@@ -1,0 +1,22 @@
+{
+  "extends": ["tslint:all"],
+  "rules": {
+    "curly": false,
+    "interface-name": false,
+    "max-classes-per-file": false,
+    "max-file-line-count": [true, 200],
+    "max-line-length": [true, 200],
+    "member-ordering": false,
+    "no-any": true,
+    "no-console": false,
+    "quotemark": [true, "single"],
+    "object-literal-sort-keys": false,
+    "one-line": false,
+    "ordered-imports": [true, {"import-sources-order": "lowercase-last", "named-imports-order": "lowercase-last"}],
+    "semicolon": [true, "never"],
+    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
+    "typedef": [true, "array-destructuring", "arrow-call-signature", "arrow-parameter", "call-signature", "member-variable-declaration", "object-destructuring", "parameter", "property-declaration", "variable-declaration"],
+    "typedef-whitespace": false,
+    "whitespace": [true, "check-branch", "check-decl", "check-module", "check-operator", "check-preblock", "check-separator", "check-typecast"]
+  }
+}

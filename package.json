@@ -1,0 +1,36 @@
+{
+  "name": "ryor",
+  "version": "0.0.1",
+  "description": "Creates a simple CLI for your project tasks which can be composed as \"package scripts\" for NPS.",
+  "repository": "movecodemove/ryor",
+  "bugs": "https://github.com/movecodemove/ryor/issues",
+  "contributors": [
+    "Scott Steven Rodriguez <scott@movecodemove.com> (http://movecodemove.com)"
+  ],
+  "engines": {
+    "node": ">= 6.10.3"
+  },
+  "main": "dist/ryor",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "minimist": "^1.2.0",
+    "nps": "^5.3.1"
+  },
+  "devDependencies": {
+    "@types/chalk": "^0.4.31",
+    "@types/jest": "^19.2.4",
+    "@types/minimist": "^1.2.0",
+    "@types/node": "^7.0.27",
+    "chalk-cli": "^3.0.0",
+    "jest": "^20.0.4",
+    "nodent": "^3.0.17",
+    "rollup": "^0.41.6",
+    "ryor": "^0.0.0",
+    "shx": "^0.2.2",
+    "tslint": "^5.4.2",
+    "typescript": "^2.3.4"
+  }
+}

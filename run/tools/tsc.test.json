@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "alwaysStrict": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["ES2017", "ScriptHost"],
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "noFallthroughCasesInSwitch": true,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "outDir": "../../build/cjs",
+    "strictNullChecks": true,
+    "target": "ES2017"
+  },
+  "include": [
+    "../../source"
+  ]
+}
