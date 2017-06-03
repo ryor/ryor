@@ -1,6 +1,6 @@
 {
   "name": "ryor",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Creates a simple CLI for your project tasks which can be composed as \"package scripts\" for NPS.",
   "repository": "movecodemove/ryor",
   "bugs": "https://github.com/movecodemove/ryor/issues",
@@ -29,7 +29,7 @@
     "jest": "^20.0.4",
     "nodent": "^3.0.17",
     "rollup": "^0.41.6",
-    "ryor": "^0.0.8",
+    "ryor": "^0.0.9",
     "shx": "^0.2.2",
     "tslint": "^5.4.2",
     "typescript": "^2.3.4"
