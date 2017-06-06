@@ -1,4 +1,4 @@
 module.exports = {
   description: 'Transpiles code',
-  nps: 'Transpiling code'
+  nps: 'echo Transpiling code'
 }

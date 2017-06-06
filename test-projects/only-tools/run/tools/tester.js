@@ -1,6 +1,6 @@
 module.exports = {
   nps: {
     quiet: 'Testing code with quiet settings',
-    verbose: 'Testing code with verbose settings'
+    verbose: 'echo Testing code with verbose settings'
   }
 }
