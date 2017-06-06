@@ -1,6 +1,6 @@
 declare module 'nps' {
   interface Config {
-    scriptConfig: NPSScriptsConfiguration
+    scriptConfig: NPSScripts
     scripts: string[]
     options: {[key:string]:boolean}
   }
@@ -8,71 +8,14 @@ declare module 'nps' {
   export default nps
 }
 
-interface CommandDefinition {
-  description: string
-  options?: CommandOptionDefinitions
-  values?: CommandValuesDefinition
+interface HelpList {
+  label: string
+  items: HelpListItem[]
 }
 
-interface CommandFunction {
-  (arguments:CommandFunctionArguments): void
-}
-
-interface CommandFunctionArguments {
-  [key:string]:{}
-}
-
-interface CommandOptionDefinition {
-  description: string
-  alias?: string
-  type?: string
-}
-
-interface CommandOptionDefinitions {
-  [key:string]: string | CommandOptionDefinition
-}
-
-interface CommandValuesDefinition {
-  key: string
-  description: string
-  required?: 1
-  limit?: number
-  accepts?: {[key:string]:string}
-  defaults?: string
-}
-
-interface CommandOption {
-  alias: string
-  description: string
-  type: string
-}
-
-interface CommandOptions {
-  [key:string]: CommandOption
-}
-
-interface CommandModule {
-  define?:() => CommandDefinition
-  run?:CommandFunction
-  nps?: string
-}
-
-interface HelpCommandArguments {
-  command: string
-}
-
-interface HelpItem {
+interface HelpListItem {
   key: string
   value: string
-}
-
-interface NPSCommandArguments {
-  debug: boolean
-  scripts: string[]
-}
-
-interface NPSConfiguration {
-  scripts: NPSScriptsConfiguration
 }
 
 interface NPSError {
@@ -81,14 +24,11 @@ interface NPSError {
   ref: string
 }
 
-interface NPSOptions {
-  debug: boolean
+interface NPSScripts {
+  [key:string]: string | NPSScripts
 }
 
-interface NPSScriptDescriptions {
-  [key:string]: string
-}
-
-interface NPSScriptsConfiguration {
-  [key:string]: string | NPSScriptsConfiguration
+interface Runnable {
+  description?: string
+  nps?: string | NPSScripts
 }

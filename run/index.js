@@ -1,1 +1,1 @@
-require('ryor').run()
+require('../dist/ryor').run()
