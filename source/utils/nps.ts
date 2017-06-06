@@ -1,3 +1,4 @@
+import {randomBytes} from 'crypto'
 import {existsSync, mkdirSync, unlinkSync, writeFileSync} from 'fs'
 import {tmpdir} from 'os'
 import nps from 'nps'
@@ -76,7 +77,7 @@ export function runNPSScripts(scripts:string[]):void
       )
 
   const configDirectoryPath:string = resolve(tmpdir(), 'ryor')
-  const configFilePath:string = resolve(configDirectoryPath, `${Date.now()}.json`)
+  const configFilePath:string = resolve(configDirectoryPath, `${randomBytes(10).toString('hex')}.json`)
   const scriptConfig:NPSScripts = JSON.parse(JSON.stringify(getNPSScripts()).replace(/nps /g, `nps -sc ${configFilePath} `))
 
   if (!existsSync(configDirectoryPath))
