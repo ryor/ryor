@@ -10,8 +10,7 @@ const nps = series(
   'echo',
   'nps jest.quiet',
   'echo',
-  'nps build',
-  'nps patch',
+  'nps build patch',
   'git add --all',
   'git commit',
   'git push'
