@@ -4,7 +4,7 @@ import {resolve} from 'path'
 import {composeHelpItemsList, outputHelpMessage} from '../help'
 
 export const expectedTasksHelpMessage:string =
-`${bold('Usage:')} node run <tasks...>
+`${bold('Usage:')} node run ${bold('<tasks...>')}
 
 ${bold('Tasks:')}
 
@@ -14,7 +14,7 @@ ${bold('Tasks:')}
   ${bold('tools ')}    Lists available tools`
 
 export const expectedToolsHelpMessage:string =
-`${bold('Usage:')} node run <tools...>
+`${bold('Usage:')} node run ${bold('<tools...>')}
 
 ${bold('Tools:')}
 

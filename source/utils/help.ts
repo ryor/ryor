@@ -5,7 +5,7 @@ import {capitalize, maxStringLength, padStringWithSpaces} from './strings'
 
 export const Message:{[key:string]:string} = {
   NoDescriptionProvided: 'No description provided',
-  Usage: `${bold('Usage:')} node run <[TYPE]...>`,
+  Usage: `${bold('Usage:')} node run ${bold('<[TYPE]...>')}`,
   ToolsTaskDescription: 'Lists available tools'
 }
 
