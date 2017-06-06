@@ -6,7 +6,7 @@ const nps = series(
   'echo',
   rm('build'),
   log.task('Transpiling TypeScript'),
-  'nps tsc.commands tsc.lib',
+  'nps tsc',
   log.task('Bundling module with Rollup'),
   'nps rollup',
   log.task('Cleaning up'),

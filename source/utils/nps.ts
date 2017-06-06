@@ -85,12 +85,6 @@ export function runNPSScripts(scripts:string[]):void
   writeFileSync(configFilePath, JSON.stringify({scripts:scriptConfig}))
 
   nps({scriptConfig, scripts, options: {silent: true}})
-    .then(():void =>
-    {
-      unlinkSync(configFilePath)
-    })
-    .catch(({message}:NPSError):void =>
-    {
-      unlinkSync(configFilePath)
-    })
+    .then(():void => unlinkSync(configFilePath))
+    .catch(({message}:NPSError):void => unlinkSync(configFilePath))
 }

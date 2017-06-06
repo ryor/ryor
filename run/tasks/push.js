@@ -8,7 +8,7 @@ const nps = series(
   'nps tslint',
   log.task('Testing TypeScript with Jest'),
   'echo',
-  'nps jest.quiet',
+  'nps jest',
   'echo',
   'nps build patch',
   'git add --all',
