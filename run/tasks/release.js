@@ -23,7 +23,7 @@ const nps = series(
   log.task('Adding new tag to Git repository'),
   `git tag -a v${version} -m "Version ${version}"`,
   log.task('Pushing commit and tag to Github'),
-  'git --follow-tags',
+  'git push --follow-tags',
   'echo'
 )
 
