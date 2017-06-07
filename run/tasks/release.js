@@ -12,6 +12,7 @@ const nps = series(
   'echo',
   'nps jest',
   'echo',
+  rm('coverage'),
   log.task('Confirming build completes succesfully'),
   'nps tsc rollup',
   rm('build'),
