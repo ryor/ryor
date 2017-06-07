@@ -6,11 +6,9 @@
 
 No plugins, no global dependencies, no cluttering of a project root with configuration files or a package.json file with configuration details and lengthy, difficult-to-mantain scripts. Simply install development dependencies as usual with **npm** or **yarn** and **node run** will list available project tasks and tools.
 
-## Philosophy
-
 ### Tools that "do one thing and do it well"
 
-Like the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy), the **ryor** philosophy holds that tools should "do one thing and do it well" instead of trying to tackle too many different concerns and requiring unevenly maintained 3rd-party plugins (like Gulp, Grunt, Webpack, etc.) to do so.  As much as reasonably possible, using simple command-line calls or short scripts that wrap Node.js APIs is preferred to the bundling of tools with "pluggable" task runners.
+Like the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy), **ryor** projects prefer tools should "do one thing and do it well" over "pluggable" task runners that requiring unevenly maintained 3rd-party plugins (like Gulp, Grunt, Webpack, etc.).
 
 ### Package scripts
 
