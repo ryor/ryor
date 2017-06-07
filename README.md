@@ -1,7 +1,8 @@
 # `ryor` – Roll Your Own (Task) Runner for Node.js Projects
 
-[![Travis](https://img.shields.io/travis/movecodemove/ryor.svg?style=flat)](https://travis-ci.org/movecodemove/ryor)
-[![Codecov](https://img.shields.io/codecov/c/github/movecodemove/ryor.svg?style=flat)](https://codecov.io/gh/movecodemove/ryor)
+[![Travis](https://img.shields.io/travis/movecodemove/ryor.svg)](https://travis-ci.org/movecodemove/ryor)
+[![Codecov](https://img.shields.io/codecov/c/github/movecodemove/ryor.svg)](https://codecov.io/gh/movecodemove/ryor)
+[![License](https://img.shields.io/github/license/movecodemove/ryor.svg)](https://github.com/movecodemove/ryor/blob/master/LICENSE)
 
 No plugins, no global dependencies, no cluttering of a project root with configuration files or a package.json file with configuration details and lengthy, difficult-to-mantain scripts. Simply install development dependencies as usual with **npm** or **yarn** and **node run** will list available project tasks and tools.
 
@@ -38,27 +39,3 @@ Just create a run directory that contains an index.js file with this one line: `
 ## Sample Projects / Templates
 
 Several coming soon.
-
-## License
-
-(The MIT License)
-
-Copyright (c) 2017 Move Code Move
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.

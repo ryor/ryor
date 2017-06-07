@@ -1,1 +1,1 @@
-require('../build').run()
+require('ryor').run()
