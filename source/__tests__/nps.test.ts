@@ -1,4 +1,3 @@
-import {bold} from 'chalk'
 import {resolve} from 'path'
 import {getNPSScripts, getNPSScriptNames, runNPSScripts} from '../nps'
 import {Message} from '../strings'
@@ -93,18 +92,18 @@ test('Runs NPS scripts', ():void =>
 
   directoryPath = resolve(rootDirectoryPath, 'test-projects/only-tasks')
   process.chdir(directoryPath)
-  expect(() => runNPSScripts(['build'])).toThrow(`NPS script ${bold('build')} could not be resolved`)
-  expect(() => runNPSScripts(['build', 'test'])).toThrow(`NPS script ${bold('build')} could not be resolved`)
-  expect(() => runNPSScripts(['build', 'bundler'])).toThrow(`NPS scripts ${bold('build')} and ${bold('bundler')} could not be resolved`)
+  expect(() => runNPSScripts(['build'])).toThrow(Message.NPS.ScriptsNotResolved)
+  expect(() => runNPSScripts(['build', 'test'])).toThrow(Message.NPS.ScriptsNotResolved)
+  expect(() => runNPSScripts(['build', 'bundler'])).toThrow(Message.NPS.ScriptsNotResolved)
   expect(() => runNPSScripts(['build.development'])).not.toThrow()
   expect(() => runNPSScripts(['test', 'build.production', 'deploy'])).not.toThrow()
   process.chdir(rootDirectoryPath)
 
   directoryPath = resolve(rootDirectoryPath, 'test-projects/only-tools')
   process.chdir(directoryPath)
-  expect(() => runNPSScripts(['build.development'])).toThrow(`NPS script ${bold('build.development')} could not be resolved`)
-  expect(() => runNPSScripts(['build.development', 'bundler'])).toThrow(`NPS script ${bold('build.development')} could not be resolved`)
-  expect(() => runNPSScripts(['tester'])).toThrow(`NPS script ${bold('tester')} could not be resolved`)
+  expect(() => runNPSScripts(['build.development'])).toThrow(Message.NPS.ScriptsNotResolved)
+  expect(() => runNPSScripts(['build.development', 'bundler'])).toThrow(Message.NPS.ScriptsNotResolved)
+  expect(() => runNPSScripts(['tester'])).toThrow(Message.NPS.ScriptsNotResolved)
   expect(() => runNPSScripts(['tester.quiet'])).not.toThrow()
   expect(() => runNPSScripts(['tester.quiet', 'transpiler', 'bundler'])).not.toThrow()
   process.chdir(rootDirectoryPath)

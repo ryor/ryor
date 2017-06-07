@@ -8,11 +8,16 @@ declare module 'nps' {
   export default nps
 }
 
+interface Command {
+  function: () => void
+}
+
 interface NPSScripts {
   [key:string]: string | NPSScripts
 }
 
 interface Runnable {
   description?: string
+  command?: Command
   nps?: string | NPSScripts
 }

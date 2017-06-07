@@ -1,4 +1,3 @@
-import {bold, red} from 'chalk'
 import {resolve} from 'path'
 import {run} from '..'
 import {Message} from '../strings'
@@ -6,39 +5,7 @@ import {expectedTaskUsageInformation, expectedToolsUsageInformation} from './usa
 
 const rootDirectoryPath:string = resolve(__dirname, '../..')
 
-test('Outputs tasks usage information when run function is executed with an empty args array', ():void =>
-{
-  let consoleLogValue:string = ''
-  let testProjectDirectoryPath:string
-
-  jest.spyOn(console, 'log').mockImplementation((value:string):string => consoleLogValue = value)
-
-  testProjectDirectoryPath = resolve(rootDirectoryPath, 'test-projects/tasks-and-tools')
-  process.chdir(testProjectDirectoryPath)
-  run([])
-  process.chdir(rootDirectoryPath)
-  expect(consoleLogValue.trim()).toBe(expectedTaskUsageInformation['tasks-and-tools'])
-
-  jest.clearAllMocks()
-})
-
-test('Outputs tools usage information when "tools" is only arg passed to run function', ():void =>
-{
-  let consoleLogValue:string = ''
-  let testProjectDirectoryPath:string
-
-  jest.spyOn(console, 'log').mockImplementation((value:string):string => consoleLogValue = value)
-
-  testProjectDirectoryPath = resolve(rootDirectoryPath, 'test-projects/tasks-and-tools')
-  process.chdir(testProjectDirectoryPath)
-  run(['tools'])
-  process.chdir(rootDirectoryPath)
-  expect(consoleLogValue.trim()).toBe(expectedToolsUsageInformation)
-
-  jest.clearAllMocks()
-})
-
-test('Outputs RunnablesRequired message when runnables cannot be resolved', ():void =>
+test('Outputs RunnablesRequired message when no runnables have been defined', ():void =>
 {
   let consoleLogValue:string = ''
   let testProjectDirectoryPath:string
@@ -60,17 +27,131 @@ test('Outputs RunnablesRequired message when runnables cannot be resolved', ():v
   jest.clearAllMocks()
 })
 
-test('Outputs error message and exits process with non-zero code when script cannot be resolved', ():void =>
+test('Outputs tasks usage information when run function is executed with an empty args array', ():void =>
 {
+  const testProjectDirectoryPath:string = resolve(rootDirectoryPath, 'test-projects/tasks-and-tools')
   let consoleLogValue:string = ''
-  let exitCode:number = 0
 
   jest.spyOn(console, 'log').mockImplementation((value:string):string => consoleLogValue = value)
-  jest.spyOn(process, 'exit').mockImplementation((code:number):number => exitCode = code)
 
+  process.chdir(testProjectDirectoryPath)
+  run([])
+  process.chdir(rootDirectoryPath)
+  expect(consoleLogValue.trim()).toBe(expectedTaskUsageInformation['tasks-and-tools'])
+
+  jest.clearAllMocks()
+})
+
+test('Outputs tools usage information when "tools" is only arg passed to run function', ():void =>
+{
+  const testProjectDirectoryPath:string = resolve(rootDirectoryPath, 'test-projects/tasks-and-tools')
+  let consoleLogValue:string = ''
+
+  jest.spyOn(console, 'log').mockImplementation((value:string):string => consoleLogValue = value)
+
+  process.chdir(testProjectDirectoryPath)
+  run(['tools'])
+  process.chdir(rootDirectoryPath)
+  expect(consoleLogValue.trim()).toBe(expectedToolsUsageInformation)
+
+  jest.clearAllMocks()
+})
+
+test('Outputs tasks usage information when "tools" is only arg passed to run function but no tools are defined', ():void =>
+{
+  let consoleLogValue:string = ''
+  let testProjectDirectoryPath:string
+
+  jest.spyOn(console, 'log').mockImplementation((value:string):string => consoleLogValue = value)
+
+  testProjectDirectoryPath = resolve(rootDirectoryPath, 'test-projects/only-tasks')
+  process.chdir(testProjectDirectoryPath)
+  run(['tools'])
+  process.chdir(rootDirectoryPath)
+  expect(consoleLogValue.trim()).toBe(expectedTaskUsageInformation['only-tasks'])
+
+  jest.clearAllMocks()
+})
+
+test('Outputs tasks usage information when runnable cannot be resolved', ():void =>
+{
+  const testProjectDirectoryPath:string = resolve(rootDirectoryPath, 'test-projects/tasks-and-tools')
+  let consoleLogValue:string = ''
+
+  jest.spyOn(console, 'log').mockImplementation((value:string):string => consoleLogValue = value)
+
+  process.chdir(testProjectDirectoryPath)
   run(['invalid'])
-  expect(consoleLogValue.trim()).toBe(red(`NPS script ${bold('invalid')} could not be resolved`))
-  expect(exitCode).toBe(1)
+  process.chdir(rootDirectoryPath)
+  expect(consoleLogValue.trim()).toBe(expectedTaskUsageInformation['tasks-and-tools'])
+
+  jest.clearAllMocks()
+})
+
+test('Outputs tasks usage information when "nps" is only arg passed to run function', ():void =>
+{
+  const testProjectDirectoryPath:string = resolve(rootDirectoryPath, 'test-projects/tasks-and-tools')
+  let consoleLogValue:string = ''
+
+  jest.spyOn(console, 'log').mockImplementation((value:string):string => consoleLogValue = value)
+
+  process.chdir(testProjectDirectoryPath)
+  run(['nps'])
+  process.chdir(rootDirectoryPath)
+  expect(consoleLogValue.trim()).toBe(expectedTaskUsageInformation['tasks-and-tools'])
+
+  jest.clearAllMocks()
+})
+
+test('Outputs tasks usage information when "nps" is first arg passed to run function and subsequent args cannot be resolved into NPS scripts', ():void =>
+{
+  const testProjectDirectoryPath:string = resolve(rootDirectoryPath, 'test-projects/tasks-and-tools')
+  let consoleLogValue:string = ''
+
+  jest.spyOn(console, 'log').mockImplementation((value:string):string => consoleLogValue = value)
+
+  process.chdir(testProjectDirectoryPath)
+  run(['nps', 'invalid'])
+  process.chdir(rootDirectoryPath)
+  expect(consoleLogValue.trim()).toBe(expectedTaskUsageInformation['tasks-and-tools'])
+
+  jest.clearAllMocks()
+})
+
+test('Runs single NPS script when resolved as runnable', ():void =>
+{
+  const testProjectDirectoryPath:string = resolve(rootDirectoryPath, 'test-projects/tasks-and-tools')
+  let consoleLogValue:string = ''
+
+  jest.spyOn(console, 'log').mockImplementation((value:string):string => consoleLogValue = value)
+
+  process.chdir(testProjectDirectoryPath)
+  run(['test'])
+  process.chdir(rootDirectoryPath)
+  expect(consoleLogValue.trim()).toBe('')
+
+  jest.clearAllMocks()
+})
+
+test('Runs NPS scripts when listed in series after initial "nps" arg', ():void =>
+{
+  const testProjectDirectoryPath:string = resolve(rootDirectoryPath, 'test-projects/tasks-and-tools')
+  let consoleLogValue:string = ''
+
+  jest.spyOn(console, 'log').mockImplementation((value:string):string => consoleLogValue = value)
+
+  process.chdir(testProjectDirectoryPath)
+
+  run(['nps', 'test'])
+  expect(consoleLogValue.trim()).toBe('')
+
+  run(['nps', 'test', 'deploy'])
+  expect(consoleLogValue.trim()).toBe('')
+
+  run(['nps', 'tester.quiet', 'tester.verbose', 'transpiler', 'bundler'])
+  expect(consoleLogValue.trim()).toBe('')
+
+  process.chdir(rootDirectoryPath)
 
   jest.clearAllMocks()
 })

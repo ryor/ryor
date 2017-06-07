@@ -3,9 +3,8 @@ import {existsSync, mkdirSync, unlinkSync, writeFileSync} from 'fs'
 import {tmpdir} from 'os'
 import nps from 'nps'
 import {resolve} from 'path'
-import {bold} from 'chalk'
 import {getRunnables} from './runnables'
-import {Message, commaSeparateValues} from './strings'
+import {Message} from './strings'
 
 export function getNPSScripts():NPSScripts
 {
@@ -64,11 +63,7 @@ export function runNPSScripts(scripts:string[]):void
   const unresolvedScripts:string[] = scripts.filter((script:string):boolean => !scriptNames.includes(script))
 
   if (unresolvedScripts.length > 0)
-    throw new Error(
-      Message.NPS.ScriptsNotResolved
-        .replace('scripts', unresolvedScripts.length === 1 ? 'script' : 'scripts')
-        .replace('[SCRIPTS]', commaSeparateValues(unresolvedScripts.map((script:string):string => bold(script))))
-      )
+    throw new Error(Message.NPS.ScriptsNotResolved)
 
   const configDirectoryPath:string = resolve(tmpdir(), 'ryor')
   const configFilePath:string = resolve(configDirectoryPath, `${randomBytes(10).toString('hex')}.json`)

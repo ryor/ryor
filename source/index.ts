@@ -3,34 +3,55 @@ import {existsSync} from 'fs'
 import {EOL} from 'os'
 import {resolve} from 'path'
 import {runNPSScripts} from './nps'
+import {resolveRunnable} from './runnables'
 import {Message} from './strings'
 import {outputUsageInformation} from './usage'
 
 export function run(args:string[] = process.argv.slice(2)):void
 {
-  const runDirectoryPath:string = resolve(process.cwd(), 'run')
-
-  if (existsSync(runDirectoryPath) && (existsSync(resolve(runDirectoryPath, 'tasks')) || existsSync(resolve(runDirectoryPath, 'tools'))))
+  try
   {
-    if (args.length === 0)
+    const runDirectoryPath:string = resolve(process.cwd(), 'run')
+
+    if (existsSync(runDirectoryPath) && (existsSync(resolve(runDirectoryPath, 'tasks')) || existsSync(resolve(runDirectoryPath, 'tools'))))
+    {
+      if (args.length === 0)
+        return outputUsageInformation()
+
+      if (args[0] === 'tools')
+        return outputUsageInformation(existsSync(resolve(runDirectoryPath, 'tools')) ? 'tools' : 'tasks')
+
+      if (args[0] === 'nps')
+      {
+        if (args.length > 1)
+          return runNPSScripts(args.slice(1))
+
+        return outputUsageInformation()
+      }
+
+      const runnable:Runnable|undefined = resolveRunnable(args[0])
+
+      if (runnable)
+      {
+        const {nps} = runnable
+
+        if (nps)
+          return runNPSScripts([args[0]])
+      }
+
       return outputUsageInformation()
-
-    if (args[0] === 'tools')
-      return outputUsageInformation(existsSync(resolve(runDirectoryPath, 'tools')) ? 'tools' : 'tasks')
-
-    try
-    {
-      runNPSScripts(args)
     }
 
-    catch(error)
-    {
-      console.log(`${EOL}${red(error.message || error)}${EOL}`)
-
-      process.exit(1)
-    }
+    console.log(`${EOL}${Message.Run.RunnablesRequired}${EOL}`)
   }
 
-  else
-    console.log(`${EOL}${Message.Run.RunnablesRequired}${EOL}`)
+  catch(error)
+  {
+    const {message}:Error = error
+
+    if (message && message === Message.NPS.ScriptsNotResolved)
+      return outputUsageInformation()
+
+    console.log(`${EOL}${red(error.message || error)}${EOL}`)
+  }
 }
