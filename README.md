@@ -8,7 +8,7 @@ No plugins, no global dependencies, no cluttering of a project root with configu
 
 ### Tools that "do one thing and do it well"
 
-Like the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy), **ryor** projects prefer tools should "do one thing and do it well" over task runners that requiring unevenly maintained 3rd-party plugins (like Gulp, Grunt, Webpack, etc.).
+Like the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy), **ryor** projects prefer tools that "do one thing and do it well" over task runners that require unevenly maintained 3rd-party plugins (like Gulp, Grunt, Webpack, etc.).
 
 ### Package scripts
 
@@ -28,11 +28,11 @@ Running `node run` on a **ryor** project will output a list of available tasks a
 
 ### Simple usage
 
-Just **node run [TASK]/[TOOL]**.  Tasks compose NPS scripts that run tools in series or parallel and tools are exposed for use by tasks and debugging.
+Just `node run [task]/[tool]`.  Tasks compose NPS scripts that run tools in series or parallel and tools are exposed for use by tasks and debugging.
 
 ### Simple to roll
 
-Just create a run directory that contains an index.js file with this one line: `require('ryor').run()`.  Then add as many tasks (in the **run/tasks**) and/or tools (in the **run/tools**) as you'd like.
+Just create a run directory that contains an index.js file with this one line: `require('ryor').run()`.  Then add as many tasks (in the **run/tasks** directory) and/or tools (in the **run/tools** directory) as you'd like.
 
 ## Sample Projects / Templates
 
