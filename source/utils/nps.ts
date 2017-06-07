@@ -5,13 +5,7 @@ import nps from 'nps'
 import {resolve} from 'path'
 import {bold} from 'chalk'
 import {getRunnables} from './runnables'
-import {commaSeparateValues} from './strings'
-
-export const Message:{[key:string]:string} = {
-  NPSScriptsNotResolved: 'NPS script [SCRIPTS] could not be resolved',
-  NPSScriptKeysRequired: 'At least one script key required',
-  NoNPSScriptsDefined: 'No NPS scripts found'
-}
+import {Message, commaSeparateValues} from './strings'
 
 export function getNPSScripts():NPSScripts
 {
@@ -60,18 +54,18 @@ export function getNPSScriptNames(parentNode:NPSScripts = getNPSScripts(), paren
 export function runNPSScripts(scripts:string[]):void
 {
   if (scripts.length === 0)
-    throw new Error(Message.NPSScriptKeysRequired)
+    throw new Error(Message.NPS.ScriptKeysRequired)
 
   const scriptNames:string[] = getNPSScriptNames()
 
   if (scriptNames.length === 0)
-    throw new Error(Message.NoNPSScriptsDefined)
+    throw new Error(Message.NPS.ScriptsNotDefined)
 
   const unresolvedScripts:string[] = scripts.filter((script:string):boolean => !scriptNames.includes(script))
 
   if (unresolvedScripts.length > 0)
     throw new Error(
-      Message.NPSScriptsNotResolved
+      Message.NPS.ScriptsNotResolved
         .replace('script', unresolvedScripts.length > 1 ? 'scripts' : 'script')
         .replace('[SCRIPTS]', commaSeparateValues(unresolvedScripts.map((script:string):string => bold(script))))
       )
@@ -87,5 +81,5 @@ export function runNPSScripts(scripts:string[]):void
 
   nps({scriptConfig, scripts, options: {silent: true}})
     .then(():void => unlinkSync(configFilePath))
-    .catch(({message}:NPSError):void => unlinkSync(configFilePath))
+    .catch(():void => unlinkSync(configFilePath))
 }

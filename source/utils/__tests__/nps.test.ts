@@ -1,6 +1,7 @@
 import {bold} from 'chalk'
 import {resolve} from 'path'
-import {Message, getNPSScripts, getNPSScriptNames, runNPSScripts} from '../nps'
+import {getNPSScripts, getNPSScriptNames, runNPSScripts} from '../nps'
+import {Message} from '../strings'
 
 const rootDirectoryPath:string = resolve(__dirname, '../../..')
 const expectedTaskScriptKeys:string[] = ['build', 'deploy', 'test']
@@ -78,16 +79,16 @@ test('Runs NPS scripts', ():void =>
 {
   let directoryPath:string
 
-  expect(() => runNPSScripts([])).toThrow(Message.NPSScriptKeysRequired)
+  expect(() => runNPSScripts([])).toThrow(Message.NPS.ScriptKeysRequired)
 
   directoryPath = resolve(rootDirectoryPath, 'test-projects/empty')
   process.chdir(directoryPath)
-  expect(() => runNPSScripts(['build'])).toThrow(Message.NoNPSScriptsDefined)
+  expect(() => runNPSScripts(['build'])).toThrow(Message.NPS.ScriptsNotDefined)
   process.chdir(rootDirectoryPath)
 
   directoryPath = resolve(rootDirectoryPath, 'test-projects/empty-run')
   process.chdir(directoryPath)
-  expect(() => runNPSScripts(['build'])).toThrow(Message.NoNPSScriptsDefined)
+  expect(() => runNPSScripts(['build'])).toThrow(Message.NPS.ScriptsNotDefined)
   process.chdir(rootDirectoryPath)
 
   directoryPath = resolve(rootDirectoryPath, 'test-projects/only-tasks')

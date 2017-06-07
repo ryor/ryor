@@ -5,13 +5,13 @@ const rootDirectoryPath:string = resolve(__dirname, '../../..')
 const expectedTaskRunnableKeys:string[] = ['build', 'deploy', 'test']
 const expectedToolRunnableKeys:string[] = ['bundler', 'tester', 'transpiler']
 
-function getTestProjectRunnables(project:string, type:string):Map<string, Runnable>|undefined
+function getTestProjectRunnables(project:string, type:string):Map<string, Runnable>
 {
   const directoryPath:string = resolve(rootDirectoryPath, `test-projects/${project}`)
 
   process.chdir(directoryPath)
 
-  const runnables:Map<string, Runnable>|undefined = getRunnables(type)
+  const runnables:Map<string, Runnable> = getRunnables(type)
 
   process.chdir(rootDirectoryPath)
 
@@ -20,19 +20,19 @@ function getTestProjectRunnables(project:string, type:string):Map<string, Runnab
 
 test('Gets task runnables', ():void =>
 {
-  let tasks:Map<string, Runnable>|undefined
+  let tasks:Map<string, Runnable>
 
   tasks = getTestProjectRunnables('empty', 'tasks')
-  expect(tasks).toBeUndefined()
+  expect(tasks.size).toBe(0)
 
   tasks = getTestProjectRunnables('empty-run', 'tasks')
-  expect(tasks).toBeUndefined()
+  expect(tasks.size).toBe(0)
 
   tasks = getTestProjectRunnables('only-tasks', 'tasks')
   expect(Array.from(tasks!.keys()).sort()).toEqual(expectedTaskRunnableKeys)
 
   tasks = getTestProjectRunnables('only-tools', 'tasks')
-  expect(tasks).toBeUndefined()
+  expect(tasks.size).toBe(0)
 
   tasks = getTestProjectRunnables('tasks-and-tools', 'tasks')
   expect(Array.from(tasks!.keys()).sort()).toEqual(expectedTaskRunnableKeys)
@@ -43,13 +43,13 @@ test('Gets tool runnables', ():void =>
   let tools:Map<string, Runnable>|undefined
 
   tools = getTestProjectRunnables('empty', 'tasks')
-  expect(tools).toBeUndefined()
+  expect(tools.size).toBe(0)
 
   tools = getTestProjectRunnables('empty-run', 'tasks')
-  expect(tools).toBeUndefined()
+  expect(tools.size).toBe(0)
 
   tools = getTestProjectRunnables('only-tasks', 'tools')
-  expect(tools).toBeUndefined()
+  expect(tools.size).toBe(0)
 
   tools = getTestProjectRunnables('only-tools', 'tools')
   expect(Array.from(tools!.keys()).sort()).toEqual(expectedToolRunnableKeys)

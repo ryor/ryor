@@ -1,4 +1,4 @@
-const {log, shell: {mv, rm, series}} = require('../utils/nps')
+const {log, shell: {rm, series}} = require('../utils/nps')
 
 const description = 'Complete build with error-checking, transpiling, testing and bundling'
 
@@ -10,8 +10,7 @@ const nps = series(
   log.task('Bundling module with Rollup'),
   'nps rollup',
   log.task('Cleaning up'),
-  rm('build/index.js build/utils dist'),
-  mv('build', 'dist'),
+  rm('build/utils'),
   log.success('Build complete'),
   'echo'
 )

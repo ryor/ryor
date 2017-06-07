@@ -8,8 +8,7 @@ const nps = series(
   'nps tslint',
   log.task('Testing TypeScript with Jest'),
   'echo',
-  'nps jest.coverage',
-  rm('coverage'),
+  'nps jest',
   'echo',
   log.success('All tests passed'),
   'echo'

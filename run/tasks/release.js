@@ -10,10 +10,17 @@ const nps = series(
   'echo',
   'nps jest',
   'echo',
-  'nps build patch',
+  log.task('Confirming build completes succesfully'),
+  'nps tsc rollup',
+  rm('build'),
+  log.task('Updating package.json file'),
+  'nps patch',
+  log.task('Committing changes to Git repository'),
   'git add --all',
   'git commit',
-  'git push'
+  log.task('Pushing changes to Github'),
+  'git push',
+  'echo'
 )
 
 module.exports = {description, nps}

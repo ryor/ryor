@@ -1,10 +1,10 @@
 import {resolve} from 'path'
 import {run} from '..'
-import {expectedTasksHelpMessage, expectedToolsHelpMessage} from '../utils/__tests__/help.test'
+import {expectedTaskUsageInformation, expectedToolsUsageInformation} from '../utils/__tests__/usage.test'
 
 const rootDirectoryPath:string = resolve(__dirname, '../..')
 
-test('Outputs tasks help message when run function is executed with an empty args array', ():void =>
+test('Outputs tasks usage information when run function is executed with an empty args array', ():void =>
 {
   let consoleLogValue:string = ''
   let testProjectDirectoryPath:string
@@ -15,12 +15,12 @@ test('Outputs tasks help message when run function is executed with an empty arg
   process.chdir(testProjectDirectoryPath)
   run([])
   process.chdir(rootDirectoryPath)
-  expect(consoleLogValue.trim()).toBe(expectedTasksHelpMessage)
+  expect(consoleLogValue.trim()).toBe(expectedTaskUsageInformation['tasks-and-tools'])
 
   jest.clearAllMocks()
 })
 
-test('Outputs tools help message when "tools" is only arg passed to run function', ():void =>
+test('Outputs tools usage information when "tools" is only arg passed to run function', ():void =>
 {
   let consoleLogValue:string = ''
   let testProjectDirectoryPath:string
@@ -31,7 +31,7 @@ test('Outputs tools help message when "tools" is only arg passed to run function
   process.chdir(testProjectDirectoryPath)
   run(['tools'])
   process.chdir(rootDirectoryPath)
-  expect(consoleLogValue.trim()).toBe(expectedToolsHelpMessage)
+  expect(consoleLogValue.trim()).toBe(expectedToolsUsageInformation)
 
   jest.clearAllMocks()
 })
