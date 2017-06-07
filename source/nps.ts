@@ -66,7 +66,7 @@ export function runNPSScripts(scripts:string[]):void
   if (unresolvedScripts.length > 0)
     throw new Error(
       Message.NPS.ScriptsNotResolved
-        .replace('script', unresolvedScripts.length > 1 ? 'scripts' : 'script')
+        .replace('scripts', unresolvedScripts.length === 1 ? 'script' : 'scripts')
         .replace('[SCRIPTS]', commaSeparateValues(unresolvedScripts.map((script:string):string => bold(script))))
       )
 

@@ -38,7 +38,7 @@ ${bold('Tools:')}
   ${bold('tester    ')}    No description provided
   ${bold('transpiler')}    Transpiles code`
 
-const rootDirectoryPath:string = resolve(__dirname, '../../..')
+const rootDirectoryPath:string = resolve(__dirname, '../..')
 
 test('Composes items lists', ():void =>
 {

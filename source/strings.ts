@@ -4,7 +4,7 @@ export const Message:{[key:string]:{[key:string]:string}} = {
   NPS: {
     ScriptKeysRequired: 'At least one script key required',
     ScriptsNotDefined: 'No NPS scripts found',
-    ScriptsNotResolved: 'NPS script [SCRIPTS] could not be resolved'
+    ScriptsNotResolved: 'NPS scripts [SCRIPTS] could not be resolved'
   },
   Run: {
     RunnablesRequired: `Define ${bold('tasks')} or ${bold('tools')} to proceed. Visit ${underline('https://github.com/movecodemove/ryor')} for more details about how to get started.`

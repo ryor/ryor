@@ -3,7 +3,7 @@ import {resolve} from 'path'
 import {getNPSScripts, getNPSScriptNames, runNPSScripts} from '../nps'
 import {Message} from '../strings'
 
-const rootDirectoryPath:string = resolve(__dirname, '../../..')
+const rootDirectoryPath:string = resolve(__dirname, '../..')
 const expectedTaskScriptKeys:string[] = ['build', 'deploy', 'test']
 const expectedToolsScriptKeys:string[] = ['bundler', 'tester', 'transpiler']
 const expectedTaskScriptNames:string[] = ['build.development', 'build.production', 'deploy', 'test']

@@ -1,7 +1,7 @@
 import {resolve} from 'path'
 import {getRunnables, resolveRunnable} from '../runnables'
 
-const rootDirectoryPath:string = resolve(__dirname, '../../..')
+const rootDirectoryPath:string = resolve(__dirname, '../..')
 const expectedTaskRunnableKeys:string[] = ['build', 'deploy', 'test']
 const expectedToolRunnableKeys:string[] = ['bundler', 'tester', 'transpiler']
 
