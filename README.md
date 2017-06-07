@@ -1,4 +1,4 @@
-# `ryor` – Roll Your Own (Task) Runner for Node.js Projects
+## Roll Your Own (Task) Runner for Node.js Projects
 
 [![Travis](https://img.shields.io/travis/movecodemove/ryor.svg)](https://travis-ci.org/movecodemove/ryor)
 [![Codecov](https://img.shields.io/codecov/c/github/movecodemove/ryor.svg)](https://codecov.io/gh/movecodemove/ryor)
