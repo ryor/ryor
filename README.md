@@ -4,11 +4,11 @@
 [![Codecov](https://img.shields.io/codecov/c/github/movecodemove/ryor.svg)](https://codecov.io/gh/movecodemove/ryor)
 [![License](https://img.shields.io/github/license/movecodemove/ryor.svg)](https://github.com/movecodemove/ryor/blob/master/LICENSE)
 
-No plugins, no global dependencies, no cluttering of a project root with configuration files or a package.json file with configuration details and lengthy, difficult-to-mantain scripts. Simply install development dependencies as usual with **npm** or **yarn** and **node run** will list available project tasks and tools.
+No plugins, no global dependencies, no cluttering of a project root with configuration files or a package.json file with configuration details and lengthy, difficult-to-mantain scripts. Simply install development dependencies as usual with **npm** or **yarn** and `node run` will list available project tasks and tools.
 
 ### Tools that "do one thing and do it well"
 
-Like the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy), **ryor** projects prefer tools should "do one thing and do it well" over "pluggable" task runners that requiring unevenly maintained 3rd-party plugins (like Gulp, Grunt, Webpack, etc.).
+Like the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy), **ryor** projects prefer tools should "do one thing and do it well" over task runners that requiring unevenly maintained 3rd-party plugins (like Gulp, Grunt, Webpack, etc.).
 
 ### Package scripts
 
@@ -20,15 +20,15 @@ As often as reasonably possible, a project's development dependencies should con
 
 ### No clutter
 
-Too many tools require configuration files on a project root and/or configuration blocks in a package.json file.  As much as possible, anything required to use a tool (including configuration files and/or scripts that use Node.js APIs) is contained in a **run/tools/[TOOL]** directory.
+Too many tools require configuration files on a project root and/or configuration blocks in a package.json file.  As much as possible, anything required to use a tool (including configuration files and/or scripts that use Node.js APIs) is contained in a **run/tools/[tool]** directory.
 
 ### Simple usage information
 
-Running **node run** on a **ryor** project will output a list of available tasks and **node run tools** will list available tools.
+Running `node run` on a **ryor** project will output a list of available tasks and `node run tools` will list available tools.
 
 ### Simple usage
 
-Just **node run [TASK]/[TOOL]**.  Tasks compose NPS scripts that run tools in series or parallel and tools just "do one thing and do it well".
+Just **node run [TASK]/[TOOL]**.  Tasks compose NPS scripts that run tools in series or parallel and tools are exposed for use by tasks and debugging.
 
 ### Simple to roll
 
