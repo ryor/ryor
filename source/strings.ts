@@ -7,7 +7,7 @@ export const Message:{[key:string]:{[key:string]:string}} = {
     ScriptsNotResolved: 'NPS script(s) could not be resolved'
   },
   Run: {
-    RunnablesRequired: `Define ${bold('tasks')} or ${bold('tools')} to proceed. Visit ${underline('https://github.com/movecodemove/ryor')} for more details about how to get started.`,
+    RunnablesRequired: `Define ${bold('tasks')} or ${bold('tools')} to proceed. Visit ${underline('https://github.com/ryor-org/ryor')} for more details about how to get started.`,
     RunnableNotResolved: `No task or tool named ${bold('[RUNNABLE]')} could be resolved`
   },
   Usage: {
