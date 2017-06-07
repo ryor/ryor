@@ -1,8 +1,8 @@
 ## Roll Your Own (Task) Runner for Node.js Projects
 
-[![Travis](https://img.shields.io/travis/movecodemove/ryor.svg)](https://travis-ci.org/movecodemove/ryor)
-[![Codecov](https://img.shields.io/codecov/c/github/movecodemove/ryor.svg)](https://codecov.io/gh/movecodemove/ryor)
-[![License](https://img.shields.io/github/license/movecodemove/ryor.svg)](https://github.com/movecodemove/ryor/blob/master/LICENSE)
+[![Travis](https://img.shields.io/travis/ryor-org/ryor.svg)](https://travis-ci.org/ryor-org/ryor)
+[![Codecov](https://img.shields.io/codecov/c/github/ryor-org/ryor/v0.0.39.svg)](https://codecov.io/gh/ryor-org/ryor/branch/v0.0.39)
+[![License](https://img.shields.io/github/license/ryor-org/ryor.svg)](https://github.com/ryor-org/ryor/blob/master/LICENSE)
 
 No plugins, no global dependencies, no cluttering of a project root with configuration files or a package.json file with configuration details and lengthy, difficult-to-mantain scripts. Simply install development dependencies as usual with **npm** or **yarn** and `node run` will list available project tasks and tools.
 
