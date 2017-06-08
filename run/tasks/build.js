@@ -10,7 +10,7 @@ const nps = series(
   log.task('Bundling module with Rollup'),
   'nps rollup',
   log.task('Cleaning up'),
-  rm('build/utils'),
+  rm('build/esm'),
   log.success('Build complete'),
   'echo'
 )
