@@ -7,5 +7,5 @@ deploy:
   on:
     tags: true
   provider: script
-  script: node run deploy
+  script: node run build deploy
   skip_cleanup: true
