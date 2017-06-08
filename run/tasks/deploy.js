@@ -4,12 +4,12 @@ const description = 'Verifies that tests pass and build completes succesfully an
 
 const nps = series(
   'echo',
-  log.task('Uploading code coverage results to CodeCov'),
-  'codecov',
-  log.task('Publishing to NPM'),
+  // log.task('Uploading code coverage results to CodeCov'),
+  // 'codecov',
+  // log.task('Publishing to NPM'),
   cp('package.json', 'README.md',  'run/tools/npm/.npmrc', 'build'),
-  'cd build',
-  'npm publish',
+  // 'cd build',
+  // 'npm publish',
   'echo'
 )
 

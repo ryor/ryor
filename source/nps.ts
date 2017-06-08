@@ -67,7 +67,9 @@ export function runNPSScripts(scripts:string[]):void
 
   const configDirectoryPath:string = resolve(tmpdir(), 'ryor')
   const configFilePath:string = resolve(configDirectoryPath, `${randomBytes(10).toString('hex')}.json`)
-  const scriptConfig:NPSScripts = JSON.parse(JSON.stringify(getNPSScripts()).replace(/nps /g, `nps -sc ${configFilePath} `))
+  const modulesPath:string = resolve(process.cwd(), 'node_modules')
+  const npsCommand:string = existsSync(resolve(modulesPath, '.bin/nps')) || existsSync(resolve(modulesPath, '.bin/nps.cmd')) ? 'nps' : 'node node_modules/nps/dist/bin/nps.js'
+  const scriptConfig:NPSScripts = JSON.parse(JSON.stringify(getNPSScripts()).replace(/nps /g, `${npsCommand} -sc ${configFilePath} `))
 
   if (!existsSync(configDirectoryPath))
     mkdirSync(configDirectoryPath)
