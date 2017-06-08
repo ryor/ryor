@@ -1,7 +1,9 @@
 language: node_js
 node_js: 'node'
-cache: yarn
+git:
+  depth: 3
 install: yarn install
+cache: yarn
 script: node run test build
 deploy:
   provider: script
