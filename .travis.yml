@@ -4,8 +4,8 @@ cache: yarn
 install: yarn install
 script: node run test build
 deploy:
+  provider: script
+  script: node run deploy
+  skip_cleanup: true
   on:
     tags: true
-  provider: script
-  script: node run build deploy
-  skip_cleanup: true
