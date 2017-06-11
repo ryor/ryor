@@ -8,7 +8,7 @@ const nps = series(
   log.task('Uploading code coverage results to CodeCov'),
   'codecov',
   log.task('Publishing to NPM'),
-  cp('package.json', 'README.md',  'run/tools/npm/.npmrc', 'build'),
+  cp('package.json README.md run/tools/npm/.npmrc build'),
   'cd build',
   'npm publish',
   'echo'

@@ -1,5 +1,7 @@
+dist: trusty
+sudo: false
 language: node_js
-node_js: 'node'
+node_js: '6.11.0'
 git:
   depth: 3
 install: yarn install
