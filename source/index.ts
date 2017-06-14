@@ -1,6 +1,6 @@
 import {red} from 'chalk'
 import {EOL} from 'os'
-import {detectUnresolvableCommands, getRunnableModules, resolveRequestedRunnables, runRequestedRunnables} from './runnables'
+import {getRunnableModules, resolveRequestedRunnables, runRequestedRunnables} from './runnables'
 import {composeUsageInformation} from './usage'
 
 export function run(args:string[] = []):void
@@ -16,18 +16,11 @@ export function run(args:string[] = []):void
   else
     try
     {
-      const runnables:Runnable[] = resolveRequestedRunnables(args, runnableModules)
-      const unresolvableCommands:string[] = detectUnresolvableCommands(runnables)
-
-      if (unresolvableCommands.length > 0)
-        console.log(`${EOL}Commands ${unresolvableCommands.join(' ')} could not be resolved${EOL}`)
-
-      else
-        Promise.resolve()
-          .then(() => console.log(''))
-          .then(() => runRequestedRunnables(runnables))
-          .then(() => console.log(''))
-          .catch(() => console.log(''))
+      Promise.resolve()
+        .then(() => console.log(''))
+        .then(() => runRequestedRunnables(resolveRequestedRunnables(args, runnableModules)))
+        .then(() => console.log(''))
+        .catch(() => console.log(''))
     }
 
     catch (error)

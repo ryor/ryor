@@ -3,7 +3,6 @@ import {ChildProcess, spawn} from 'child_process'
 import {existsSync, readdirSync, statSync} from 'fs'
 import {EOL} from 'os'
 import {parse, resolve} from 'path'
-import {which} from 'shelljs'
 import {parse as parseRunnableValues} from 'shell-quote'
 
 export function getRunnableModules():Map<string, Map<string, RunnableModule>>
@@ -164,29 +163,6 @@ export function resolveRequestedRunnables(values:string[], runnableModules:Map<s
   })
 }
 
-export function updateProcessPath():void
-{
-  const projectBinDirectoryPath:string = resolve(process.cwd(), 'node_modules/.bin')
-
-  if (existsSync(projectBinDirectoryPath))
-    process.env.PATH = `${process.env.PATH}:${projectBinDirectoryPath}`
-}
-
-export function detectUnresolvableCommands(runnables:Runnable[]):string[]
-{
-  let unresolvableCommands:string[] = []
-
-  updateProcessPath()
-
-  runnables.forEach(({command}:Runnable):void =>
-  {
-    if (command && !which(command))
-      unresolvableCommands.push(command)
-  })
-
-  return unresolvableCommands
-}
-
 export function runFunctionRunnable(definition:Runnable):Promise<void>
 {
   const returnValue:Promise<void>|void = definition.function!(definition.args)
@@ -219,6 +195,11 @@ export function runProcessRunnable(definition:Runnable):Promise<void>
 
 export function runRequestedRunnables(definitions:Runnable[]):Promise<void>
 {
+  const projectBinDirectoryPath:string = resolve(process.cwd(), 'node_modules/.bin')
+
+  if (existsSync(projectBinDirectoryPath))
+    process.env.PATH = `${process.env.PATH}:${projectBinDirectoryPath}`
+
   return definitions
     .reduce((previousPromise:Promise<void>, definition:Runnable):Promise<void> =>
       previousPromise

@@ -6,7 +6,7 @@ git:
   depth: 3
 install: yarn install
 cache: yarn
-script: node run test build
+script: node run test + build
 deploy:
   provider: script
   script: node run deploy
