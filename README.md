@@ -1,18 +1,18 @@
 ## Roll Your Own (Task) Runner for Node.js Projects
 
 [![Travis](https://img.shields.io/travis/ryor-org/ryor.svg)](https://travis-ci.org/ryor-org/ryor/branches)
-[![Codecov](https://img.shields.io/codecov/c/github/ryor-org/ryor/v0.0.54.svg)](https://codecov.io/gh/ryor-org/ryor/branch/v0.0.54)
+[![Codecov](https://img.shields.io/codecov/c/github/ryor-org/ryor/v0.0.55.svg)](https://codecov.io/gh/ryor-org/ryor/branch/v0.0.55)
 [![License](https://img.shields.io/github/license/ryor-org/ryor.svg)](https://github.com/ryor-org/ryor/blob/master/LICENSE)
 
-No plugins, no global dependencies, no cluttering of a project root with configuration files or a package.json file with configuration details and lengthy, difficult-to-mantain scripts. Just use `node run` to list available project tasks and tools.
+No plugins, no system dependencies, no cluttering of a project root with configuration files or a package.json file with configuration details and lengthy, difficult-to-mantain scripts. Just use `node run` to list a project's tasks and `node run [task]/[tool]/[executable]` to run either a task, a tool or any executable in the `node_modules/.bin` directory of a project.
 
 ### Use tools that do one thing well
 
 Unlike task runners or pluggable build tools that require often clunky coordination between unevenly maintained 3rd-party plugins (Gulp, Grunt, Webpack, etc.), **ryor** adopts the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy), preferring tools that do one thing well. Tasks can be composed as scripts similar to **npm**/**yarn** or [NPS](https://www.npmjs.com/package/nps) scripts.
 
-### No global dependencies
+### No system dependencies
 
-**Node.js** is only system dependencies required and including **ryor** as a project development dependency is all that's needed to get started.
+Including **ryor** as a project development dependency is all that's needed to get started.
 
 ### No clutter
 
