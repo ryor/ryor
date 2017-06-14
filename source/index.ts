@@ -16,9 +16,11 @@ export function run(args:string[] = []):void
   else
     try
     {
+      const runnables:Runnable[] = resolveRequestedRunnables(args, runnableModules)
+
       Promise.resolve()
         .then(() => console.log(''))
-        .then(() => runRequestedRunnables(resolveRequestedRunnables(args, runnableModules)))
+        .then(() => runRequestedRunnables(runnables))
         .then(() => console.log(''))
         .catch(() => console.log(''))
     }

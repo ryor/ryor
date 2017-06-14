@@ -1,4 +1,4 @@
-const description = 'Incremements semver patch numbers for both the package file and the ryor development dependency listed in it'
+const description = 'Increments semver patch numbers for both the package.json file and the ryor development dependency listed in it'
 
 function run()
 {
@@ -16,8 +16,6 @@ function run()
 
     packageJSON.version = nextVersion
     packageJSON.devDependencies.ryor = currentVersion
-
-    console.log(`Patching to version ${nextVersion}`)
 
     writeFileSync(packageJSONPath, JSON.stringify(packageJSON, null, 2))
     writeFileSync(readmePath, readme.replace(new RegExp(currentVersion, 'g'), nextVersion))

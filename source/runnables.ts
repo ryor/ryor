@@ -1,14 +1,13 @@
-import {bold, red} from 'chalk'
+import {bold} from 'chalk'
 import {ChildProcess, spawn} from 'child_process'
 import {existsSync, readdirSync, statSync} from 'fs'
-import {EOL} from 'os'
 import {parse, resolve} from 'path'
+import {which} from 'shelljs'
 import {parse as parseRunnableValues} from 'shell-quote'
 
 export function getRunnableModules():Map<string, Map<string, RunnableModule>>
 {
   const runnablesDirectoryPath:string = resolve(process.cwd(), 'run')
-  const runnableResolutionErrors:string[] = []
   const runnableModules:Map<string, Map<string, RunnableModule>> = ['tasks', 'tools']
     .reduce((map:Map<string, Map<string, RunnableModule>>, type:string):Map<string, Map<string, RunnableModule>> =>
     {
@@ -31,8 +30,8 @@ export function getRunnableModules():Map<string, Map<string, RunnableModule>>
 
             catch (error)
             {
-              if (!error.code || error.code !== 'MODULE_NOT_FOUND')
-                runnableResolutionErrors.push(`${bold(`${directoryPath.split('/').pop()}/${key}:`)} ${error.message}`)
+              if (!(error.code && error.code === 'MODULE_NOT_FOUND'))
+                throw error
             }
 
             if (runnableModule && runnableModule.run)
@@ -46,9 +45,6 @@ export function getRunnableModules():Map<string, Map<string, RunnableModule>>
       return map
 
     }, new Map<string, Map<string, RunnableModule>>())
-
-  if (runnableResolutionErrors.length > 0)
-    console.error(red(`${EOL}The following errors were encountered while trying to resolve runnables:${EOL}${EOL}  ${red(runnableResolutionErrors.join(`${EOL}  `))}`))
 
   return runnableModules
 }
@@ -144,7 +140,8 @@ export function resolveRequestedRunnables(values:string[], runnableModules:Map<s
       }
     })
 
-  return allRunnableValues.map((runnableValues:string[]):Runnable =>
+  const unresolvedCommands:string[] = []
+  const runnables:Runnable[] = allRunnableValues.map((runnableValues:string[]):Runnable =>
   {
     const key:string = runnableValues[0]
     const args:string[] = runnableValues.splice(1)
@@ -154,13 +151,23 @@ export function resolveRequestedRunnables(values:string[], runnableModules:Map<s
       definition.function = functions.get(key)
 
     else
+    {
+      if (key !== 'cd' && !which(key))
+        unresolvedCommands.push(key)
+
       definition.command = key
+    }
 
     if (Object.keys(args).length > 0)
       definition.args = args
 
     return definition
   })
+
+  if (unresolvedCommands.length > 0)
+    throw new Error(`Command(s) ${unresolvedCommands.join(' ')} could not be resolved`)
+
+  return runnables
 }
 
 export function runFunctionRunnable(definition:Runnable):Promise<void>
