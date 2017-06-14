@@ -7,7 +7,7 @@ export const expectedTasksUsageInformation = {
 
   'only-tasks':
 
-`${bold('Usage:')} node run ${bold('<task/command>')} [args...] [+ <task/command> [args...]] ...
+`${bold('Usage:')} node run ${bold('<task|command>')} [args...] [+ <task|command> [args...]] ...
 
 ${bold('Tasks:')}
 
@@ -17,7 +17,7 @@ ${bold('Tasks:')}
 
   'tasks-and-tools':
 
-`${bold('Usage:')} node run ${bold('<task/tool/command>')} [args...] [+ <task/tool/command> [args...]] ...
+`${bold('Usage:')} node run ${bold('<task|tool|command>')} [args...] [+ <task|tool|command> [args...]] ...
 
 ${bold('Tasks:')}
 
@@ -32,7 +32,7 @@ export const expectedToolsUsageInformation = {
 
   'only-tools':
 
-`${bold('Usage:')} node run ${bold('<tool/command>')} [args...] [+ <tool/command> [args...]] ...
+`${bold('Usage:')} node run ${bold('<tool|command>')} [args...] [+ <tool|command> [args...]] ...
 
 ${bold('Tools:')}
 
@@ -42,7 +42,7 @@ ${bold('Tools:')}
 
   'tasks-and-tools':
 
-`${bold('Usage:')} node run ${bold('<task/tool/command>')} [args...] [+ <task/tool/command> [args...]] ...
+`${bold('Usage:')} node run ${bold('<task|tool|command>')} [args...] [+ <task|tool|command> [args...]] ...
 
 ${bold('Tools:')}
 

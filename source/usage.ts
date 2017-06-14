@@ -17,7 +17,7 @@ export function composeUsageInformation(args:string[], runnableModules:Map<strin
 
   const keys:string[] = Array.from(descriptions.keys())
   const maxKeyLength:number = maxStringLength(keys)
-  const usageTypes:string = `${runnableModules.has('tasks') ? 'task/' : ''}${runnableModules.has('tools') ? 'tool/' : ''}command`
+  const usageTypes:string = `${runnableModules.has('tasks') ? 'task|' : ''}${runnableModules.has('tools') ? 'tool|' : ''}command`
   const usage:string = `${bold('Usage:')} node run ${bold(`<${usageTypes}>`)} [args...] [+ <${usageTypes}> [args...]] ...`
   const label:string = bold(`${type.charAt(0).toUpperCase()}${type.slice(1)}:`)
   const runnables:string = `${keys.map((key:string):string => `  ${bold(padStringWithSpaces(key, maxKeyLength))}    ${descriptions.get(key)}`).join(EOL)}`
