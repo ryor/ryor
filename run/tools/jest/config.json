@@ -1,11 +1,11 @@
 {
   "collectCoverage": true,
-  "collectCoverageFrom": ["**/*.ts", "!**/*.d.ts"],
-  "coverageDirectory": "<rootDir>/../coverage",
+  "collectCoverageFrom": ["source/**/*.ts", "!source/**/*.d.ts"],
+  "coverageDirectory": "<rootDir>/coverage",
   "moduleFileExtensions": ["js", "ts"],
-  "rootDir": "../../../source",
-  "testMatch": ["**/__tests__/*.ts"],
+  "rootDir": "../../..",
+  "testMatch": ["<rootDir>/tests/**/*.ts"],
   "transform": {
-    "^.+\\.ts$": "<rootDir>/../run/tools/jest/preprocessor.js"
+    "^.+\\.ts$": "<rootDir>/run/tools/jest/preprocessor.js"
   }
 }

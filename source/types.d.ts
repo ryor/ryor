@@ -1,23 +1,22 @@
-declare module 'nps' {
-  interface Config {
-    scriptConfig: NPSScripts
-    scripts: string[]
-    options: {[key:string]:boolean}
-  }
-  function nps(config:Config):Promise<number>
-  export default nps
+declare module 'shell-quote' {
+  export function parse(args:string):string[]
 }
 
-interface Command {
-  function: () => void
+interface RunnableModule {
+  description?: string
+  run: string | RunnableFactory
 }
 
-interface NPSScripts {
-  [key:string]: string | NPSScripts
+interface RunnableFactory {
+  (args?:string[]): string | RunnableFunction
+}
+
+interface RunnableFunction {
+  (args?:string[]): Promise<void> | void
 }
 
 interface Runnable {
-  description?: string
-  command?: Command
-  nps?: string | NPSScripts
+  command?: string
+  function?: RunnableFunction
+  args?: string[]
 }

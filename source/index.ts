@@ -1,57 +1,37 @@
 import {red} from 'chalk'
-import {existsSync} from 'fs'
 import {EOL} from 'os'
-import {resolve} from 'path'
-import {runNPSScripts} from './nps'
-import {resolveRunnable} from './runnables'
-import {Message} from './strings'
-import {outputUsageInformation} from './usage'
+import {detectUnresolvableCommands, getRunnableModules, resolveRequestedRunnables, runRequestedRunnables} from './runnables'
+import {composeUsageInformation} from './usage'
 
-export function run(args:string[] = process.argv.slice(2)):void
+export function run(args:string[] = []):void
 {
-  try
-  {
-    const runDirectoryPath:string = resolve(process.cwd(), 'run')
+  const runnableModules:Map<string, Map<string, RunnableModule>> = getRunnableModules()
 
-    if (existsSync(runDirectoryPath) && (existsSync(resolve(runDirectoryPath, 'tasks')) || existsSync(resolve(runDirectoryPath, 'tools'))))
+  if (runnableModules.size === 0)
+    console.log(`${EOL}Add tasks and/or tools to proceed${EOL}`)
+
+  else if (args.length === 0 || args[0] === 'tools')
+    console.log(`${EOL}${composeUsageInformation(args, runnableModules)}${EOL}`)
+
+  else
+    try
     {
-      if (args.length === 0)
-        return outputUsageInformation()
+      const runnables:Runnable[] = resolveRequestedRunnables(args, runnableModules)
+      const unresolvableCommands:string[] = detectUnresolvableCommands(runnables)
 
-      if (args[0] === 'tools')
-        return outputUsageInformation(existsSync(resolve(runDirectoryPath, 'tools')) ? 'tools' : 'tasks')
+      if (unresolvableCommands.length > 0)
+        console.log(`${EOL}Commands ${unresolvableCommands.join(' ')} could not be resolved${EOL}`)
 
-      if (args[0] === 'nps')
-      {
-        if (args.length > 1)
-          return runNPSScripts(args.slice(1))
-
-        return outputUsageInformation()
-      }
-
-      const runnable:Runnable|undefined = resolveRunnable(args[0])
-
-      if (runnable)
-      {
-        const {nps} = runnable
-
-        if (nps)
-          return runNPSScripts([args[0]])
-      }
-
-      return outputUsageInformation()
+      else
+        Promise.resolve()
+          .then(() => console.log(''))
+          .then(() => runRequestedRunnables(runnables))
+          .then(() => console.log(''))
+          .catch(() => console.log(''))
     }
 
-    console.log(`${EOL}${Message.Run.RunnablesRequired}${EOL}`)
-  }
-
-  catch(error)
-  {
-    const {message}:Error = error
-
-    if (message && message === Message.NPS.ScriptsNotResolved)
-      return outputUsageInformation()
-
-    console.log(`${EOL}${red(error.message || error)}${EOL}`)
-  }
+    catch (error)
+    {
+      console.log(`${EOL}${red(error.message || error)}${EOL}`)
+    }
 }

@@ -1,17 +1,15 @@
-const {log, shell: {rm, series}} = require('../utils/nps')
+const {log, shell: {rm, series}} = require('../utils/scripts')
 
 const description = 'Checks TypeScript for errors with TSLint and then tests TypeScript with Jest'
 
-const nps = series(
-  'echo',
+const run = series(
   log.task('Checking TypeScript for errors with TSLint'),
-  'nps tslint',
+  'tslint',
   log.task('Testing TypeScript with Jest'),
   'echo',
-  'nps jest',
+  'jest',
   'echo',
-  log.success('All tests passed'),
-  'echo'
+  log.success('All tests passed')
 )
 
-module.exports = {description, nps}
+module.exports = {description, run}

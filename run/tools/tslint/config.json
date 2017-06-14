@@ -1,6 +1,7 @@
 {
   "extends": ["tslint:all"],
   "rules": {
+    "completed-docs": false,
     "curly": false,
     "interface-name": false,
     "max-classes-per-file": false,
@@ -8,9 +9,12 @@
     "max-line-length": [true, 200],
     "member-ordering": false,
     "no-console": false,
+    "no-inferrable-types": false,
+    "no-namespace": [true, "allow-declarations"],
     "quotemark": [true, "single"],
     "object-literal-sort-keys": false,
     "one-line": false,
+    "only-arrow-functions": false,
     "ordered-imports": [true, {"import-sources-order": "lowercase-last", "named-imports-order": "lowercase-last"}],
     "semicolon": [true, "never"],
     "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],

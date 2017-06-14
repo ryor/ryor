@@ -1,18 +1,17 @@
-const {log, shell: {rm, series}} = require('../utils/nps')
+const {log, shell: {rm, series}} = require('../utils/scripts')
 
-const description = 'Complete build with error-checking, transpiling, testing and bundling'
+const description = 'Transpiles TypeScript into ES modules, bundles ES modules with Rollup and adds autorun function call'
 
-const nps = series(
-  'echo',
+const run = series(
   rm('build'),
   log.task('Transpiling TypeScript'),
-  'nps tsc',
+  'tsc',
   log.task('Bundling module with Rollup'),
-  'nps rollup',
+  'rollup',
+  'autorun',
   log.task('Cleaning up'),
   rm('build/esm'),
-  log.success('Build complete'),
-  'echo'
+  log.success('Build complete')
 )
 
-module.exports = {description, nps}
+module.exports = {description, run}
