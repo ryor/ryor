@@ -1,7 +1,7 @@
 ## Roll Your Own (Task) Runner for Node.js Projects
 
 [![Travis](https://img.shields.io/travis/ryor-org/ryor.svg)](https://travis-ci.org/ryor-org/ryor/branches)
-[![Codecov](https://img.shields.io/codecov/c/github/ryor-org/ryor/v0.0.58.svg)](https://codecov.io/gh/ryor-org/ryor/branch/v0.0.58)
+[![Codecov](https://img.shields.io/codecov/c/github/ryor-org/ryor/v0.0.59.svg)](https://codecov.io/gh/ryor-org/ryor/branch/v0.0.59)
 [![License](https://img.shields.io/github/license/ryor-org/ryor.svg)](https://github.com/ryor-org/ryor/blob/master/LICENSE)
 
 No plugins, no system dependencies, no cluttering of a project root with configuration files or a package.json file with configuration details and lengthy, difficult-to-mantain scripts. Just use `node run` to list a project's tasks and `node run [task]/[tool]/[executable]` to run either a task, a tool or any executable in the `node_modules/.bin` directory of a project.

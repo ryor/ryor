@@ -1,4 +1,4 @@
-const {log, shell: {cp, series}} = require('../utils/scripts')
+const {log, shell: {cp, series}} = require('../utils')
 
 const description = 'Uploads code coverage to Codecov and publishes to NPM'
 

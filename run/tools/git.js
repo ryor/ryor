@@ -1,5 +1,5 @@
 const {bold} = require('chalk')
-const {shell: {rm, series}} = require('../utils/scripts')
+const {shell: {series}} = require('../utils')
 
 const description = 'Runs Git commit, tag and push commands'
 

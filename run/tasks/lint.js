@@ -1,4 +1,4 @@
-const {log, shell: {series}} = require('../utils/scripts')
+const {log, shell: {series}} = require('../utils')
 
 const description = 'Checks TypeScript for errors with TSLint'
 

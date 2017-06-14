@@ -1,4 +1,4 @@
-const {log, shell: {rm, series}} = require('../utils/scripts')
+const {log, shell: {rm, series}} = require('../utils')
 
 const description = 'Transpiles TypeScript into ES modules, bundles ES modules with Rollup and adds autorun function call'
 

@@ -1,5 +1,5 @@
 const {bold} = require('chalk')
-const {log, shell: {rm, series}} = require('../utils/scripts')
+const {log, shell: {rm, series}} = require('../utils')
 
 const description = 'Verifies that tests pass and build completes succesfully, increments package.json patch numbers, commits changes to Git repository and pushes commit to Github'
 
