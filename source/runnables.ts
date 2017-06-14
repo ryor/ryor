@@ -170,11 +170,19 @@ export function runFunctionRunnable(definition:Runnable):Promise<void>
   return returnValue instanceof Promise ? returnValue : Promise.resolve()
 }
 
-export function runProcessRunnable(definition:Runnable):Promise<void>
+export function runDirectoryChangeRunnable({args}:Runnable):Promise<void>
+{
+  if (args && args.length > 0)
+    process.chdir(resolve(process.cwd(), args[0]))
+
+  return Promise.resolve()
+}
+
+export function runProcessRunnable({command, args}:Runnable):Promise<void>
 {
   return new Promise<void>((resolve:() => void, reject:(message:string) => void):void =>
   {
-    const childProcess:ChildProcess = spawn(definition.command!, definition.args || [], {env:process.env, stdio:'inherit'})
+    const childProcess:ChildProcess = spawn(command!, args || [], {env:process.env, stdio:'inherit'})
     let errors:string = ''
 
     childProcess.on('error', (data:Buffer):string => errors += data.toString())
@@ -185,7 +193,7 @@ export function runProcessRunnable(definition:Runnable):Promise<void>
         return reject(errors.trim())
 
       if (code !== 0)
-        return reject(`Runnable ${bold([definition.command].concat(definition.args).join(' '))} exited with code ${bold(String(code))}`)
+        return reject(`Runnable ${bold([command].concat(args || []).join(' '))} exited with code ${bold(String(code))}`)
 
       else
         resolve()
@@ -207,6 +215,9 @@ export function runRequestedRunnables(definitions:Runnable[]):Promise<void>
         {
           if (definition.function)
             return runFunctionRunnable(definition)
+
+          if (definition.command === 'cd')
+            return runDirectoryChangeRunnable(definition)
 
           return runProcessRunnable(definition)
         }),
