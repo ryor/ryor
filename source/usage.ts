@@ -6,7 +6,7 @@ export function composeUsageInformation(args:string[], runnableModules:Map<strin
 {
   const type:string = args.length > 0 && args[0] === 'tools' ? (runnableModules.has('tools') ? 'tools' : 'tasks') : runnableModules.has('tasks') ? 'tasks' : 'tools'
   const modules:Map<string, RunnableModule> = runnableModules.get(type)!
-  const descriptions:Map<string, string> = Array.from(modules.keys()).
+  const descriptions:Map<string, string> = [...modules.keys()].
     reduce((map:Map<string, string>, key:string):Map<string, string> =>
       map.set(key, modules.get(key)!.description || 'No description provided'),
       new Map<string, string>()
@@ -15,7 +15,7 @@ export function composeUsageInformation(args:string[], runnableModules:Map<strin
   if (type === 'tasks' && runnableModules.has('tools'))
     descriptions.set('tools', 'Lists available tools')
 
-  const keys:string[] = Array.from(descriptions.keys())
+  const keys:string[] = [...descriptions.keys()]
   const maxKeyLength:number = maxStringLength(keys)
   const usageTypes:string = `${runnableModules.has('tasks') ? 'task|' : ''}${runnableModules.has('tools') ? 'tool|' : ''}command`
   const usage:string = `${bold('Usage:')} node run ${bold(`<${usageTypes}>`)} [args...] [+ <${usageTypes}> [args...]] ...`

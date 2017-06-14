@@ -140,7 +140,12 @@ export function resolveRequestedRunnables(values:string[], runnableModules:Map<s
       }
     })
 
-  const unresolvedCommands:string[] = []
+  const projectBinDirectoryPath:string = resolve(process.cwd(), 'node_modules/.bin')
+
+  if (existsSync(projectBinDirectoryPath))
+    process.env.PATH = `${process.env.PATH}:${projectBinDirectoryPath}`
+
+  const unresolvedCommands:Set<string> = new Set<string>()
   const runnables:Runnable[] = allRunnableValues.map((runnableValues:string[]):Runnable =>
   {
     const key:string = runnableValues[0]
@@ -153,7 +158,7 @@ export function resolveRequestedRunnables(values:string[], runnableModules:Map<s
     else
     {
       if (key !== 'cd' && !which(key))
-        unresolvedCommands.push(key)
+        unresolvedCommands.add(key)
 
       definition.command = key
     }
@@ -164,8 +169,8 @@ export function resolveRequestedRunnables(values:string[], runnableModules:Map<s
     return definition
   })
 
-  if (unresolvedCommands.length > 0)
-    throw new Error(`Command(s) ${unresolvedCommands.join(' ')} could not be resolved`)
+  if (unresolvedCommands.size > 0)
+    throw new Error(`Command(s) ${[...unresolvedCommands].sort().join(' ')} could not be resolved`)
 
   return runnables
 }
@@ -210,11 +215,6 @@ export function runProcessRunnable({command, args}:Runnable):Promise<void>
 
 export function runRequestedRunnables(definitions:Runnable[]):Promise<void>
 {
-  const projectBinDirectoryPath:string = resolve(process.cwd(), 'node_modules/.bin')
-
-  if (existsSync(projectBinDirectoryPath))
-    process.env.PATH = `${process.env.PATH}:${projectBinDirectoryPath}`
-
   return definitions
     .reduce((previousPromise:Promise<void>, definition:Runnable):Promise<void> =>
       previousPromise
