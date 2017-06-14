@@ -2,8 +2,8 @@ import {bold} from 'chalk'
 import {ChildProcess, spawn} from 'child_process'
 import {existsSync, readdirSync, statSync} from 'fs'
 import {parse, resolve} from 'path'
-import {which} from 'shelljs'
 import {parse as parseRunnableValues} from 'shell-quote'
+import {which} from 'shelljs'
 
 export function getRunnableModules():Map<string, Map<string, RunnableModule>>
 {
