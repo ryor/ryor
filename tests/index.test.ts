@@ -1,3 +1,4 @@
+import {red} from 'chalk'
 import {resolve} from 'path'
 import {run} from '../source'
 
@@ -5,22 +6,29 @@ const rootDirectoryPath = resolve(__dirname, '..')
 
 test('Outputs no modules resolved error message', () =>
 {
-  const consoleLogMock = jest.spyOn(console, 'log').mockImplementation((value:string):string => consoleLogValue = value.trim())
-  let consoleLogValue = ''
+  const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation((value:string):string => consoleErrorValue = value.trim())
+  const processExitMock = jest.spyOn(process, 'exit').mockImplementation((code:number):number => exitCode = code)
+  let consoleErrorValue = ''
+  let exitCode = 0
 
   process.chdir(resolve(rootDirectoryPath, `tests/projects/empty`))
 
   run()
 
-  expect(consoleLogValue).toBe('Add tasks and/or tools to proceed')
+  expect(consoleErrorValue).toBe(red('Could not resolve any tasks or tools'))
+  expect(exitCode).toBe(1)
 
   process.chdir(resolve(rootDirectoryPath, `tests/projects/empty-run`))
 
+  exitCode = 0
+
   run()
 
-  expect(consoleLogValue).toBe('Add tasks and/or tools to proceed')
+  expect(consoleErrorValue).toBe(red('Could not resolve any tasks or tools'))
+  expect(exitCode).toBe(1)
 
   process.chdir(rootDirectoryPath)
 
-  consoleLogMock.mockRestore()
+  consoleErrorMock.mockRestore()
+  processExitMock.mockRestore()
 })
