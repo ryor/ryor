@@ -4,6 +4,7 @@ import {existsSync, readdirSync, statSync} from 'fs'
 import {parse, resolve} from 'path'
 import {parse as parseRunnableValues} from 'shell-quote'
 import {which} from 'shelljs'
+import {commaSeparateValues} from './strings'
 
 export function getRunnableModules():Map<string, Map<string, RunnableModule>>
 {
@@ -170,7 +171,7 @@ export function resolveRequestedRunnables(values:string[], runnableModules:Map<s
   })
 
   if (unresolvedCommands.size > 0)
-    throw new Error(`Command(s) ${[...unresolvedCommands].sort().join(' ')} could not be resolved`)
+    throw new Error(`Command(s) ${commaSeparateValues([...unresolvedCommands].sort().map((command:string):string => bold(command)))} could not be resolved`)
 
   return runnables
 }
