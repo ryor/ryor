@@ -23,7 +23,7 @@ export function run(args:string[] = []):void
         .then(() => console.log(''))
         .then(() => runRequestedRunnables(runnables))
         .then(() => console.log(''))
-        .catch(() => console.log(''))
+        .catch((error) => console.error(`${EOL}${red(error.stack || error)}${EOL}`))
     }
   }
 
