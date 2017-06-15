@@ -18,5 +18,5 @@ interface RunnableFunction {
 interface Runnable {
   command?: string
   function?: RunnableFunction
-  args?: string[]
+  args: string[]
 }

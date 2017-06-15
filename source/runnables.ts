@@ -99,7 +99,7 @@ export function resolveRequestedRunnables(values:string[], runnableModules:Map<s
       else
       {
         if (typeof runnable !== 'string')
-          runnable = (runnable as RunnableFactory)(runnableValues.splice(1)) as string
+          runnable = (runnable as RunnableFactory)(runnableValues.slice(1)) as string
 
         if (typeof runnable === 'string')
         {
@@ -117,7 +117,7 @@ export function resolveRequestedRunnables(values:string[], runnableModules:Map<s
               else
               {
                 if (typeof nestedRunnable !== 'string')
-                  nestedRunnable = (nestedRunnable as RunnableFactory)(nestedRunnableValues.splice(1)) as string
+                  nestedRunnable = (nestedRunnable as RunnableFactory)(nestedRunnableValues.slice(1)) as string
 
                 if (typeof nestedRunnable === 'string')
                   allNestedRunnableValues = allNestedRunnableValues.concat(splitRunnableValues(parseRunnableValues(nestedRunnable)))
@@ -150,8 +150,7 @@ export function resolveRequestedRunnables(values:string[], runnableModules:Map<s
   const runnables:Runnable[] = allRunnableValues.map((runnableValues:string[]):Runnable =>
   {
     const key:string = runnableValues[0]
-    const args:string[] = runnableValues.splice(1)
-    const definition:Runnable = {}
+    const definition:Runnable = {args:runnableValues.slice(1)}
 
     if (functions.has(key))
       definition.function = functions.get(key)
@@ -163,9 +162,6 @@ export function resolveRequestedRunnables(values:string[], runnableModules:Map<s
 
       definition.command = key
     }
-
-    if (Object.keys(args).length > 0)
-      definition.args = args
 
     return definition
   })
@@ -185,7 +181,7 @@ export function runFunctionRunnable(definition:Runnable):Promise<void>
 
 export function runDirectoryChangeRunnable({args}:Runnable):Promise<void>
 {
-  if (args && args.length > 0)
+  if (args.length > 0)
     process.chdir(resolve(process.cwd(), args[0]))
 
   return Promise.resolve()
@@ -195,7 +191,7 @@ export function runProcessRunnable({command, args}:Runnable):Promise<void>
 {
   return new Promise<void>((resolve:() => void, reject:(message:string) => void):void =>
   {
-    const childProcess:ChildProcess = spawn(command!, args || [], {env:process.env, stdio:'inherit'})
+    const childProcess:ChildProcess = spawn(command!, args, {env:process.env, stdio:'inherit'})
     let errors:string = ''
 
     childProcess.on('error', (data:Buffer):string => errors += data.toString())
@@ -206,7 +202,7 @@ export function runProcessRunnable({command, args}:Runnable):Promise<void>
         return reject(errors.trim())
 
       if (code !== 0)
-        return reject(`Runnable ${bold([command].concat(args || []).join(' '))} exited with code ${bold(String(code))}`)
+        return reject(`Runnable ${bold([command].concat(args).join(' '))} exited with code ${bold(String(code))}`)
 
       else
         resolve()
