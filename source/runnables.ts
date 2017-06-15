@@ -19,6 +19,7 @@ export function getRunnableModules():Map<string, Map<string, RunnableModule>>
         const modules:Map<string, RunnableModule> = new Map<string, RunnableModule>()
 
         readdirSync(directoryPath)
+          .filter((modulePath:string):boolean => modulePath.endsWith('.js') || existsSync(resolve(directoryPath, modulePath, 'index.js')))
           .map((modulePath:string):string => parse(modulePath).name)
           .forEach((key:string):void =>
           {
@@ -31,8 +32,7 @@ export function getRunnableModules():Map<string, Map<string, RunnableModule>>
 
             catch (error)
             {
-              if (!(error.code && error.code === 'MODULE_NOT_FOUND'))
-                throw error
+              throw new Error(error.stack.toString())
             }
 
             if (runnableModule && runnableModule.run)
