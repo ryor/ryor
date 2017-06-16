@@ -1,5 +1,5 @@
 import {resolve} from 'path'
-import {getRunnableModules, resolveRequestedRunnables, resolveRunnable, runFunctionRunnable, runProcessRunnable, splitRunnableValues} from '../source/runnables'
+import {getRunnableModules, resolveRunnables, runFunctionRunnable, runProcessRunnable} from '../source/runnables'
 
 const rootDirectoryPath = resolve(__dirname, '..')
 
@@ -40,48 +40,24 @@ test('Gets all runnable modules', () =>
 
 test('Resolves runnables', () =>
 {
-  process.chdir(resolve(rootDirectoryPath, `tests/projects/only-tasks`))
-
-  const runnableModules = getRunnableModules()
-  let runnable
-
-  runnable = resolveRunnable('build', runnableModules)
-
-  expect(runnable).toBeDefined()
-  expect(typeof runnable).toBe('function')
-
-  runnable = resolveRunnable('test', runnableModules)
-
-  expect(runnable).toBeDefined()
-  expect(typeof runnable).toBe('string')
-
-  runnable = resolveRunnable('bundler', runnableModules)
-
-  expect(runnable).toBeUndefined()
-
-  process.chdir(rootDirectoryPath)
-})
-
-test('Resolves requested runnable definitions', () =>
-{
   let runnableModules
-  let definitions
+  let runnables
 
   process.chdir(resolve(rootDirectoryPath, `tests/projects/only-tasks`))
 
   runnableModules = getRunnableModules()
 
-  definitions = resolveRequestedRunnables(['build'], runnableModules)
+  runnables = resolveRunnables(['build'], runnableModules)
 
-  expect(definitions).toEqual([{command: 'echo', args: ['running', 'development', 'build']}])
+  expect(runnables).toEqual([{command: 'echo', args: ['running', 'development', 'build']}])
 
-  definitions = resolveRequestedRunnables(['build', 'production'], runnableModules)
+  runnables = resolveRunnables(['build', 'production'], runnableModules)
 
-  expect(definitions).toEqual([{command: 'echo', args: ['running', 'production', 'build']}])
+  expect(runnables).toEqual([{command: 'echo', args: ['running', 'production', 'build']}])
 
-  definitions = resolveRequestedRunnables(['test', '+', 'build', 'production'], runnableModules)
+  runnables = resolveRunnables(['test', '+', 'build', 'production'], runnableModules)
 
-  expect(definitions).toEqual([
+  expect(runnables).toEqual([
     {command: 'echo', args: ['testing']},
     {command: 'echo', args: ['running', 'production', 'build']}
   ])
@@ -90,16 +66,16 @@ test('Resolves requested runnable definitions', () =>
 
   runnableModules = getRunnableModules()
 
-  definitions = resolveRequestedRunnables(['test'], runnableModules)
+  runnables = resolveRunnables(['test'], runnableModules)
 
-  expect(definitions).toEqual([
+  expect(runnables).toEqual([
     {command: 'echo', args: ['testing']},
     {command: 'echo', args: ['testing', 'with', 'coverage', 'results']}
   ])
 
-  definitions = resolveRequestedRunnables(['test', '+', 'build', 'production'], runnableModules)
+  runnables = resolveRunnables(['test', '+', 'build', 'production'], runnableModules)
 
-  expect(definitions).toEqual([
+  expect(runnables).toEqual([
     {command: 'echo', args: ['testing']},
     {command: 'echo', args: ['testing', 'with', 'coverage', 'results']},
     {command: 'echo', args: ['running', 'production', 'build']}
@@ -159,13 +135,4 @@ test('Runs process runnables', () =>
   const response = runProcessRunnable({command:'echo', args:['value']})
 
   expect(response instanceof Promise).toBe(true)
-})
-
-test('Splits runnable values', () =>
-{
-  expect(splitRunnableValues([])).toEqual([])
-  expect(splitRunnableValues(['build'])).toEqual([['build']])
-  expect(splitRunnableValues(['build', 'value', 'value'])).toEqual([['build', 'value', 'value']])
-  expect(splitRunnableValues(['build', '+', 'test'])).toEqual([['build'], ['test']])
-  expect(splitRunnableValues(['build', 'value', 'value', '+', 'test', 'value', 'value'])).toEqual([['build', 'value', 'value'], ['test', 'value', 'value']])
 })

@@ -2,9 +2,8 @@ import {bold} from 'chalk'
 import {ChildProcess, spawn} from 'child_process'
 import {existsSync, readdirSync, statSync} from 'fs'
 import {parse, resolve} from 'path'
-import {parse as parseRunnableValues} from 'shell-quote'
+import {parse as parseRunString} from 'shell-quote'
 import {which} from 'shelljs'
-import {commaSeparateValues} from './strings'
 
 export function getRunnableModules():Map<string, Map<string, RunnableModule>>
 {
@@ -50,126 +49,66 @@ export function getRunnableModules():Map<string, Map<string, RunnableModule>>
   return runnableModules
 }
 
-export function resolveRunnable(key:string, runnableModules:Map<string, Map<string, RunnableModule>>):string|RunnableFactory|undefined
-{
-  let runnableModule:RunnableModule|undefined
-
-  runnableModules
-    .forEach((runnableModules:Map<string, RunnableModule>):void =>
-    {
-      if (!runnableModule && runnableModules.has(key))
-        runnableModule = runnableModules.get(key)
-    })
-
-  if (runnableModule)
-    return runnableModule.run
-
-  return undefined
-}
-
-export function splitRunnableValues(values:string[]):string[][]
+export function resolveRunnables(values:string[], runnableModules:Map<string, Map<string, RunnableModule>>):Runnable[]
 {
   return values
-    .reduce((runnableValues:string[][], value) =>
+    .reduce((runnablesValues:string[][], value):string[][] =>
     {
-      if (runnableValues.length === 0 || value === '+')
-        runnableValues.push([])
+      if (runnablesValues.length === 0 || value === '+')
+        runnablesValues.push([])
 
       if (value !== '+')
-        runnableValues[runnableValues.length - 1].push(value)
+        runnablesValues[runnablesValues.length - 1].push(value)
 
-      return runnableValues
+      return runnablesValues
     }, [])
-}
-
-export function resolveRequestedRunnables(values:string[], runnableModules:Map<string, Map<string, RunnableModule>>):Runnable[]
-{
-  const functions:Map<string, RunnableFunction> = new Map<string, RunnableFunction>()
-  let allRunnableValues:string[][] = []
-
-  splitRunnableValues(values)
-    .forEach((runnableValues:string[], runnableIndex:number):void =>
+    .reduce((result:Runnable[], runnableValues:string[]):Runnable[] =>
     {
-      const runnableKey:string = runnableValues[0]
-      let runnable:string|RunnableFactory|undefined = resolveRunnable(runnableKey, runnableModules)
+      let command:string = runnableValues[0]
+      let args:string[] = runnableValues.slice(1)
+      let run:string|RunnableFactory|RunnableFunction|undefined
 
-      if (!runnable)
-        allRunnableValues.push(runnableValues)
-
-      else
-      {
-        if (typeof runnable !== 'string')
-          runnable = (runnable as RunnableFactory)(runnableValues.slice(1)) as string
-
-        if (typeof runnable === 'string')
+      runnableModules
+        .forEach((typeModules:Map<string, RunnableModule>):void =>
         {
-          let allNestedRunnableValues:string[][] = []
+          if (!run && typeModules.has(command))
+            run = typeModules.get(command)!.run
+        })
 
-          splitRunnableValues(parseRunnableValues(runnable))
-            .forEach((nestedRunnableValues:string[], nestedRunnableIndex:number):void =>
-            {
-              const nestedRunnableKey:string = nestedRunnableValues[0]
-              let nestedRunnable:string|RunnableFactory|undefined = resolveRunnable(nestedRunnableKey, runnableModules)
+      if (run)
+      {
+        if (typeof run === 'function')
+          run = run(runnableValues.slice(1)) as string|RunnableFunction
 
-              if (!nestedRunnable)
-                allNestedRunnableValues.push(nestedRunnableValues)
+        if (typeof run === 'function')
+          return result.concat([{function: run, args: runnableValues.slice(1)}])
 
-              else
-              {
-                if (typeof nestedRunnable !== 'string')
-                  nestedRunnable = (nestedRunnable as RunnableFactory)(nestedRunnableValues.slice(1)) as string
+        else if (typeof run === 'string')
+        {
+          const parsedRunString:string[] = parseRunString(run)
 
-                if (typeof nestedRunnable === 'string')
-                  allNestedRunnableValues = allNestedRunnableValues.concat(splitRunnableValues(parseRunnableValues(nestedRunnable)))
+          if (parsedRunString.includes('+') || parsedRunString[0] !== command)
+            return result.concat(resolveRunnables(parsedRunString, runnableModules))
 
-                else
-                {
-                  allNestedRunnableValues.push(nestedRunnableValues)
-                  functions.set(nestedRunnableKey, nestedRunnable)
-                }
-              }
-            })
-
-          allRunnableValues = allRunnableValues.concat(allNestedRunnableValues)
+          else
+          {
+            command = parsedRunString[0]
+            args = parsedRunString.slice(1)
+          }
         }
 
         else
-        {
-          allRunnableValues.push(runnableValues)
-          functions.set(runnableKey, runnable)
-        }
+          throw new Error(`Error occurred while resolving ${bold(command)} module. Expected run value to be either a string or a function. Received ${bold(typeof run)}.`)
       }
-    })
 
-  const projectBinDirectoryPath:string = resolve(process.cwd(), 'node_modules/.bin')
+      if (command !== 'cd' && !which(command))
+        throw new Error(`Command ${bold(command)} could not be resolved`)
 
-  if (existsSync(projectBinDirectoryPath))
-    process.env.PATH = `${process.env.PATH}:${projectBinDirectoryPath}`
+      if (!(command === 'cd' && args.length === 0))
+        return result.concat([{command, args}])
 
-  const unresolvedCommands:Set<string> = new Set<string>()
-  const runnables:Runnable[] = allRunnableValues.map((runnableValues:string[]):Runnable =>
-  {
-    const key:string = runnableValues[0]
-    const definition:Runnable = {args:runnableValues.slice(1)}
-
-    if (functions.has(key))
-      definition.function = functions.get(key)
-
-    else
-    {
-      if (key !== 'cd' && !which(key))
-        unresolvedCommands.add(key)
-
-      definition.command = key
-    }
-
-    return definition
-  })
-
-  if (unresolvedCommands.size > 0)
-    throw new Error(`Command(s) ${commaSeparateValues([...unresolvedCommands].sort().map((command:string):string => bold(command)))} could not be resolved`)
-
-  return runnables
+      return result
+    }, [])
 }
 
 export function runFunctionRunnable(definition:Runnable):Promise<void>

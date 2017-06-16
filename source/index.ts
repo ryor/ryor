@@ -1,6 +1,8 @@
 import {red} from 'chalk'
+import {existsSync} from 'fs'
 import {EOL} from 'os'
-import {getRunnableModules, resolveRequestedRunnables, runRequestedRunnables} from './runnables'
+import {resolve} from 'path'
+import {getRunnableModules, resolveRunnables, runRequestedRunnables} from './runnables'
 import {composeUsageInformation} from './usage'
 
 export function run(args:string[] = []):void
@@ -17,10 +19,14 @@ export function run(args:string[] = []):void
 
     else
     {
-      const runnables:Runnable[] = resolveRequestedRunnables(args, runnableModules)
+      const projectBinDirectoryPath:string = resolve(process.cwd(), 'node_modules/.bin')
 
-      Promise.resolve()
-        .then(() => runRequestedRunnables(runnables))
+      if (existsSync(projectBinDirectoryPath))
+          process.env.PATH = `${process.env.PATH}:${projectBinDirectoryPath}`
+
+      const runnables:Runnable[] = resolveRunnables(args, runnableModules)
+
+      runRequestedRunnables(runnables)
         .catch((error) =>
         {
           if (error)
