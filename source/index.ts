@@ -20,9 +20,7 @@ export function run(args:string[] = []):void
       const runnables:Runnable[] = resolveRequestedRunnables(args, runnableModules)
 
       Promise.resolve()
-        .then(() => console.log(''))
         .then(() => runRequestedRunnables(runnables))
-        .then(() => console.log(''))
         .catch((error) =>
         {
           if (error)
