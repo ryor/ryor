@@ -202,7 +202,7 @@ export function runProcessRunnable({command, args}:Runnable):Promise<void>
         return reject(errors.trim())
 
       if (code !== 0)
-        return reject(`Runnable ${bold([command].concat(args).join(' '))} exited with code ${bold(String(code))}`)
+        return reject('')
 
       else
         resolve()
