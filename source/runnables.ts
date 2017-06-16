@@ -66,7 +66,7 @@ export function splitRunnableValues(values:string[]):string[][]
 
 export function resolveRunnables(values:string[], runnableModules:Map<string, Map<string, RunnableModule>>):Runnable[]
 {
-  return splitRunnableValues(values).reduce((result:Runnable[], runnableValues:string[]):Runnable[] =>
+  return splitRunnableValues(values).reduce((runnables:Runnable[], runnableValues:string[]):Runnable[] =>
   {
     let command:string = runnableValues[0]
     let args:string[] = runnableValues.slice(1)
@@ -84,20 +84,20 @@ export function resolveRunnables(values:string[], runnableModules:Map<string, Ma
         run = run(runnableValues.slice(1)) as string|RunnableFunction
 
       if (typeof run === 'function')
-        return result.concat([{function: run, args: runnableValues.slice(1)}])
+        return runnables.concat([{function: run, args: runnableValues.slice(1)}])
 
       else if (typeof run === 'string')
       {
-        splitRunnableValues(parseRunString(run)).forEach((splitValues:string[]):void =>
+        splitRunnableValues(parseRunString(run)).forEach((runnableValues:string[]):void =>
         {
-          if (splitValues[0] === command)
-            result.push({command:splitValues[0], args:splitValues.slice(1)})
+          if (runnableValues[0] === command)
+            runnables.push({command:runnableValues[0], args:runnableValues.slice(1)})
 
           else
-            result = result.concat(resolveRunnables(splitValues, runnableModules))
+            runnables = runnables.concat(resolveRunnables(runnableValues, runnableModules))
         })
 
-        return result
+        return runnables
       }
 
       else
@@ -108,9 +108,9 @@ export function resolveRunnables(values:string[], runnableModules:Map<string, Ma
       throw new Error(`Command ${bold(command)} could not be resolved`)
 
     if (!(command === 'cd' && args.length === 0))
-      return result.concat([{command, args}])
+      return runnables.concat([{command, args}])
 
-    return result
+    return runnables
   }, [])
 }
 
