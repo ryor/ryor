@@ -8,107 +8,110 @@ import {which} from 'shelljs'
 export function getRunnableModules():Map<string, Map<string, RunnableModule>>
 {
   const runnablesDirectoryPath:string = resolve(process.cwd(), 'run')
-  const runnableModules:Map<string, Map<string, RunnableModule>> = ['tasks', 'tools']
-    .reduce((map:Map<string, Map<string, RunnableModule>>, type:string):Map<string, Map<string, RunnableModule>> =>
+
+  return ['tasks', 'tools'].reduce((map:Map<string, Map<string, RunnableModule>>, type:string):Map<string, Map<string, RunnableModule>> =>
+  {
+    const directoryPath:string = resolve(runnablesDirectoryPath, type)
+
+    if (existsSync(directoryPath) && statSync(directoryPath).isDirectory())
     {
-      const directoryPath:string = resolve(runnablesDirectoryPath, type)
+      const modules:Map<string, RunnableModule> = new Map<string, RunnableModule>()
 
-      if (existsSync(directoryPath) && statSync(directoryPath).isDirectory())
-      {
-        const modules:Map<string, RunnableModule> = new Map<string, RunnableModule>()
+      readdirSync(directoryPath)
+        .filter((modulePath:string):boolean => modulePath.endsWith('.js') || existsSync(resolve(directoryPath, modulePath, 'index.js')))
+        .map((modulePath:string):string => parse(modulePath).name)
+        .forEach((key:string):void =>
+        {
+          let runnableModule:RunnableModule|undefined
 
-        readdirSync(directoryPath)
-          .filter((modulePath:string):boolean => modulePath.endsWith('.js') || existsSync(resolve(directoryPath, modulePath, 'index.js')))
-          .map((modulePath:string):string => parse(modulePath).name)
-          .forEach((key:string):void =>
+          try
           {
-            let runnableModule:RunnableModule|undefined
+            runnableModule = require(`${directoryPath}/${key}`)
+          }
 
-            try
-            {
-              runnableModule = require(`${directoryPath}/${key}`)
-            }
+          catch (error)
+          {
+            throw new Error(error.stack.toString())
+          }
 
-            catch (error)
-            {
-              throw new Error(error.stack.toString())
-            }
+          if (runnableModule && runnableModule.run)
+            modules.set(key, runnableModule)
+        })
 
-            if (runnableModule && runnableModule.run)
-              modules.set(key, runnableModule)
-          })
+      if (modules.size > 0)
+        map.set(type, modules)
+    }
 
-        if (modules.size > 0)
-          map.set(type, modules)
-      }
+    return map
 
-      return map
+  }, new Map<string, Map<string, RunnableModule>>())
+}
 
-    }, new Map<string, Map<string, RunnableModule>>())
+export function splitRunnableValues(values:string[]):string[][]
+{
+  if (!values.includes('+'))
+    return [values]
 
-  return runnableModules
+  return values.reduce((runnablesValues:string[][], value:string):string[][] =>
+  {
+    if (runnablesValues.length === 0 || value === '+')
+      runnablesValues.push([])
+
+    if (value !== '+')
+      runnablesValues[runnablesValues.length - 1].push(value)
+
+    return runnablesValues
+  }, [])
 }
 
 export function resolveRunnables(values:string[], runnableModules:Map<string, Map<string, RunnableModule>>):Runnable[]
 {
-  return values
-    .reduce((runnablesValues:string[][], value):string[][] =>
+  return splitRunnableValues(values).reduce((result:Runnable[], runnableValues:string[]):Runnable[] =>
+  {
+    let command:string = runnableValues[0]
+    let args:string[] = runnableValues.slice(1)
+    let run:string|RunnableFactory|RunnableFunction|undefined
+
+    runnableModules.forEach((typeModules:Map<string, RunnableModule>):void =>
     {
-      if (runnablesValues.length === 0 || value === '+')
-        runnablesValues.push([])
+      if (!run && typeModules.has(command))
+        run = typeModules.get(command)!.run
+    })
 
-      if (value !== '+')
-        runnablesValues[runnablesValues.length - 1].push(value)
-
-      return runnablesValues
-    }, [])
-    .reduce((result:Runnable[], runnableValues:string[]):Runnable[] =>
+    if (run)
     {
-      let command:string = runnableValues[0]
-      let args:string[] = runnableValues.slice(1)
-      let run:string|RunnableFactory|RunnableFunction|undefined
+      if (typeof run === 'function')
+        run = run(runnableValues.slice(1)) as string|RunnableFunction
 
-      runnableModules
-        .forEach((typeModules:Map<string, RunnableModule>):void =>
-        {
-          if (!run && typeModules.has(command))
-            run = typeModules.get(command)!.run
-        })
+      if (typeof run === 'function')
+        return result.concat([{function: run, args: runnableValues.slice(1)}])
 
-      if (run)
+      else if (typeof run === 'string')
       {
-        if (typeof run === 'function')
-          run = run(runnableValues.slice(1)) as string|RunnableFunction
-
-        if (typeof run === 'function')
-          return result.concat([{function: run, args: runnableValues.slice(1)}])
-
-        else if (typeof run === 'string')
+        splitRunnableValues(parseRunString(run)).forEach((splitValues:string[]):void =>
         {
-          const parsedRunString:string[] = parseRunString(run)
-
-          if (parsedRunString.includes('+') || parsedRunString[0] !== command)
-            return result.concat(resolveRunnables(parsedRunString, runnableModules))
+          if (splitValues[0] === command)
+            result.push({command:splitValues[0], args:splitValues.slice(1)})
 
           else
-          {
-            command = parsedRunString[0]
-            args = parsedRunString.slice(1)
-          }
-        }
+            result = result.concat(resolveRunnables(splitValues, runnableModules))
+        })
 
-        else
-          throw new Error(`Error occurred while resolving ${bold(command)} module. Expected run value to be either a string or a function. Received ${bold(typeof run)}.`)
+        return result
       }
 
-      if (command !== 'cd' && !which(command))
-        throw new Error(`Command ${bold(command)} could not be resolved`)
+      else
+        throw new Error(`Error occurred while resolving ${bold(command)} module. Expected run value to be either a string or a function. Received ${bold(typeof run)}.`)
+    }
 
-      if (!(command === 'cd' && args.length === 0))
-        return result.concat([{command, args}])
+    if (command !== 'cd' && !which(command))
+      throw new Error(`Command ${bold(command)} could not be resolved`)
 
-      return result
-    }, [])
+    if (!(command === 'cd' && args.length === 0))
+      return result.concat([{command, args}])
+
+    return result
+  }, [])
 }
 
 export function runFunctionRunnable(definition:Runnable):Promise<void>
@@ -151,19 +154,18 @@ export function runProcessRunnable({command, args}:Runnable):Promise<void>
 
 export function runRequestedRunnables(definitions:Runnable[]):Promise<void>
 {
-  return definitions
-    .reduce((previousPromise:Promise<void>, definition:Runnable):Promise<void> =>
-      previousPromise
-        .then(():Promise<void> =>
-        {
-          if (definition.function)
-            return runFunctionRunnable(definition)
+  return definitions.reduce((previousPromise:Promise<void>, definition:Runnable):Promise<void> =>
+    previousPromise
+      .then(():Promise<void> =>
+      {
+        if (definition.function)
+          return runFunctionRunnable(definition)
 
-          if (definition.command === 'cd')
-            return runDirectoryChangeRunnable(definition)
+        if (definition.command === 'cd')
+          return runDirectoryChangeRunnable(definition)
 
-          return runProcessRunnable(definition)
-        }),
-      Promise.resolve()
-    )
+        return runProcessRunnable(definition)
+      }),
+    Promise.resolve()
+  )
 }
