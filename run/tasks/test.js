@@ -1,15 +1,13 @@
-const {log, shell: {rm, series}} = require('../utils')
-
 const description = 'Checks TypeScript for errors with TSLint and then tests TypeScript with Jest'
 
-const run = series(
-  log.task('Checking TypeScript for errors with TSLint'),
+const run = [
+  'log -w Checking TypeScript for errors with TSLint',
   'tslint',
-  log.task('Testing TypeScript with Jest'),
+  'log -w Testing TypeScript with Jest',
   'echo',
   'jest',
   'echo',
-  log.success('All tests passed')
-)
+  'log -s All tests passed'
+]
 
 module.exports = {description, run}

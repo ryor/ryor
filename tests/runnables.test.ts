@@ -17,7 +17,7 @@ test('Gets all runnable modules', () =>
 
   typeModules = runnableModules.get('tasks')!
 
-  expect(Array.from(typeModules.keys())).toEqual(['build', 'deploy', 'test'])
+  expect(Array.from(typeModules.keys())).toEqual(['build', 'deploy', 'lint', 'test'])
 
   process.chdir(resolve(rootDirectoryPath, `tests/projects/tasks-and-tools`))
 
@@ -55,11 +55,17 @@ test('Resolves runnables', () =>
 
   expect(runnables).toEqual([{command: 'echo', args: ['running', 'production', 'build']}])
 
-  runnables = resolveRunnables(['test', '+', 'build', 'production'], runnableModules)
+  runnables = resolveRunnables(['test'], runnableModules)
 
   expect(runnables).toEqual([
-    {command: 'echo', args: ['testing']},
-    {command: 'echo', args: ['running', 'production', 'build']}
+    {command: 'echo', args: ['running', 'tests']},
+    [
+      {command: 'echo', args: ['running', 'test', '1', 'in', 'parallel']},
+      {command: 'echo', args: ['running', 'test', '2', 'in', 'parallel']},
+      {command: 'echo', args: ['running', 'test', '3', 'in', 'parallel']},
+      {command: 'echo', args: ['running', 'test', '4', 'in', 'parallel']}
+    ],
+    {command: 'echo', args: ['all', 'tests', 'passed', 'successfully']}
   ])
 
   process.chdir(resolve(rootDirectoryPath, `tests/projects/tasks-and-tools`))

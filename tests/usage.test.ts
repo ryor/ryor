@@ -13,6 +13,7 @@ ${bold('Tasks:')}
 
   ${bold('build ')}    Builds project
   ${bold('deploy')}    No description provided
+  ${bold('lint  ')}    Lints project
   ${bold('test  ')}    Tests project`,
 
   'tasks-and-tools':

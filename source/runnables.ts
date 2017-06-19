@@ -64,13 +64,13 @@ export function splitRunnableValues(values:string[]):string[][]
   }, [])
 }
 
-export function resolveRunnables(values:string[], runnableModules:Map<string, Map<string, RunnableModule>>):Runnable[]
+export function resolveRunnables(values:string[], runnableModules:Map<string, Map<string, RunnableModule>>):(Runnable|Runnable[])[]
 {
-  return splitRunnableValues(values).reduce((runnables:Runnable[], runnableValues:string[]):Runnable[] =>
+  return splitRunnableValues(values).reduce((runnables:(Runnable|Runnable[])[], values:string[]):(Runnable|Runnable[])[] =>
   {
-    let command:string = runnableValues[0]
-    let args:string[] = runnableValues.slice(1)
-    let run:string|RunnableFactory|RunnableFunction|undefined
+    let command:string = values[0]
+    let args:string[] = values.slice(1)
+    let run:string|string[]|RunnableFactory|RunnableFunction|undefined
 
     runnableModules.forEach((typeModules:Map<string, RunnableModule>):void =>
     {
@@ -81,27 +81,58 @@ export function resolveRunnables(values:string[], runnableModules:Map<string, Ma
     if (run)
     {
       if (typeof run === 'function')
-        run = run(runnableValues.slice(1)) as string|RunnableFunction
+        run = run(values.slice(1)) as string|RunnableFunction
 
       if (typeof run === 'function')
-        return runnables.concat([{function: run, args: runnableValues.slice(1)}])
+        return runnables.concat([{function: run, args: values.slice(1)}])
 
       else if (typeof run === 'string')
       {
-        splitRunnableValues(parseRunString(run)).forEach((runnableValues:string[]):void =>
+        splitRunnableValues(parseRunString(run)).forEach((values:string[]):void =>
         {
-          if (runnableValues[0] === command)
-            runnables.push({command:runnableValues[0], args:runnableValues.slice(1)})
+          if (values[0] === command)
+            runnables.push({command:values[0], args:values.slice(1)})
 
           else
-            runnables = runnables.concat(resolveRunnables(runnableValues, runnableModules))
+            runnables = runnables.concat(resolveRunnables(values, runnableModules))
+        })
+
+        return runnables
+      }
+
+      else if (Array.isArray(run))
+      {
+        run.forEach((values:string|string[]):void =>
+        {
+          if (typeof values === 'string')
+          {
+            const runnableValues = parseRunString(values)
+
+            if (runnableValues[0] === command)
+              runnables.push({command:runnableValues[0], args:runnableValues.slice(1)})
+
+            else
+              runnables = runnables.concat(resolveRunnables(runnableValues, runnableModules))
+          }
+
+          else if (Array.isArray(values))
+          {
+            let parallelRunnables:Runnable[] = []
+
+            values.forEach((value:string):void =>
+            {
+              parallelRunnables = parallelRunnables.concat(resolveRunnables(parseRunString(value), runnableModules) as Runnable[])
+            })
+
+            runnables.push(parallelRunnables)
+          }
         })
 
         return runnables
       }
 
       else
-        throw new Error(`Error occurred while resolving ${bold(command)} module. Expected run value to be either a string or a function. Received ${bold(typeof run)}.`)
+        throw new Error(`Error occurred while resolving ${bold(command)} module. Expected run value to be either a string, a function or an array. Received ${bold(typeof run)}.`)
     }
 
     if (command !== 'cd' && !which(command))
@@ -152,20 +183,32 @@ export function runProcessRunnable({command, args}:Runnable):Promise<void>
   })
 }
 
-export function runRequestedRunnables(definitions:Runnable[]):Promise<void>
+export function runRunnable(runnable:Runnable):Promise<void>
 {
-  return definitions.reduce((previousPromise:Promise<void>, definition:Runnable):Promise<void> =>
-    previousPromise
-      .then(():Promise<void> =>
-      {
-        if (definition.function)
-          return runFunctionRunnable(definition)
+  if (runnable.function)
+    return runFunctionRunnable(runnable)
 
-        if (definition.command === 'cd')
-          return runDirectoryChangeRunnable(definition)
+  if (runnable.command === 'cd')
+    return runDirectoryChangeRunnable(runnable)
 
-        return runProcessRunnable(definition)
-      }),
-    Promise.resolve()
-  )
+  return runProcessRunnable(runnable)
+}
+
+export function runRunnablesParallel(runnables:Runnable[]):Promise<void>
+{
+  return Promise
+    .all(runnables.map((runnable:Runnable):Promise<void> => runRunnable(runnable)))
+    .then(():void => {})
+}
+
+export function runRunnablesSeries(steps:(Runnable|Runnable[])[]):Promise<void>
+{
+  return steps.reduce((previousStep:Promise<void>, nextStep:Runnable|Runnable[]):Promise<void> => previousStep.then(():Promise<void> =>
+  {
+    if (Array.isArray(nextStep))
+      return runRunnablesParallel(nextStep)
+
+    return runRunnable(nextStep)
+  }),
+  Promise.resolve())
 }

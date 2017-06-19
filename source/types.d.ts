@@ -4,7 +4,7 @@ declare module 'shell-quote' {
 
 interface RunnableModule {
   description?: string
-  run: string | RunnableFactory
+  run: string | string[] | RunnableFactory
 }
 
 interface RunnableFactory {

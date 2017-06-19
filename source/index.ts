@@ -2,7 +2,7 @@ import {red} from 'chalk'
 import {existsSync} from 'fs'
 import {EOL} from 'os'
 import {resolve} from 'path'
-import {getRunnableModules, resolveRunnables, runRequestedRunnables} from './runnables'
+import {getRunnableModules, resolveRunnables, runRunnablesSeries} from './runnables'
 import {composeUsageInformation} from './usage'
 
 export function run(args:string[] = []):void
@@ -24,9 +24,9 @@ export function run(args:string[] = []):void
       if (existsSync(projectBinDirectoryPath))
           process.env.PATH = `${process.env.PATH}:${projectBinDirectoryPath}`
 
-      const runnables:Runnable[] = resolveRunnables(args, runnableModules)
+      const runnables:(Runnable|Runnable[])[] = resolveRunnables(args, runnableModules)
 
-      runRequestedRunnables(runnables)
+      runRunnablesSeries(runnables)
         .catch((error) =>
         {
           if (error)

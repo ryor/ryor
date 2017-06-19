@@ -1,17 +1,15 @@
-const {log, shell: {rm, series}} = require('../utils')
-
 const description = 'Transpiles TypeScript into ES modules, bundles ES modules with Rollup and adds autorun function call'
 
-const run = series(
-  rm('build'),
-  log.task('Transpiling TypeScript'),
+const run = [
+  'shx rm -rf build',
+  'log -w Transpiling TypeScript',
   'tsc',
-  log.task('Bundling module with Rollup'),
+  'log -w Bundling module with Rollup',
   'rollup',
   'autorun',
-  log.task('Cleaning up'),
-  rm('build/esm'),
-  log.success('Build complete')
-)
+  'log -s Cleaning up',
+  'shx rm -rf build/esm',
+  'log -s Build complete'
+]
 
 module.exports = {description, run}

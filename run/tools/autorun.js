@@ -1,5 +1,3 @@
-const {EOL} = require('os')
-
 const description = 'Replaces ryor module export with autorun function call'
 
 function run()
@@ -7,6 +5,7 @@ function run()
   return () =>
   {
     const {readFileSync, writeFileSync} = require('fs')
+    const {EOL} = require('os')
     const {resolve} = require('path')
     const modulePath = resolve(__dirname, '../../build/index.js')
     const moduleCode = readFileSync(modulePath).toString()

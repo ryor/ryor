@@ -1,5 +1,4 @@
 const {bold} = require('chalk')
-const {shell: {series}} = require('../utils')
 
 const description = 'Runs Git commit, tag and push commands'
 
@@ -20,7 +19,10 @@ function run(args)
       if (args.length < 2)
         throw new Error(`A commmit message is required when using ${bold('git commit')}`)
 
-      return series('git add --all', `git commit -m '${args.splice(1).join(' ')}'`)
+      return [
+        'git add --all',
+        `git commit -m '${args.splice(1).join(' ')}'`
+      ]
 
     case 'tag':
 
