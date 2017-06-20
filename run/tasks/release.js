@@ -1,4 +1,4 @@
-const description = 'Verifies that tests pass and build completes succesfully, increments package.json patch numbers, commits changes to Git repository and pushes commit to Github'
+const description = 'Verifies that tests pass and build completes succesfully, increments package.json patch numbers, commits changes to Git repository and pushes commit and tag to Github'
 
 function run(args)
 {
@@ -9,18 +9,22 @@ function run(args)
     throw new Error(`A commmit message is required to run the ${bold('release')} task`)
   }
 
+  const currentVersion = require('../../package.json').version.split('.')
+  const newVersion = `${currentVersion[0]}.${currentVersion[1]}.${Number(currentVersion[2]) + 1}`
+
   return [
     'test',
     'build',
     'shx rm -rf build coverage',
-    'log -w Updating semver patch number in package.json file',
+    'log -w Updating semver patch numbers in package.json and README files',
     'patch',
     'log -w Committing changes to Git repository',
-    `git commit '${args.join(' ')}'`,
+    'git add -A',
+    `git commit -m '${args.join(' ')}'`,
     'log -w Adding new tag to Git repository',
-    'git tag',
+    `git tag -a v${newVersion} -m "Version ${newVersion}"`,
     'log -w Pushing commit and tag to Github',
-    'git push'
+    'git push --follow-tags'
   ]
 }
 

@@ -1,9 +1,8 @@
 import {bold} from 'chalk'
-import {ChildProcess, spawn} from 'child_process'
+import {spawn} from 'cross-spawn'
 import {existsSync, readdirSync, statSync} from 'fs'
 import {parse, resolve} from 'path'
 import {parse as parseRunString} from 'shell-quote'
-import {which} from 'shelljs'
 
 export function getRunnableModules():Map<string, Map<string, RunnableModule>>
 {
@@ -135,13 +134,7 @@ export function resolveRunnables(values:string[], runnableModules:Map<string, Ma
         throw new Error(`Error occurred while resolving ${bold(command)} module. Expected run value to be either a string, a function or an array. Received ${bold(typeof run)}.`)
     }
 
-    if (command !== 'cd' && !which(command))
-      throw new Error(`Command ${bold(command)} could not be resolved`)
-
-    if (!(command === 'cd' && args.length === 0))
-      return runnables.concat([{command, args}])
-
-    return runnables
+    return runnables.concat([{command, args}])
   }, [])
 }
 
@@ -164,7 +157,7 @@ export function runProcessRunnable({command, args}:Runnable):Promise<void>
 {
   return new Promise<void>((resolve:() => void, reject:(message:string) => void):void =>
   {
-    const childProcess:ChildProcess = spawn(command!, args, {env:process.env, stdio:'inherit'})
+    const childProcess:NodeJS.EventEmitter = spawn(command!, args, {env:process.env, stdio:'inherit'})
     let errors:string = ''
 
     childProcess.on('error', (data:Buffer):string => errors += data.toString())
