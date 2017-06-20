@@ -1,17 +1,17 @@
 ## Roll Your Own (Task) Runner for Node.js Projects
 
 [![Travis](https://img.shields.io/travis/ryor-org/ryor.svg)](https://travis-ci.org/ryor-org/ryor/branches)
-[![Codecov](https://img.shields.io/codecov/c/github/ryor-org/ryor/v0.0.74.svg)](https://codecov.io/gh/ryor-org/ryor/branch/v0.0.74)
+[![Codecov](https://img.shields.io/codecov/c/github/ryor-org/ryor/v0.0.75.svg)](https://codecov.io/gh/ryor-org/ryor/branch/v0.0.75)
 [![Greenkeeper](https://badges.greenkeeper.io/ryor-org/ryor.svg)](https://greenkeeper.io/)
 [![David-DM dependencies](https://david-dm.org/ryor-org/ryor/master.svg)](https://david-dm.org/ryor-org/ryor/master)
 [![David-DM devDependencies](https://david-dm.org/ryor-org/ryor/dev-status.svg)](https://david-dm.org/ryor-org/ryor/master#info=devDependencies)
 [![License](https://img.shields.io/github/license/ryor-org/ryor.svg)](https://github.com/ryor-org/ryor/blob/master/LICENSE)
 
-No plugins, no system dependencies, no cluttering of a project root with configuration files or a package.json file with configuration details and lengthy, difficult-to-mantain scripts. Just use `node run` to list a project's tasks and `node run [task]/[tool]/[executable]` to run either a task, a tool or any executable in the `node_modules/.bin` directory of a project.
+No plugins, no system dependencies, no cluttering of a project root with configuration files or a package.json file with configuration details and lengthy, difficult-to-maintain scripts. Just use `node run` to list a project's tasks and `node run [task]/[tool]/[executable]` to run either a task, a tool or any executable in the `node_modules/.bin` directory of a project.
 
-### Use tools that do one thing well
+### Use tools independently
 
-Unlike task runners or pluggable build tools that require often clunky coordination between unevenly maintained 3rd-party plugins (Gulp, Grunt, Webpack, etc.), **ryor** adopts the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy), preferring tools that do one thing well. Tasks can be composed as scripts similar to **npm**/**yarn** or [NPS](https://www.npmjs.com/package/nps) scripts.
+Unlike task runners or pluggable build tools that require often clunky coordination between unevenly maintained 3rd-party plugins (Gulp, Grunt, Webpack, etc.), **ryor** adopts the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy), preferring to expose the tools that "do one thing well" to developers. Sequences similar to shell, **npm**/**yarn** or [NPS](https://www.npmjs.com/package/nps) scripts can be composed that utilize tools or tools can just be used independently.
 
 ### No system dependencies
 

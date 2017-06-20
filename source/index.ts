@@ -22,7 +22,7 @@ export function run(args:string[] = []):void
       const projectBinDirectoryPath:string = resolve(process.cwd(), 'node_modules/.bin')
 
       if (existsSync(projectBinDirectoryPath))
-          process.env.PATH = `${process.env.PATH}:${projectBinDirectoryPath}`
+          process.env.PATH = `${process.env.PATH}${process.platform === 'win32' ? ';' : ':'}${projectBinDirectoryPath}`
 
       const runnables:(Runnable|Runnable[])[] = resolveRunnables(args, runnableModules)
 
