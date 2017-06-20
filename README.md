@@ -1,5 +1,7 @@
 ## Roll Your Own (Task) Runner for Node.js Projects
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ryor-org/ryor.svg)](https://greenkeeper.io/)
+
 [![Travis](https://img.shields.io/travis/ryor-org/ryor.svg)](https://travis-ci.org/ryor-org/ryor/branches)
 [![Codecov](https://img.shields.io/codecov/c/github/ryor-org/ryor/v0.0.73.svg)](https://codecov.io/gh/ryor-org/ryor/branch/v0.0.73)
 [![License](https://img.shields.io/github/license/ryor-org/ryor.svg)](https://github.com/ryor-org/ryor/blob/master/LICENSE)
