@@ -25,7 +25,7 @@ Similar to shell, **npm**/**yarn** or [NPS](https://www.npmjs.com/package/nps), 
 
 ### Simple to define
 
-Runnables can be defined in two subdirectories in a project's `run` directory, `tasks` and `tools`. Tasks are intended to be the main developer interface for a project, composing sequences that utilize other runnables, and tools are intended to be either "batteries included" versions of tools included as project dependencies, with all of the configuration details required to run properly defined in the runnable, or functions/Promises that perform any necessary operations.
+Runnables can be defined in two subdirectories in a project's `run` directory, `tasks` and `tools`. Tasks are intended to be the main developer interface for a project, composing sequences that utilize other runnables. Tools are intended to be either "batteries included" versions of tools included as project dependencies, with all of the configuration details required to run properly, or functions/Promises that perform any necessary operations.  Runnables can also included an optional description, which is displayed in the usage information.
 
 ### Simple to get usage information
 
