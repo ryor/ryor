@@ -1,6 +1,6 @@
 {
   "name": "ryor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Roll your own lightweight task runner for your project",
   "repository": "ryor-org/ryor",
   "bugs": "https://github.com/ryor-org/ryor/issues",
