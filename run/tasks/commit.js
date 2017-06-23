@@ -15,9 +15,9 @@ function run(args)
     'shx rm -rf build coverage',
     'log -w Committing changes to Git repository',
     'git add -A',
-    `git commit -m '${args.join(' ')}'`,
+    `git commit -m '${args.join(' ')}' --quiet`,
     'log -w Pushing changes to Git repository',
-    'git push --follow-tags',
+    'git push --quiet',
     'log -s Changes committed'
   ]
 }

@@ -1,4 +1,4 @@
-const description = 'Verifies that tests pass and build completes succesfully, increments package.json patch numbers, commits changes to Git repository and pushes commit and tag to Github'
+const description = 'Commits changes to Git repository, tags commit and pushes tag to Github'
 
 function run(args)
 {
@@ -13,7 +13,8 @@ function run(args)
   const newVersion = `${currentVersion[0]}.${currentVersion[1]}.${Number(currentVersion[2]) + 1}`
 
   return [
-    'test',
+    `commit '${args.join(' ')}'`,
+    /*
     'build',
     'shx rm -rf build coverage',
     'log -w Updating semver patch numbers in package.json and README files',
@@ -25,6 +26,7 @@ function run(args)
     `git tag -a v${newVersion} -m "Version ${newVersion}"`,
     'log -w Pushing commit and tag to Github',
     'git push --follow-tags'
+    */
   ]
 }
 
