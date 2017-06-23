@@ -29,11 +29,11 @@ Runnables can be defined in two subdirectories in a project's `run` directory, `
 
 ### Simple to get usage information
 
-Just use `node run`.
+```node run```
 
 ### Simple to use
 
-`node run <runnable> [...args]` or `node run <runnable> [...args] + <runnable> [...args] + <runnable> [...args] ...`
+```node run ***runnable*** [...args]```
 
 ## Templates
 
