@@ -1,6 +1,4 @@
-const {bold} = require('chalk')
-
-const description = `Runs Jest tests. Configuration file: ${bold('run/tools/jest/config.json')}. TypeScript preproccesor: ${bold('run/tools/jest/preproccesor.js')}.`
+const description = 'Tests TypeScript with Jest'
 
 const run = 'jest -c run/tools/jest/config.json'
 

@@ -9,7 +9,7 @@ cache: yarn
 script: node run test + build
 deploy:
   provider: script
-  script: node run deploy
+  script: node run codecov + publish
   skip_cleanup: true
   on:
     tags: true

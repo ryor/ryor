@@ -1,4 +1,4 @@
-const description = 'Verifies that tests pass and build completes succesfully, commits changes to Git repository and optionally creates release tag and/or pushes commit/tag to Github'
+const description = 'Verifies that tests pass and build completes succesfully, commits changes to Git repository. Optionally creates release tag and/or pushes commit/tag to Github'
 
 function run(args)
 {
@@ -15,19 +15,19 @@ function run(args)
     throw new Error(`A commmit message is required to run the ${bold('commit')} task`)
   }
 
-  let series = [
+  const sequence = [
     'test',
     'build',
     'shx rm -rf build coverage'
   ]
 
   if (release)
-    series.push(
+    sequence.push(
       'log -w Updating semver patch numbers in package.json and README files',
       'patch'
     )
 
-  series.push(
+  sequence.push(
     'log -w Committing changes to Git repository',
     'git add -A',
     `git commit -m '${_.join(' ')}' --quiet`
@@ -38,19 +38,19 @@ function run(args)
     const currentVersion = require('../../package.json').version.split('.')
     const newVersion = `${currentVersion[0]}.${currentVersion[1]}.${Number(currentVersion[2]) + 1}`
 
-    series.push(
+    sequence.push(
       'log -w Adding new tag to Git repository',
       `git tag -a v${newVersion} -m "Version ${newVersion}"`
     )
   }
 
   if (push || release)
-    series.push(
+    sequence.push(
       `log -w Pushing commit${release ? ' and tag ' : ' '}to Github`,
       `git push --quiet ${release ? ' --follow-tags' : ''}`
     )
 
-  return series
+  return sequence
 }
 
 module.exports = {description, run}

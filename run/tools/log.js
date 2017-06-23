@@ -1,6 +1,6 @@
 const {bold, cyan} = require('chalk')
 
-const description = 'Logs messages with decorations and formatting'
+const description = 'Logs messages with icons and formatting'
 
 function wait(message)
 {
