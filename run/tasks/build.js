@@ -7,7 +7,7 @@ const run = [
   'log -w Bundling module with Rollup',
   'rollup',
   'autorun',
-  'log -s Cleaning up',
+  'log -w Cleaning up',
   'shx rm -rf build/esm',
   'log -s Build complete'
 ]
