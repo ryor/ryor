@@ -39,12 +39,16 @@ or
 
 ```node run <runnable> [...args] + <runnable> [...args] + <runnable> [...args]```
 
-## Templates
+### Templates
 
 [Node module with TypeScript, TSLint, Jest and Rollup](https://github.com/ryor-org/ryor-simple-module-template)<br>
 [Node CLI module with TypeScript, TSLint, Jest and Rollup](https://github.com/ryor-org/ryor-cli-module-template)<br>
 [Static generated Preact SPA with TypeScript, TSLint and Rollup](https://github.com/ryor-org/ryor-static-gen-spa-preact-template)
 
-## Utility
+### Utility
 
 [Command-line utility for initializing projects from ryor templates](https://github.com/ryor-org/ryor-init)
+
+### Documentation
+
+Coming soon.
