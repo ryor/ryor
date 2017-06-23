@@ -1,4 +1,6 @@
+import {red} from 'chalk'
 import {existsSync} from 'fs'
+import {EOL} from 'os'
 import {resolve} from 'path'
 import Runner from './Runner'
 import {outputUsageInformation} from './utils/usage'
@@ -25,6 +27,13 @@ export function run(args:string[] = []):void
         process.env.PATH = `${process.env.PATH}${process.platform === 'win32' ? ';' : ':'}${binDirectoryPath}`
 
     new Runner(definitions).run()
+      .catch((error) =>
+      {
+        if (error)
+          console.error(`${EOL}${red(error.stack || error)}${EOL}`)
+
+        process.exit(1)
+      })
   }
 
   else

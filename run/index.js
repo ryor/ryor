@@ -1,2 +1,1 @@
-require('../build')
-// require('ryor')
+require('ryor')

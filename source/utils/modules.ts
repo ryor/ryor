@@ -3,6 +3,11 @@ import {parse, resolve} from 'path'
 
 const MODULE_TYPES:string[] = ['tasks', 'tools']
 
+export function deleteModulesMap():void
+{
+  modules = undefined
+}
+
 export function getModulesMap():Map<string, Map<string, RunnableModule>>
 {
   if (!modules)
@@ -14,7 +19,7 @@ export function getModulesMap():Map<string, Map<string, RunnableModule>>
     MODULE_TYPES.forEach((type:string):void =>
     {
       if (existsSync(resolve(runDirectoryPath, type)))
-        modules.set(type, new Map<string, RunnableModule>())
+        modules!.set(type, new Map<string, RunnableModule>())
     })
   }
 
@@ -105,4 +110,4 @@ export function resolveModule(name:string):RunnableModule|undefined
   return resolvedModule
 }
 
-let modules:Map<string, Map<string, RunnableModule>>
+let modules:Map<string, Map<string, RunnableModule>>|undefined
