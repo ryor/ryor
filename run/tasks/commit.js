@@ -16,8 +16,6 @@ function run(args)
     'log -w Committing changes to Git repository',
     'git add -A',
     `git commit -m '${args.join(' ')}' --quiet`,
-    'log -w Pushing changes to Git repository',
-    'git push --quiet',
     'log -s Changes committed'
   ]
 }
