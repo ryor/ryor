@@ -9,7 +9,7 @@
 
 ### No system dependencies
 
-Including **ryor** as a project development dependency is all that's needed to get started.
+Including **[ryor](https://www.npmjs.com/package/ryor)** as a project development dependency is all that's needed to get started.
 
 ### No plugins
 
