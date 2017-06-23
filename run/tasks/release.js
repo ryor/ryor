@@ -1,4 +1,4 @@
-const description = 'Commits changes to Git repository, tags commit and pushes tag to Github'
+const description = 'Runs commit task, updates semver patch numbers in package.json and README files, tags changes and pushes commit and tag to Github'
 
 function run(args)
 {
@@ -14,19 +14,13 @@ function run(args)
 
   return [
     `commit '${args.join(' ')}'`,
-    /*
-    'build',
-    'shx rm -rf build coverage',
     'log -w Updating semver patch numbers in package.json and README files',
     'patch',
-    'log -w Committing changes to Git repository',
-    'git add -A',
-    `git commit -m '${args.join(' ')}'`,
+    `git commit -a --amend --no-edit`,
     'log -w Adding new tag to Git repository',
     `git tag -a v${newVersion} -m "Version ${newVersion}"`,
     'log -w Pushing commit and tag to Github',
     'git push --follow-tags'
-    */
   ]
 }
 

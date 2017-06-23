@@ -1,4 +1,4 @@
-const description = 'Verifies that tests pass and build completes succesfully, commits changes to Git repository and pushes commit to Github'
+const description = 'Verifies that tests pass and build completes succesfully and commits changes to Git repository'
 
 function run(args)
 {
