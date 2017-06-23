@@ -46,7 +46,7 @@ function run(args)
 
   if (push || release)
     series.push(
-      'log -w Pushing commit and tag to Github',
+      `log -w Pushing commit${release ? ' and tag ' : ' '}to Github`,
       `git push --quiet ${release ? ' --follow-tags' : ''}`
     )
 
