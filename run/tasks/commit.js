@@ -50,6 +50,8 @@ function run(args)
       `git push --quiet ${release ? ' --follow-tags' : ''}`
     )
 
+  series.push('log -s Complete')
+
   return series
 }
 
