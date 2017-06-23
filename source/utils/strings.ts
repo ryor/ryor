@@ -1,6 +1,6 @@
-export function commaSeparateValues(values:string[]):string
+export function capitalize(value:string):string
 {
-  return values.join(', ').replace(/,(?=[^,]*$)/, ' and')
+  return `${value.charAt(0).toUpperCase()}${value.slice(1)}`
 }
 
 export function maxStringLength(strings:string[]):number

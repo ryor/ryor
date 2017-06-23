@@ -6,17 +6,15 @@ declare module 'shell-quote' {
   export function parse(args:string):string[]
 }
 
+declare type RunnableDefinition = string | string[] | string[][]
+
 interface RunnableModule {
   description?: string
-  run: string | string[] | RunnableFactory
-}
-
-interface RunnableFactory {
-  (args?:string[]): string | RunnableFunction
+  run: RunnableDefinition | RunnableFunction
 }
 
 interface RunnableFunction {
-  (args?:string[]): Promise<void> | void
+  (args?:string[]): Promise<RunnableDefinition | void> | RunnableDefinition | void
 }
 
 interface Runnable {

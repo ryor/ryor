@@ -21,16 +21,13 @@ function run(args)
   })
   const message = parsedArgs._.join(' ')
 
-  return () =>
-  {
-    if (parsedArgs.success)
-      return success(message)
+  if (parsedArgs.success)
+    return success(message)
 
-    if (parsedArgs.wait)
-      return wait(message)
+  if (parsedArgs.wait)
+    return wait(message)
 
-    console.log(`${cyan('•')} ${bold(message)}`)
-  }
+  console.log(`${cyan('•')} ${bold(message)}`)
 }
 
 module.exports = {description, run, wait, success}

@@ -1,46 +1,32 @@
-import {red} from 'chalk'
 import {existsSync} from 'fs'
-import {EOL} from 'os'
 import {resolve} from 'path'
-import {getRunnableModules, resolveRunnables, runRunnablesSeries} from './runnables'
-import {composeUsageInformation} from './usage'
+import Runner from './Runner'
+import {outputUsageInformation} from './utils/usage'
 
 export function run(args:string[] = []):void
 {
-  try
+  if (args.length > 0)
   {
-    const runnableModules:Map<string, Map<string, RunnableModule>> = getRunnableModules()
+    const definitions:string[][] = args
+      .reduce((definitions:string[][], arg:string):string[][] =>
+      {
+        if (arg === '+')
+          definitions.push([])
 
-    if (runnableModules.size === 0)
-      throw new Error('Could not resolve any tasks or tools')
+        else
+          definitions[definitions.length - 1].push(arg)
 
-    else if (args.length === 0 || args[0] === 'tools')
-      console.log(`${EOL}${composeUsageInformation(args, runnableModules)}${EOL}`)
+        return definitions
+      }, [[]])
+      .filter((definition:RunnableDefinition):boolean => (definition as string[]).length > 0)
+    const binDirectoryPath:string = resolve(process.cwd(), 'node_modules/.bin')
 
-    else
-    {
-      const projectBinDirectoryPath:string = resolve(process.cwd(), 'node_modules/.bin')
+    if (existsSync(binDirectoryPath))
+        process.env.PATH = `${process.env.PATH}${process.platform === 'win32' ? ';' : ':'}${binDirectoryPath}`
 
-      if (existsSync(projectBinDirectoryPath))
-          process.env.PATH = `${process.env.PATH}${process.platform === 'win32' ? ';' : ':'}${projectBinDirectoryPath}`
-
-      const runnables:(Runnable|Runnable[])[] = resolveRunnables(args, runnableModules)
-
-      runRunnablesSeries(runnables)
-        .catch((error) =>
-        {
-          if (error)
-            console.error(`${EOL}${red(error.stack || error)}${EOL}`)
-
-          process.exit(1)
-        })
-    }
+    new Runner(definitions).run()
   }
 
-  catch (error)
-  {
-    console.error(`${EOL}${red(error.message || error)}${EOL}`)
-
-    process.exit(1)
-  }
+  else
+    outputUsageInformation()
 }

@@ -1,13 +1,10 @@
 import {bold} from 'chalk'
 import {resolve} from 'path'
-import {commaSeparateValues, maxStringLength, padStringWithSpaces} from '../source/strings'
+import {capitalize, maxStringLength, padStringWithSpaces} from '../../source/utils/strings'
 
-test('Outputs grammatically correct comma-separated value strings', ():void =>
+test('Capitalizes string', () =>
 {
-  expect(commaSeparateValues(['One'])).toBe('One')
-  expect(commaSeparateValues(['One', 'Two'])).toBe('One and Two')
-  expect(commaSeparateValues(['One', 'Two', 'Three'])).toBe('One, Two and Three')
-  expect(commaSeparateValues(['One', 'Two', 'Three', 'Four'])).toBe('One, Two, Three and Four')
+  expect(capitalize('value')).toBe('Value')
 })
 
 test('Determines max length of strings in array', () =>
