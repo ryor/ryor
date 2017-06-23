@@ -1,7 +1,7 @@
 ## Roll Your Own (Task) Runner for Node.js Projects
 
 [![Travis](https://img.shields.io/travis/ryor-org/ryor.svg)](https://travis-ci.org/ryor-org/ryor/branches)
-[![Codecov](https://img.shields.io/codecov/c/github/ryor-org/ryor/v0.0.77.svg)](https://codecov.io/gh/ryor-org/ryor/branch/v0.0.77)
+[![Codecov](https://img.shields.io/codecov/c/github/ryor-org/ryor/v0.1.0.svg)](https://codecov.io/gh/ryor-org/ryor/branch/v0.1.0)
 [![Greenkeeper](https://badges.greenkeeper.io/ryor-org/ryor.svg)](https://greenkeeper.io/)
 [![David-DM dependencies](https://david-dm.org/ryor-org/ryor/master.svg)](https://david-dm.org/ryor-org/ryor/master)
 [![David-DM devDependencies](https://david-dm.org/ryor-org/ryor/dev-status.svg)](https://david-dm.org/ryor-org/ryor/master#info=devDependencies)
