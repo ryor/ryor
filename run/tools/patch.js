@@ -12,7 +12,8 @@ function run()
   const currentVersionParts = currentVersion.split('.')
   const nextVersion = `${currentVersionParts[0]}.${currentVersionParts[1]}.${Number(currentVersionParts[2]) + 1}`
 
-  packageJSON.version = packageJSON.devDependencies.ryor = nextVersion
+  packageJSON.version = nextVersion
+  packageJSON.devDependencies.ryor = currentVersion
 
   writeFileSync(packageJSONPath, JSON.stringify(packageJSON, null, 2))
   writeFileSync(readmePath, readme.replace(new RegExp(currentVersion, 'g'), nextVersion))

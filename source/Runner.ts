@@ -1,58 +1,21 @@
+import {bold} from 'chalk'
 import {spawn} from 'cross-spawn'
 import {resolve} from 'path'
 import {parse} from 'shell-quote'
-import {resolveModule} from './utils/modules'
+import Resolver from './Resolver'
 
 export default class Runner
 {
-  static resolveRunnable(definition:RunnableDefinition):Runnable|Runner
-  {
-    if (typeof definition[0] === 'string')
-    {
-      const runnableModule:RunnableModule|undefined = resolveModule(definition[0] as string)
-
-      if (runnableModule)
-      {
-        const {run} = runnableModule
-
-        if (typeof run === 'function')
-          return {function:run, args:definition.slice(1) as string[]}
-
-        else if (typeof run === 'string')
-        {
-          definition = parse(run)
-
-          return {command:definition[0], args:definition.slice(1)}
-        }
-
-        else
-          return new Runner((run as string[]).map((item:string):RunnableDefinition =>
-          {
-            if (typeof item === 'string')
-              return parse(item)
-
-            return [item]
-          }))
-      }
-
-      else
-        return {command:definition[0] as string, args:definition.slice(1) as string[]}
-    }
-
-    else
-      return new Runner(definition[0] as RunnableDefinition[], 'parallel')
-  }
-
-  constructor(public definitions:RunnableDefinition[], public type:string = 'series') {}
+  constructor(public definitions:RunnableDefinition[], public resolver:Resolver, public type:string = 'series') {}
 
   public run():Promise<void>
   {
-    return this.doNext()
+    return this.next()
   }
 
-  runRunnable(definition:RunnableDefinition):Promise<void>
+  public runRunnable(definition:RunnableDefinition):Promise<void>
   {
-    const runnable:Runnable|Runner = Runner.resolveRunnable(definition)
+    const runnable:Runnable|Runner = this.resolver.resolveRunnable(definition)
     let promise:Promise<string|(string|string[]|void)[]|void>
 
     if (runnable instanceof Runner)
@@ -74,20 +37,29 @@ export default class Runner
             promise = new Promise((resolve, reject) =>
             {
               const childProcess:NodeJS.EventEmitter = spawn(command!, args, {env:process.env, stdio:'inherit'})
-              let errors = ''
+              let error:string = ''
 
-              childProcess.on('error', data => errors += data.toString())
+              childProcess.on('error', data => error += data.toString())
 
               childProcess.on('close', code =>
               {
-                if (errors)
-                  return reject(errors.trim())
+                error = error.trim()
 
                 if (code !== 0)
-                  return reject('')
+                {
+                  if (error === `Error: spawn ${command} ENOENT`)
+                    error = `Could not resolve ${bold(command!)} command`
+
+                  return reject(error)
+                }
 
                 else
+                {
+                  if (error)
+                    console.error(error)
+
                   resolve()
+                }
               })
             })
         }
@@ -118,7 +90,7 @@ export default class Runner
     })
   }
 
-  doNext():Promise<void>
+  private next():Promise<void>
   {
     if (this.definitions.length > 0)
     {
@@ -126,7 +98,7 @@ export default class Runner
       {
         const definition:RunnableDefinition = this.definitions.shift() as RunnableDefinition
 
-        return this.runRunnable(definition).then(():Promise<void> => this.doNext())
+        return this.runRunnable(definition).then(():Promise<void> => this.next())
       }
 
       else
@@ -135,7 +107,7 @@ export default class Runner
 
         this.definitions = []
 
-        return Promise.all(promises).then(():Promise<void> => this.doNext())
+        return Promise.all(promises).then(():Promise<void> => this.next())
       }
     }
 

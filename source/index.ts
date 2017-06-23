@@ -1,12 +1,12 @@
 import {red} from 'chalk'
-import {existsSync} from 'fs'
 import {EOL} from 'os'
-import {resolve} from 'path'
+import Resolver from './Resolver'
 import Runner from './Runner'
-import {outputUsageInformation} from './utils/usage'
 
 export function run(args:string[] = []):void
 {
+  const resolver = new Resolver()
+
   if (args.length > 0)
   {
     const definitions:string[][] = args
@@ -21,21 +21,17 @@ export function run(args:string[] = []):void
         return definitions
       }, [[]])
       .filter((definition:RunnableDefinition):boolean => (definition as string[]).length > 0)
-    const binDirectoryPath:string = resolve(process.cwd(), 'node_modules/.bin')
 
-    if (existsSync(binDirectoryPath))
-        process.env.PATH = `${process.env.PATH}${process.platform === 'win32' ? ';' : ':'}${binDirectoryPath}`
-
-    new Runner(definitions).run()
+    new Runner(definitions, resolver).run()
       .catch((error) =>
       {
         if (error)
-          console.error(`${EOL}${red(error.stack || error)}${EOL}`)
+          console.error(`${EOL}${red(error.message || error)}${EOL}`)
 
         process.exit(1)
       })
   }
 
   else
-    outputUsageInformation()
+    console.log(`${EOL}${resolver.composeUsageInformation()}${EOL}`)
 }

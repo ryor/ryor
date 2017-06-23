@@ -2,7 +2,7 @@ const description = 'Checks TypeScript for errors with TSLint'
 
 function run()
 {
-  return () => new Promise((resolve, reject) =>
+  return new Promise((resolve, reject) =>
   {
     const {spawn} = require('child_process')
     const childProcess = spawn('tslint', ['-c', 'run/tools/tslint/config.json', '-p', 'run/tools/tsc/config.json', '--type-check', 'source/**/*.ts'])

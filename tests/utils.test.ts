@@ -1,6 +1,4 @@
-import {bold} from 'chalk'
-import {resolve} from 'path'
-import {capitalize, maxStringLength, padStringWithSpaces} from '../../source/utils/strings'
+import {capitalize, maxStringLength, padStringWithSpaces} from '../source/utils'
 
 test('Capitalizes string', () =>
 {
