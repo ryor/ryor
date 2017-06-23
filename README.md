@@ -38,7 +38,9 @@ Just use `node run`.
 ## Templates
 
 [Simple Node module with TypeScript, TSLint, Jest and Rollup](https://github.com/ryor-org/ryor-simple-module-template)
+
 [Simple Node CLI module with TypeScript, TSLint, Jest and Rollup](https://github.com/ryor-org/ryor-cli-module-template)
+
 [Static generated Preact SPA with TypeScript, TSLint and Rollup](https://github.com/ryor-org/ryor-static-gen-spa-preact-template)
 
 ## Utility
