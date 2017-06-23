@@ -1,7 +1,7 @@
 ## Roll Your Own (Task) Runner for Node.js Projects
 
 [![Travis](https://img.shields.io/travis/ryor-org/ryor.svg)](https://travis-ci.org/ryor-org/ryor/branches)
-[![Codecov](https://img.shields.io/codecov/c/github/ryor-org/ryor/v0.1.2.svg)](https://codecov.io/gh/ryor-org/ryor/branch/v0.1.2)
+[![Codecov](https://img.shields.io/codecov/c/github/ryor-org/ryor/v0.1.3.svg)](https://codecov.io/gh/ryor-org/ryor/branch/v0.1.3)
 [![Greenkeeper](https://badges.greenkeeper.io/ryor-org/ryor.svg)](https://greenkeeper.io/)
 [![David-DM dependencies](https://david-dm.org/ryor-org/ryor/master.svg)](https://david-dm.org/ryor-org/ryor/master)
 [![David-DM devDependencies](https://david-dm.org/ryor-org/ryor/dev-status.svg)](https://david-dm.org/ryor-org/ryor/master#info=devDependencies)
@@ -21,7 +21,7 @@ Instead of cluttering of a project's root directory and/or package.json file wit
 
 ### Sequences
 
-Similar to shell, **npm**/**yarn** or [NPS](https://www.npmjs.com/package/nps), sequences can be composed that utilize runnables, either run in series or parallel.  If runnables defined as functions/Promises return sequences themselves, those operations are then run as well.
+Similar to shell, npm/yarn or [NPS](https://www.npmjs.com/package/nps) scripts, sequences can be composed that utilize runnables, either run in series or parallel.  If runnables defined as functions/Promises return sequences themselves, those operations are then run as well.
 
 ### Simple to define
 
