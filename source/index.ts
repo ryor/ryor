@@ -1,28 +1,20 @@
 import {red} from 'chalk'
+import {existsSync} from 'fs'
 import {EOL} from 'os'
-import Resolver from './Resolver'
+import {resolve} from 'path'
 import Runner from './Runner'
+import {parseCommandLineInput} from './input'
+import {composeUsageInformation} from './usage'
 
-export function run(args:string[] = []):void
+export function run(input:string[] = []):void
 {
-  const resolver = new Resolver()
+  const binDirectoryPath = resolve(process.cwd(), 'node_modules/.bin')
 
-  if (args.length > 0)
-  {
-    const definitions:string[][] = args
-      .reduce((definitions:string[][], arg:string):string[][] =>
-      {
-        if (arg === '+')
-          definitions.push([])
+  if (existsSync(binDirectoryPath) && !process.env.PATH.includes(binDirectoryPath))
+    process.env.PATH = `${process.env.PATH}${process.platform === 'win32' ? ';' : ':'}${binDirectoryPath}`
 
-        else
-          definitions[definitions.length - 1].push(arg)
-
-        return definitions
-      }, [[]])
-      .filter((definition:RunnableDefinition):boolean => (definition as string[]).length > 0)
-
-    new Runner(definitions, resolver).run()
+  if (input.length > 0)
+    new Runner(parseCommandLineInput(input)).next()
       .catch((error) =>
       {
         if (error)
@@ -30,8 +22,7 @@ export function run(args:string[] = []):void
 
         process.exit(1)
       })
-  }
 
   else
-    console.log(`${EOL}${resolver.composeUsageInformation()}${EOL}`)
+    console.log(`${EOL}${composeUsageInformation()}${EOL}`)
 }

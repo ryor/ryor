@@ -2,10 +2,14 @@ const description = 'Checks TypeScript for errors with TSLint'
 
 function run()
 {
+  const log = require('../log')
+
+  log.wait('Checking TypeScript for errors with TSLint')
+
   return new Promise((resolve, reject) =>
   {
-    const {spawn} = require('child_process')
-    const childProcess = spawn('tslint', ['-c', 'run/tools/tslint/config.json', '-p', 'run/tools/tsc/config.json', '--type-check', 'source/**/*.ts'])
+    const {spawn} = require('cross-spawn')
+    const childProcess = spawn('tslint', ['-c', 'run/tools/tslint/config.json', '-p', 'run/tools/tsc/config.json', '--type-check', 'source/*.ts'])
     let errors = ''
 
     childProcess.stderr.on('data', data => errors += data)
@@ -20,6 +24,8 @@ function run()
 
         return reject()
       }
+
+      log.success('No errors found')
 
       resolve()
     })

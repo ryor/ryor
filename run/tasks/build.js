@@ -2,9 +2,7 @@ const description = 'Transpiles TypeScript into ES modules, bundles ES modules w
 
 const run = [
   'shx rm -rf build/esm',
-  'log -w Transpiling TypeScript',
   'tsc',
-  'log -w Bundling module with Rollup',
   'rollup',
   'autorun',
   'log -w Cleaning up',

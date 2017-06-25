@@ -15,4 +15,3 @@ export function padStringWithSpaces(string:string, minLength:number):string
 
   return string
 }
-

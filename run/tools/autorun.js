@@ -1,4 +1,4 @@
-const description = 'Replaces ryor module export with autorun function call'
+const description = 'Adds run function call to module'
 
 function run()
 {
@@ -6,11 +6,13 @@ function run()
   const {EOL} = require('os')
   const {resolve} = require('path')
   const modulePath = resolve(__dirname, '../../build/index.js')
-  const moduleCode = readFileSync(modulePath).toString()
-    .replace(`Object.defineProperty(exports, '__esModule', { value: true });${EOL}${EOL}`, '')
-    .replace('exports.run = run;', 'run(process.argv.slice(2));')
 
-  writeFileSync(modulePath, moduleCode)
+  writeFileSync(
+    modulePath,
+    readFileSync(modulePath).toString()
+      .replace(`Object.defineProperty(exports, '__esModule', { value: true });${EOL}${EOL}`, '')
+      .replace('exports.run = run;', 'run(process.argv.slice(2));')
+  )
 }
 
 module.exports = {description, run}

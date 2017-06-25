@@ -1,114 +1,46 @@
-import {bold} from 'chalk'
-import {spawn} from 'cross-spawn'
-import {resolve} from 'path'
-import {parse} from 'shell-quote'
-import Resolver from './Resolver'
+import {resolveOperation} from './operations'
+import {runRunnable} from './runnables'
 
 export default class Runner
 {
-  constructor(public definitions:RunnableDefinition[], public resolver:Resolver, public type:string = 'series') {}
+  constructor(public operations:(RunnableDefinition|Runnable)[]){}
 
-  public run():Promise<void>
+  public next():Promise<void>
   {
-    return this.next()
-  }
+    if (this.operations.length > 0)
+    {
+      let operation:RunnableDefinition|Runnable|(RunnableDefinition|Runnable)[] = this.operations.shift()!
 
-  public runRunnable(definition:RunnableDefinition):Promise<void>
-  {
-    const runnable:Runnable|Runner = this.resolver.resolveRunnable(definition)
-    let promise:Promise<string|(string|string[]|void)[]|void>
-
-    if (runnable instanceof Runner)
-      promise = runnable.run()
-
-    else
-      if (runnable.command)
+      if (Array.isArray(operation))
       {
-        const {command, args} = runnable
-
-        switch (command)
+        if (Array.isArray(operation[0]))
         {
-          case 'cd':
-            process.chdir(resolve(process.cwd(), args[0]))
-            promise = Promise.resolve()
-            break
+          const promises:Promise<void>[] = (operation[0] as string[]).map((definition:string):Promise<void> =>
+          {
+            operation = resolveOperation(definition)
 
-          default:
-            promise = new Promise((resolve, reject) =>
-            {
-              const childProcess:NodeJS.EventEmitter = spawn(command!, args, {env:process.env, stdio:'inherit'})
-              let error:string = ''
+            if (Array.isArray(operation))
+              return new Runner(operation).next()
 
-              childProcess.on('error', data => error += data.toString())
+            return runRunnable(operation as Runnable, this)
+          })
 
-              childProcess.on('close', code =>
-              {
-                error = error.trim()
+          this.operations = []
 
-                if (code !== 0)
-                {
-                  if (error === `Error: spawn ${command} ENOENT`)
-                    error = `Could not resolve ${bold(command!)} command`
+          return Promise.all(promises).then(():Promise<void> => this.next())
+        }
 
-                  return reject(error)
-                }
+        operation = resolveOperation(operation as RunnableDefinition)
 
-                else
-                {
-                  if (error)
-                    console.error(error)
+        if (Array.isArray(operation))
+        {
+          this.operations = (operation as (RunnableDefinition|Runnable)[]).concat(this.operations)
 
-                  resolve()
-                }
-              })
-            })
+          return this.next()
         }
       }
 
-      else
-        promise = Promise.resolve().then(() => runnable.function!(runnable.args))
-
-    return promise.then((result:string|(string|string[]|void)[]|void):void =>
-    {
-      if (result && (typeof result === 'string' || Array.isArray(result)))
-      {
-        if (typeof result === 'string')
-          this.definitions.unshift(result)
-
-        else
-          this.definitions = (result as (string|string[]|void)[])
-            .filter((item:string|string[]|void):boolean => !!item && (typeof item === 'string' || Array.isArray(item)))
-            .map((item:string|string[]):RunnableDefinition =>
-            {
-              if (typeof item === 'string')
-                return parse(item)
-
-              return [item]
-            })
-            .concat(this.definitions)
-      }
-    })
-  }
-
-  private next():Promise<void>
-  {
-    if (this.definitions.length > 0)
-    {
-      if (this.type === 'series')
-      {
-        const definition:RunnableDefinition = this.definitions.shift() as RunnableDefinition
-
-        return this.runRunnable(definition).then(():Promise<void> => this.next())
-      }
-
-      else
-      {
-        const promises = this.definitions.map(definition => this.runRunnable(definition))
-
-        this.definitions = []
-
-        return Promise.all(promises).then(():Promise<void> => this.next())
-      }
+      return runRunnable(operation as Runnable, this).then(():Promise<void> => this.next())
     }
 
     return Promise.resolve()

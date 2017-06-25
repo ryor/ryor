@@ -1,9 +1,32 @@
-import {bold} from 'chalk'
-import {resolve} from 'path'
-import Resolver from '../source/Resolver'
-import Runner from '../source/Runner'
+const {bold} = require('chalk')
+const {resolve} = require('path')
+const {composeUsageInformation} = require('../source/usage')
 
-export const expectedUsageInformation = {
+const expectedUsageInformation = {
+
+  'all':
+
+`${bold('Usage:')} node run <runnable> [args...] [+ <runnable> [args...]] ...
+
+${bold('Tasks:')}
+
+  ${bold('build ')}    Builds project
+  ${bold('deploy')}    No description provided
+  ${bold('test  ')}    Tests project
+
+${bold('Tools:')}
+
+  ${bold('bundler   ')}    Bundles code
+  ${bold('tester    ')}    No description provided
+  ${bold('transpiler')}    Transpiles code
+
+${bold('bin:')} ${bold('thing')}`,
+
+  'only-bin':
+
+`${bold('Usage:')} node run <runnable> [args...] [+ <runnable> [args...]] ...
+
+${bold('bin:')} ${bold('thing')}`,
 
   'only-tasks':
 
@@ -23,27 +46,12 @@ ${bold('Tools:')}
 
   ${bold('bundler   ')}    Bundles code
   ${bold('tester    ')}    No description provided
-  ${bold('transpiler')}    Transpiles code`,
-
-  'tasks-and-tools':
-
-`${bold('Usage:')} node run <runnable> [args...] [+ <runnable> [args...]] ...
-
-${bold('Tasks:')}
-
-  ${bold('build ')}    Builds project
-  ${bold('deploy')}    No description provided
-  ${bold('test  ')}    Tests project
-
-${bold('Tools:')}
-
-  ${bold('bundler   ')}    Bundles code
-  ${bold('tester    ')}    No description provided
   ${bold('transpiler')}    Transpiles code`
 
 }
 const rootDirectoryPath = resolve(__dirname, '..')
 
+/*
 test('Creates Resolvers', () =>
 {
   let resolver
@@ -150,22 +158,21 @@ test('Resolves runnables', () =>
 
   process.chdir(rootDirectoryPath)
 })
+*/
 
 test('Composes usage information', () =>
 {
-  let resolver
+  process.chdir(resolve(rootDirectoryPath, 'tests/projects/all'))
+  expect(composeUsageInformation()).toBe(expectedUsageInformation['all'])
+
+  process.chdir(resolve(rootDirectoryPath, 'tests/projects/only-bin'))
+  expect(composeUsageInformation()).toBe(expectedUsageInformation['only-bin'])
 
   process.chdir(resolve(rootDirectoryPath, 'tests/projects/only-tasks'))
-  resolver = new Resolver()
-  expect(resolver.composeUsageInformation()).toBe(expectedUsageInformation['only-tasks'])
+  expect(composeUsageInformation()).toBe(expectedUsageInformation['only-tasks'])
 
   process.chdir(resolve(rootDirectoryPath, 'tests/projects/only-tools'))
-  resolver = new Resolver()
-  expect(resolver.composeUsageInformation()).toBe(expectedUsageInformation['only-tools'])
-
-  process.chdir(resolve(rootDirectoryPath, 'tests/projects/tasks-and-tools'))
-  resolver = new Resolver()
-  expect(resolver.composeUsageInformation()).toBe(expectedUsageInformation['tasks-and-tools'])
+  expect(composeUsageInformation()).toBe(expectedUsageInformation['only-tools'])
 
   process.chdir(rootDirectoryPath)
 })

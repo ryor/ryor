@@ -4,7 +4,7 @@
   "coverageDirectory": "<rootDir>/coverage",
   "moduleFileExtensions": ["js", "ts"],
   "rootDir": "../../..",
-  "testMatch": ["<rootDir>/tests/**/*.ts"],
+  "testMatch": ["<rootDir>/tests/*.js"],
   "transform": {
     "^.+\\.ts$": "<rootDir>/run/tools/jest/preprocessor.js"
   }
