@@ -13,7 +13,7 @@ Including **[ryor](https://www.npmjs.com/package/ryor)** as a project developmen
 
 ### No plugins
 
-Unlike task runners or pluggable build tools that require often clunky coordination between unevenly maintained 3rd-party plugins (Gulp, Grunt, Webpack, etc.), **ryor** exposes the tools that already [do one thing and do it well](https://en.wikipedia.org/wiki/Unix_philosophy) as CLIs or Node APIs and offers a convenient and robust means of grouping the running of those tools, either sequentially or in parallel.
+Unlike task runners or pluggable build tools that require often clunky coordination between unevenly maintained 3rd-party plugins (Gulp, Grunt, Webpack, etc.), **ryor** exposes the tools that already [do one thing and do it well](https://en.wikipedia.org/wiki/Unix_philosophy) as CLIs or Node APIs and offers a convenient and robust means of writing custom "runnables".
 
 ### Less clutter
 
