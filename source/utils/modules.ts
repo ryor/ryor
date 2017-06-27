@@ -1,12 +1,12 @@
 import {existsSync, readdirSync, statSync} from 'fs'
 import {parse, resolve} from 'path'
 
-let possibleModuleTypes:string[]
-let resolvedModules:{[key:string]:RunnableModule}
+let possibleModuleTypes:string[]|undefined
+let resolvedModules:Map<string, RunnableModule>|undefined
 
 export function getPossibleModuleTypes():string[]
 {
-  if (!possibleModuleTypes)
+  if (possibleModuleTypes === undefined)
   {
     const runDirectoryPath:string = resolve(process.cwd(), 'run')
 
@@ -18,7 +18,7 @@ export function getPossibleModuleTypes():string[]
       const typeDirectoryPath:string = resolve(runDirectoryPath, type)
 
       if (existsSync(typeDirectoryPath) && statSync(typeDirectoryPath).isDirectory())
-        possibleModuleTypes.push(type)
+        possibleModuleTypes!.push(type)
     })
   }
 
@@ -27,15 +27,15 @@ export function getPossibleModuleTypes():string[]
 
 export function resolveRunnableModule(name:string):RunnableModule|undefined
 {
-  if (resolvedModules && resolvedModules[name])
-    return resolvedModules[name]
+  if (resolvedModules !== undefined && resolvedModules.has(name))
+    return resolvedModules.get(name)
 
   const runDirectoryPath:string = resolve(process.cwd(), 'run')
   let resolvedModule:RunnableModule|undefined
 
   getPossibleModuleTypes().forEach((type:string):void =>
   {
-    if (!resolvedModule)
+    if (resolvedModule === undefined)
     {
       const typeDirectoryPath:string = resolve(runDirectoryPath, type)
       let jsFilePath:string = resolve(typeDirectoryPath, `${name}.js`)
@@ -45,23 +45,17 @@ export function resolveRunnableModule(name:string):RunnableModule|undefined
 
       if (existsSync(jsFilePath))
       {
-        try
-        {
-          const jsModule:RunnableModule = require(jsFilePath)
+          const jsModule:RunnableModule|{run?:{}} = require(jsFilePath) as RunnableModule|{run?:{}}
 
-          if (jsModule.run)
+          if (jsModule.run !== undefined)
           {
-            resolvedModule = jsModule
+            resolvedModule = jsModule as RunnableModule
 
-            if (!resolvedModules)
-              resolvedModules = {}
+            if (resolvedModules === undefined)
+              resolvedModules = new Map<string, RunnableModule>()
 
-            resolvedModules[name] = resolvedModule
+            resolvedModules.set(name, resolvedModule)
           }
-        }
-
-        // TODO: Output module resolution errors in debug mode
-        catch (error) {}
       }
     }
   })
@@ -75,18 +69,18 @@ export function resolveAllRunnableModules():Map<string, Map<string, RunnableModu
   const runDirectoryPath:string = resolve(process.cwd(), 'run')
 
   if (existsSync(runDirectoryPath) && statSync(runDirectoryPath).isDirectory())
-    readdirSync(runDirectoryPath).forEach((childPath:string):void =>
+    readdirSync(runDirectoryPath).forEach((possibleTypePath:string):void =>
     {
-      const type:string = parse(childPath).name
+      const type:string = parse(possibleTypePath).name
       const typeDirectoryPath:string = resolve(runDirectoryPath, type)
 
       if (existsSync(typeDirectoryPath) && statSync(typeDirectoryPath).isDirectory())
       {
         const typeModules:Map<string, RunnableModule> = new Map<string, RunnableModule>()
 
-        readdirSync(typeDirectoryPath).forEach((childPath:string):void =>
+        readdirSync(typeDirectoryPath).forEach((possibleModulePath:string):void =>
         {
-          const name:string = parse(childPath).name
+          const name:string = parse(possibleModulePath).name
           let jsFilePath:string = resolve(typeDirectoryPath, `${name}.js`)
 
           if (!existsSync(jsFilePath))
@@ -94,16 +88,10 @@ export function resolveAllRunnableModules():Map<string, Map<string, RunnableModu
 
           if (existsSync(jsFilePath))
           {
-            try
-            {
-              const jsModule:RunnableModule = require(jsFilePath)
+            const jsModule:RunnableModule|{run?:{}} = require(jsFilePath) as RunnableModule|{run?:{}}
 
-              if (jsModule.run)
-                typeModules.set(name, jsModule)
-            }
-
-            // TODO: Output module resolution errors in debug mode
-            catch (error) {}
+            if (jsModule.run !== undefined)
+              typeModules.set(name, jsModule as RunnableModule)
           }
         })
 

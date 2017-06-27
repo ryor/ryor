@@ -1,5 +1,5 @@
 const {resolve} = require('path')
-const {run} = require('../source')
+const {run} = require('..')
 
 test('Adds node_modules/.bin directory to PATH if neccesary', () =>
 {

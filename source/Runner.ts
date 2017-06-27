@@ -1,46 +1,67 @@
-import {resolveOperation} from './operations'
-import {runRunnable} from './runnables'
+import {resolveRunnable, runRunnable} from './utils/runnables'
 
-export default class Runner
+export class Runner
 {
-  constructor(public operations:(RunnableDefinition|Runnable)[]){}
+  public constructor(public definitions:Array<RunnableDefinition|RunnableDefinition[]>, public context?:string) {}
 
-  public next():Promise<void>
+  public run():Promise<void>
   {
-    if (this.operations.length > 0)
+    return this.next()
+  }
+
+  private next():Promise<void>
+  {
+    if (this.definitions.length > 0)
     {
-      let operation:RunnableDefinition|Runnable|(RunnableDefinition|Runnable)[] = this.operations.shift()!
+      const definition:RunnableDefinition|RunnableDefinition[]|undefined = this.definitions.shift()
+      let promise:Promise<RunnableDefinition|Array<RunnableDefinition|RunnableDefinition[]>|void|void[]>
 
-      if (Array.isArray(operation))
+      if (Array.isArray(definition) && Array.isArray(definition[0]))
+        promise = Promise.all((definition[0] as string[]).map((value:string):Promise<void> => new Runner([value], this.context).run()))
+
+      else
       {
-        if (Array.isArray(operation[0]))
+        const runnable:Runnable|Runner = resolveRunnable(definition as RunnableDefinition, this.context)
+
+        if (runnable instanceof Runner)
+          promise = runnable.run()
+
+        else
         {
-          const promises:Promise<void>[] = (operation[0] as string[]).map((definition:string):Promise<void> =>
-          {
-            operation = resolveOperation(definition)
+          promise = runRunnable(runnable)
 
-            if (Array.isArray(operation))
-              return new Runner(operation).next()
+          if (runnable.function !== undefined)
+            promise = promise.then((result:RunnableDefinition|Array<RunnableDefinition|RunnableDefinition[]>|void):Promise<void>|void =>
+            {
+              if (result !== undefined)
+              {
+                let definitions:Array<RunnableDefinition|RunnableDefinition[]>|undefined
 
-            return runRunnable(operation as Runnable, this)
-          })
+                if (typeof result === 'string')
+                  definitions = [result]
 
-          this.operations = []
+                else if (Array.isArray(result))
+                  definitions = (result as Array<RunnableDefinition|RunnableDefinition[]>)
+                    .map((value:RunnableDefinition|RunnableDefinition[]):RunnableDefinition|RunnableDefinition[] =>
+                    {
+                      if (typeof value === 'string')
+                        return value
 
-          return Promise.all(promises).then(():Promise<void> => this.next())
-        }
+                      return [value as string[]]
+                    })
 
-        operation = resolveOperation(operation as RunnableDefinition)
-
-        if (Array.isArray(operation))
-        {
-          this.operations = (operation as (RunnableDefinition|Runnable)[]).concat(this.operations)
-
-          return this.next()
+                if (definitions !== undefined)
+                  return new Runner(definitions, runnable.context).run()
+              }
+            })
         }
       }
 
-      return runRunnable(operation as Runnable, this).then(():Promise<void> => this.next())
+      return promise.then(():Promise<void>|void =>
+      {
+        if (this.definitions.length > 0)
+          return this.next()
+      })
     }
 
     return Promise.resolve()

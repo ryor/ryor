@@ -9,18 +9,21 @@ function run()
   return new Promise((resolve, reject) =>
   {
     const {spawn} = require('cross-spawn')
-    const childProcess = spawn('tslint', ['-c', 'run/tools/tslint/config.json', '-p', 'run/tools/tsc/config.json', '--type-check', 'source/*.ts'])
+    const childProcess = spawn('tslint', ['-c', 'run/tools/tslint/config.json', '-p', 'run/tools/tsc/config.json', '--type-check', 'source/**/*.ts'])
     let errors = ''
 
     childProcess.stderr.on('data', data => errors += data)
+    childProcess.stdout.on('data', data => errors += data)
 
     childProcess.on('close', code =>
     {
+      errors = errors.trim()
+
       if (errors)
       {
         const {EOL} = require('os')
 
-        console.error(`${EOL}${errors.trim()}`)
+        console.error(`${EOL}${errors.trim()}${EOL}`)
 
         return reject()
       }

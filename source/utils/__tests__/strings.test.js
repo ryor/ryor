@@ -1,4 +1,4 @@
-const {capitalize, maxStringLength, padStringWithSpaces} = require('../source/strings')
+const {capitalize, maxStringLength, padStringWithSpaces} = require('../strings')
 
 test('Capitalizes string', () =>
 {

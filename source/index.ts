@@ -1,28 +1,30 @@
-import {red} from 'chalk'
 import {existsSync} from 'fs'
 import {EOL} from 'os'
 import {resolve} from 'path'
-import Runner from './Runner'
-import {parseCommandLineInput} from './input'
-import {composeUsageInformation} from './usage'
+import {Runner} from './Runner'
+import {handleError} from './utils/errors'
+import {parseCommandLineInput} from './utils/input'
+import {composeUsageInformation} from './utils/usage'
 
 export function run(input:string[] = []):void
 {
-  const binDirectoryPath = resolve(process.cwd(), 'node_modules/.bin')
+  const binDirectoryPath:string = resolve(process.cwd(), 'node_modules/.bin')
+  const env:{[key:string]:string} = process.env as {[key:string]:string}
 
-  if (existsSync(binDirectoryPath) && !process.env.PATH.includes(binDirectoryPath))
-    process.env.PATH = `${process.env.PATH}${process.platform === 'win32' ? ';' : ':'}${binDirectoryPath}`
+  if (existsSync(binDirectoryPath) && !env.PATH.includes(binDirectoryPath))
+    env.PATH = `${env.PATH}${process.platform === 'win32' ? ';' : ':'}${binDirectoryPath}`
 
-  if (input.length > 0)
-    new Runner(parseCommandLineInput(input)).next()
-      .catch((error) =>
-      {
-        if (error)
-          console.error(`${EOL}${red(error.message || error)}${EOL}`)
+  try
+  {
+    if (input.length > 0)
+      new Runner(parseCommandLineInput(input)).run().catch(handleError)
 
-        process.exit(1)
-      })
+    else
+      console.log(`${EOL}${composeUsageInformation()}${EOL}`)
+  }
 
-  else
-    console.log(`${EOL}${composeUsageInformation()}${EOL}`)
+  catch (error)
+  {
+    handleError(error as Error)
+  }
 }

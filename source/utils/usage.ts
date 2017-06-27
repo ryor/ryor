@@ -10,17 +10,17 @@ export function composeUsageInformation():string
   const modules:Map<string, Map<string, RunnableModule>> = resolveAllRunnableModules()
   const runnableKeys:Set<string> = new Set<string>()
   const binDirectoryPath:string = resolve(process.cwd(), 'node_modules', '.bin')
-  let lists:string[] = []
+  const lists:string[] = []
 
   modules.forEach((typeModules:Map<string, RunnableModule>, type:string):void =>
   {
     const keys:string[] = Array.from(typeModules.keys())
     const maxKeyLength:number = maxStringLength(keys)
-    let items:string[] = []
+    const items:string[] = []
 
     typeModules.forEach(({description}:RunnableModule, key:string):void =>
     {
-      items.push(`  ${bold(padStringWithSpaces(key, maxKeyLength))}    ${description || 'No description provided'}`)
+      items.push(`  ${bold(padStringWithSpaces(key, maxKeyLength))}    ${description !== undefined ? description : 'No description provided'}`)
       runnableKeys.add(key)
     })
 
@@ -40,7 +40,7 @@ export function composeUsageInformation():string
     })
 
     if (binKeys.size > 0)
-      lists.push(`${bold('bin:')} ${Array.from(binKeys).map((key:string):string => bold(key)).join(' ')}`)
+      lists.push(bold(`bin: ${Array.from(binKeys).join(' ')}`))
   }
 
   return `${bold('Usage:')} node run <runnable> [args...] [+ <runnable> [args...]] ...${EOL}${EOL}${lists.join(`${EOL}${EOL}`)}`

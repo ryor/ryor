@@ -1,6 +1,6 @@
 const {bold} = require('chalk')
 const {resolve} = require('path')
-const {composeUsageInformation} = require('../source/usage')
+const {composeUsageInformation} = require('../usage')
 
 const expectedUsageInformation = {
 
@@ -20,13 +20,13 @@ ${bold('Tools:')}
   ${bold('tester    ')}    No description provided
   ${bold('transpiler')}    Transpiles code
 
-${bold('bin:')} ${bold('thing')}`,
+${bold('bin: thing')}`,
 
   'only-bin':
 
 `${bold('Usage:')} node run <runnable> [args...] [+ <runnable> [args...]] ...
 
-${bold('bin:')} ${bold('thing')}`,
+${bold('bin: thing')}`,
 
   'only-tasks':
 
@@ -49,7 +49,7 @@ ${bold('Tools:')}
   ${bold('transpiler')}    Transpiles code`
 
 }
-const rootDirectoryPath = resolve(__dirname, '..')
+const rootDirectoryPath = resolve(__dirname, '../../..')
 
 /*
 test('Creates Resolvers', () =>
@@ -162,16 +162,16 @@ test('Resolves runnables', () =>
 
 test('Composes usage information', () =>
 {
-  process.chdir(resolve(rootDirectoryPath, 'tests/projects/all'))
+  process.chdir(resolve(rootDirectoryPath, 'test-projects/all'))
   expect(composeUsageInformation()).toBe(expectedUsageInformation['all'])
 
-  process.chdir(resolve(rootDirectoryPath, 'tests/projects/only-bin'))
+  process.chdir(resolve(rootDirectoryPath, 'test-projects/only-bin'))
   expect(composeUsageInformation()).toBe(expectedUsageInformation['only-bin'])
 
-  process.chdir(resolve(rootDirectoryPath, 'tests/projects/only-tasks'))
+  process.chdir(resolve(rootDirectoryPath, 'test-projects/only-tasks'))
   expect(composeUsageInformation()).toBe(expectedUsageInformation['only-tasks'])
 
-  process.chdir(resolve(rootDirectoryPath, 'tests/projects/only-tools'))
+  process.chdir(resolve(rootDirectoryPath, 'test-projects/only-tools'))
   expect(composeUsageInformation()).toBe(expectedUsageInformation['only-tools'])
 
   process.chdir(rootDirectoryPath)
