@@ -20,13 +20,7 @@ function run()
       errors = errors.trim()
 
       if (errors)
-      {
-        const {EOL} = require('os')
-
-        console.error(`${EOL}${errors.trim()}${EOL}`)
-
-        return reject()
-      }
+        return reject(errors)
 
       log.success('No errors found')
 

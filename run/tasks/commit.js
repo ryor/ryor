@@ -22,33 +22,15 @@ function run(args)
   ]
 
   if (release)
-    sequence.push(
-      'log -w Updating semver patch numbers in package.json and README files',
-      'patch'
-    )
+    sequence.push('patch')
 
-  sequence.push(
-    'log -w Committing changes to Git repository',
-    'git add -A',
-    `git commit -m '${_.join(' ')}' --quiet`
-  )
+  sequence.push(`git commit ${_.join(' ')}`)
 
   if (release)
-  {
-    const currentVersion = require('../../package.json').version.split('.')
-    const newVersion = `${currentVersion[0]}.${currentVersion[1]}.${Number(currentVersion[2]) + 1}`
-
-    sequence.push(
-      'log -w Adding new tag to Git repository',
-      `git tag -a v${newVersion} -m "Version ${newVersion}"`
-    )
-  }
+    sequence.push('git tag')
 
   if (push || release)
-    sequence.push(
-      `log -w Pushing commit${release ? ' and tag ' : ' '}to Github`,
-      `git push --quiet ${release ? ' --follow-tags' : ''}`
-    )
+    sequence.push('git push')
 
   return sequence
 }
