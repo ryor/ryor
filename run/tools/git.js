@@ -1,11 +1,18 @@
 const description = 'Runs Git commands'
 
+const VALID_COMMANDS = ['commit', 'push', 'tag']
+
 function run(args)
 {
   const {bold} = require('chalk')
 
   if (args.length === 0)
-    throw new Error(`A Git command is required to use the ${bold('git')} tool`)
+    throw new Error(`A command is required to use the ${bold('git')} tool. Accepts ${bold('commit')}, ${bold('push')} and ${bold('tag')}.`)
+
+  const command = args[0]
+
+  if (!VALID_COMMANDS.includes(command))
+    throw new Error(`Invalid command ${bold(command)} passed to ${bold('git')} tool. Accepts ${bold('commit')}, ${bold('push')} and ${bold('tag')}.`)
 
   switch (args[0])
   {

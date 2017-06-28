@@ -2,7 +2,7 @@ import {resolveRunnable, runRunnable} from './utils/runnables'
 
 export class Runner
 {
-  public constructor(public definitions:Array<RunnableDefinition|RunnableDefinition[]>, public context?:string) {}
+  public constructor(public definitions:Array<RunnableDefinition|RunnableDefinition[]> = [], public context?:string) {}
 
   public run():Promise<void>
   {

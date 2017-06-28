@@ -2,7 +2,7 @@ const description = 'Checks TypeScript for errors with TSLint and then tests Typ
 
 const run = [
   'tslint',
-  'jest'
+  'jest -cv'
 ]
 
 module.exports = {description, run}

@@ -1,5 +1,4 @@
 {
-  "collectCoverage": true,
   "collectCoverageFrom": ["source/**/*.ts", "!source/**/*.d.ts"],
   "coverageDirectory": "<rootDir>/coverage",
   "moduleFileExtensions": ["js", "ts"],

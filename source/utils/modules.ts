@@ -12,14 +12,15 @@ export function getPossibleModuleTypes():string[]
 
     possibleModuleTypes = []
 
-    readdirSync(runDirectoryPath).forEach((childPath:string):void =>
-    {
-      const type:string = parse(childPath).name
-      const typeDirectoryPath:string = resolve(runDirectoryPath, type)
+    if (existsSync(runDirectoryPath) && statSync(runDirectoryPath).isDirectory())
+      readdirSync(runDirectoryPath).forEach((childPath:string):void =>
+      {
+        const type:string = parse(childPath).name
+        const typeDirectoryPath:string = resolve(runDirectoryPath, type)
 
-      if (existsSync(typeDirectoryPath) && statSync(typeDirectoryPath).isDirectory())
-        possibleModuleTypes!.push(type)
-    })
+        if (existsSync(typeDirectoryPath) && statSync(typeDirectoryPath).isDirectory())
+          possibleModuleTypes!.push(type)
+      })
   }
 
   return possibleModuleTypes
@@ -101,4 +102,11 @@ export function resolveAllRunnableModules():Map<string, Map<string, RunnableModu
     })
 
   return modules
+}
+
+// For testing
+export function clear():void
+{
+  possibleModuleTypes = undefined
+  resolvedModules = undefined
 }
