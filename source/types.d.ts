@@ -8,17 +8,17 @@ declare module 'shell-quote' {
 
 type RunnableDefinition = string | string[]
 
-type RunnableFunction = (args:string[]) => RunnableDefinition | void | Promise<RunnableDefinition | void>
+type RunnableFunction = (args?:string[]) => RunnableDefinition | void | Promise<RunnableDefinition | void>
 
 interface RunnableModule {
   description?: string
-  run: RunnableDefinition | RunnableFunction
+  run: RunnableDefinition | RunnableFunction | Runnable
 }
 
 interface Runnable
 {
   command?: string
   function?: RunnableFunction
-  args: string[]
+  args?: string[]
   context?: string
 }
