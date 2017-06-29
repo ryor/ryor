@@ -1,8 +1,10 @@
+'use strict'
+
 const description = 'Checks TypeScript for errors with TSLint'
 
 function run()
 {
-  const log = require('../log')
+  const log = require('../../utils/log')
 
   log.wait('Checking TypeScript for errors with TSLint')
 

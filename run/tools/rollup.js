@@ -1,3 +1,5 @@
+'use strict'
+
 const description = 'Bundles ES modules produced by TypeScript into single CommonJS module with Rollup'
 
 const run = [

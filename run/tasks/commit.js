@@ -1,4 +1,20 @@
-const description = 'Verifies that tests pass and build completes succesfully, commits changes to Git repository. Optionally creates release tag and/or pushes commit/tag to Github'
+'use strict'
+
+const description = 'Verifies that tests pass and build completes succesfully and then commits changes to Git repository'
+
+function usage()
+{
+  const {bold} = require('chalk')
+  const {EOL} = require('os')
+  const options = new Map([
+    ['-p  --push   ', 'Pushes commit to Github'],
+    ['-r  --release', 'Increments semver patch number in package.json file, creates tag with new version number and pushes commit and tag to Github']
+  ])
+  const args = '[options]'
+  const body = `${bold('Options:')}${EOL}${EOL}${Array.from(options.keys()).map(key => `  ${bold(key)}    ${options.get(key)}`).join(EOL)}`
+
+  return {args, body}
+}
 
 function run(args)
 {
@@ -35,4 +51,4 @@ function run(args)
   return sequence
 }
 
-module.exports = {description, run}
+module.exports = {description, usage, run}

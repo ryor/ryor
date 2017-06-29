@@ -10,8 +10,18 @@ type RunnableDefinition = string | string[]
 
 type RunnableFunction = (args?:string[]) => RunnableDefinition | void | Promise<RunnableDefinition | void>
 
+type DescriptionFactory = () => string
+
+type UsageInformationFactory = () => string | UsageInformation
+
+interface UsageInformation {
+  args?: string
+  body?: string
+}
+
 interface RunnableModule {
-  description?: string
+  description?: string | DescriptionFactory
+  usage?: string | UsageInformation | UsageInformationFactory
   run: RunnableDefinition | RunnableFunction | Runnable
 }
 

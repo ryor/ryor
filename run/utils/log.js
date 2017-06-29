@@ -1,6 +1,10 @@
+'use strict'
+
 const {bold, cyan} = require('chalk')
 
 const description = 'Logs messages with icons and formatting'
+
+const usage = ''
 
 function wait(message)
 {

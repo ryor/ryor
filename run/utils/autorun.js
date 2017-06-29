@@ -1,3 +1,5 @@
+'use strict'
+
 const description = 'Adds run function call to module'
 
 function run()

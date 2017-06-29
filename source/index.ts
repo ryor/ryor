@@ -16,11 +16,11 @@ export function run(input:string[] = []):void
 
   try
   {
-    if (input.length > 0)
+    if (input.length > 0 && input[0] !== 'help')
       new Runner(parseCommandLineInput(input)).run().catch(handleError)
 
     else
-      console.log(`${EOL}${composeUsageInformation()}${EOL}`)
+      console.log(`${EOL}${composeUsageInformation(input.length > 1 && input[0] === 'help' ? input[1] : undefined)}${EOL}`)
   }
 
   catch (error)

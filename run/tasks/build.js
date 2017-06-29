@@ -1,3 +1,5 @@
+'use strict'
+
 const description = 'Transpiles TypeScript into ES modules, bundles ES modules with Rollup and adds autorun function call'
 
 const run = [

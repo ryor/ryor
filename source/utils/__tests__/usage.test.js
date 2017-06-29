@@ -10,9 +10,9 @@ const expectedUsageInformation = {
 
 ${bold('Tasks:')}
 
-  ${bold('build ')}    Builds project
-  ${bold('deploy')}    No description provided
-  ${bold('test  ')}    Tests project
+  ${bold('build     ')}    Builds project
+  ${bold('deploy    ')}    No description provided
+  ${bold('test      ')}    Tests project
 
 ${bold('Tools:')}
 
@@ -20,13 +20,15 @@ ${bold('Tools:')}
   ${bold('tester    ')}    No description provided
   ${bold('transpiler')}    Transpiles code
 
-${bold('bin: thing')}`,
+${bold('Also available:')}
+
+  ${bold('thing     ')}    No description provided`,
 
   'only-bin':
 
 `${bold('Usage:')} node run <runnable> [args...] [+ <runnable> [args...]] ...
 
-${bold('bin: thing')}`,
+${bold('thing')}    No description provided`,
 
   'only-tasks':
 

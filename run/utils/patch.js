@@ -1,3 +1,5 @@
+'use strict'
+
 const description = 'Increments semver patch numbers in package.json file'
 
 function run()

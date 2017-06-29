@@ -1,3 +1,5 @@
+'use strict'
+
 const description = 'Publishes latest version to NPM'
 
 function run()
@@ -15,6 +17,7 @@ function run()
   }
 
   return [
+    'log -w Publishing to NPM',
     'shx cp -rf package.json README.md run/tools/publish/.npmrc build',
     'cd build',
     'npm publish'
