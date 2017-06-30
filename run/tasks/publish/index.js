@@ -18,7 +18,7 @@ function run()
 
   return [
     'log -w Publishing to NPM',
-    'shx cp -rf package.json README.md run/tools/publish/.npmrc build',
+    'shx cp -rf package.json README.md run/tasks/publish/.npmrc build',
     'cd build',
     'npm publish'
   ]
