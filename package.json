@@ -11,7 +11,7 @@
     "node": ">= 6.0.0"
   },
   "dependencies": {
-    "chalk": "^1.1.3",
+    "chalk": "^2.0.0",
     "cross-spawn": "^5.1.0",
     "shell-quote": "^1.6.1"
   },
@@ -22,7 +22,7 @@
     "jest": "^20.0.4",
     "minimist": "^1.2.0",
     "rollup": "^0.43.0",
-    "ryor": "0.1.9",
+    "ryor": "0.1.10",
     "shx": "^0.2.2",
     "tslint": "^5.4.3",
     "typescript": "^2.4.1"
