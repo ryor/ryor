@@ -1,11 +1,11 @@
 ## Roll Your Own (Task) Runner for Node.js Projects
 
-[![Travis](https://img.shields.io/travis/ryor-org/ryor.svg)](https://travis-ci.org/ryor-org/ryor/branches)
-[![Codecov](https://img.shields.io/codecov/c/github/ryor-org/ryor.svg)](https://codecov.io/gh/ryor-org/ryor)
-[![Greenkeeper](https://badges.greenkeeper.io/ryor-org/ryor.svg)](https://greenkeeper.io/)
-[![David-DM dependencies](https://david-dm.org/ryor-org/ryor/master.svg)](https://david-dm.org/ryor-org/ryor/master)
-[![David-DM devDependencies](https://david-dm.org/ryor-org/ryor/dev-status.svg)](https://david-dm.org/ryor-org/ryor/master#info=devDependencies)
-[![License](https://img.shields.io/github/license/ryor-org/ryor.svg)](https://github.com/ryor-org/ryor/blob/master/LICENSE)
+[![Travis](https://img.shields.io/travis/ryor/ryor.svg)](https://travis-ci.org/ryor/ryor/branches)
+[![Codecov](https://img.shields.io/codecov/c/github/ryor/ryor.svg)](https://codecov.io/gh/ryor/ryor)
+[![Greenkeeper](https://badges.greenkeeper.io/ryor/ryor.svg)](https://greenkeeper.io/)
+[![David-DM dependencies](https://david-dm.org/ryor/ryor/master.svg)](https://david-dm.org/ryor/ryor/master)
+[![David-DM devDependencies](https://david-dm.org/ryor/ryor/dev-status.svg)](https://david-dm.org/ryor/ryor/master#info=devDependencies)
+[![License](https://img.shields.io/github/license/ryor/ryor.svg)](https://github.com/ryor/ryor/blob/master/LICENSE)
 
 ### No system dependencies
 
@@ -41,13 +41,13 @@ or
 
 ### Templates
 
-[Node module with TypeScript, TSLint, Jest and Rollup](https://github.com/ryor-org/ryor-simple-module-template)<br>
-[Node CLI module with TypeScript, TSLint, Jest and Rollup](https://github.com/ryor-org/ryor-cli-module-template)<br>
-[Static generated Preact SPA with TypeScript, TSLint and Rollup](https://github.com/ryor-org/ryor-static-gen-spa-preact-template)
+[Node module with TypeScript, TSLint, Jest and Rollup](https://github.com/ryor/ryor-simple-module-template)<br>
+[Node CLI module with TypeScript, TSLint, Jest and Rollup](https://github.com/ryor/ryor-cli-module-template)<br>
+[Static generated Preact SPA with TypeScript, TSLint and Rollup](https://github.com/ryor/ryor-static-gen-spa-preact-template)
 
 ### Utility
 
-[Command-line utility for initializing projects from ryor templates](https://github.com/ryor-org/ryor-init)
+[Command-line utility for initializing projects from ryor templates](https://github.com/ryor/ryor-init)
 
 ### Documentation
 
