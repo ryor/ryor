@@ -2,9 +2,21 @@
 
 const {bold, cyan} = require('chalk')
 
-const description = 'Logs messages with icons and formatting'
+const description = 'Logs messages with a bit of formatting'
 
-const usage = ''
+function usage()
+{
+  const {bold} = require('chalk')
+  const {EOL} = require('os')
+  const options = new Map([
+    ['-w  --wait   ', 'Adds hourglass character to message'],
+    ['-s  --success', 'Adds checkmark character to message']
+  ])
+  const args = '[option]'
+  const body = `${bold('Options:')}${EOL}${EOL}${Array.from(options.keys()).map(key => `  ${bold(key)}    ${options.get(key)}`).join(EOL)}`
+
+  return {args, body}
+}
 
 function wait(message)
 {
@@ -34,4 +46,4 @@ function run(args)
   console.log(`${cyan('•')} ${bold(message)}`)
 }
 
-module.exports = {description, run, wait, success}
+module.exports = {description, usage, run, wait, success}

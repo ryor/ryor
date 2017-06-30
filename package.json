@@ -2,8 +2,8 @@
   "name": "ryor",
   "version": "0.1.10",
   "description": "Roll your own lightweight task runner for your project",
-  "repository": "ryor-org/ryor",
-  "bugs": "https://github.com/ryor-org/ryor/issues",
+  "repository": "ryor/ryor",
+  "bugs": "https://github.com/ryor/ryor/issues",
   "contributors": [
     "Scott Steven Rodriguez <scott@movecodemove.com> (http://movecodemove.com)"
   ],
@@ -11,7 +11,7 @@
     "node": ">= 6.0.0"
   },
   "dependencies": {
-    "chalk": "^2.0.0",
+    "chalk": "^2.0.1",
     "cross-spawn": "^5.1.0",
     "shell-quote": "^1.6.1"
   },

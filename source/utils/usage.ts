@@ -8,6 +8,7 @@ import {capitalize, commaSeperateStrings, padStringWithSpaces} from './strings'
 export const DEFAULT_DESCRIPTION:string = 'No description provided'
 export const DEFAULT_RUNNABLE_INFORMATION_HEADER:string = `${bold('Usage:')} node run [NAME]`
 export const MAIN_USAGE_INFORMATION_HEADER:string = `${bold('Usage:')} node run <runnable> [args...] [+ <runnable> [args...]] ...`
+export const NO_RUNNABLES_RESOLVED_MESSAGE:string = `No runnables found.`
 export const USAGE_RUNNABLE_DESCRIPTION:string = 'Outputs usage information. Specify [NAMES] for detailed information about those runnables.'
 export const USAGE_RUNNABLE_NAME:string = 'help'
 
@@ -111,6 +112,9 @@ export function composeMainUsageInformation():string
 
     body = `${items.join(EOL)}`
   }
+
+  else
+    return NO_RUNNABLES_RESOLVED_MESSAGE
 
   return `${header}${EOL}${EOL}${body}`
 }
