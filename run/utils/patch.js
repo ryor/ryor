@@ -1,6 +1,6 @@
 'use strict'
 
-const description = 'Increments semver patch numbers in package.json file'
+const description = 'Increments semver patch number in package.json file'
 
 function run()
 {
@@ -8,12 +8,9 @@ function run()
   const {resolve} = require('path')
   const packageJSONPath = resolve(__dirname, '../../package.json')
   const packageJSON = require(packageJSONPath)
-  const currentVersion = packageJSON.version
-  const currentVersionParts = currentVersion.split('.')
-  const nextVersion = `${currentVersionParts[0]}.${currentVersionParts[1]}.${Number(currentVersionParts[2]) + 1}`
+  const semverParts = packageJSON.version.split('.')
 
-  packageJSON.version = nextVersion
-  packageJSON.devDependencies.ryor = currentVersion
+  packageJSON.version = `${semverParts[0]}.${semverParts[1]}.${Number(semverParts[2]) + 1}`
 
   writeFileSync(packageJSONPath, JSON.stringify(packageJSON, null, 2))
 }

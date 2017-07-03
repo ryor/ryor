@@ -1,11 +1,11 @@
 'use strict'
 
-const description = 'Transpiles TypeScript into JavaScript ES modules'
+const description = 'Bundles ES modules produced by TypeScript into single CommonJS module with Rollup'
 
 function usage()
 {
   return require('../../utils/usage').composeUsageInformation(
-    ['-s  --silent', 'No output unless errors are encountered by TypeScript compiler']
+    ['-s  --silent', 'No output unless errors are encountered by Rollup']
   )
 }
 
@@ -16,10 +16,10 @@ function run(args)
     alias: {s: 'silent'},
     boolean: ['s:', 'silent']
   })
-  const sequence = ['tsc -p run/tools/tsc/config.json']
+  const sequence = ['rollup -c run/tools/rollup/config.js']
 
   if (!silent)
-    sequence.unshift('log -w Transpiling TypeScript')
+    sequence.unshift('log -w Bundling module with Rollup')
 
   return sequence
 }

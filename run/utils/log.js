@@ -6,16 +6,10 @@ const description = 'Logs messages with a bit of formatting'
 
 function usage()
 {
-  const {bold} = require('chalk')
-  const {EOL} = require('os')
-  const options = new Map([
+  return require('./usage').composeUsageInformation(
     ['-w  --wait   ', 'Adds hourglass character to message'],
     ['-s  --success', 'Adds checkmark character to message']
-  ])
-  const args = '[option]'
-  const body = `${bold('Options:')}${EOL}${EOL}${Array.from(options.keys()).map(key => `  ${bold(key)}    ${options.get(key)}`).join(EOL)}`
-
-  return {args, body}
+  )
 }
 
 function wait(message)

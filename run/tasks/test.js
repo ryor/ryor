@@ -1,10 +1,32 @@
 'use strict'
 
-const description = 'Checks TypeScript for errors with TSLint and then tests TypeScript with Jest'
+const description = 'Checks TypeScript for errors with TSLint and tests TypeScript with Jest'
 
-const run = [
-  'tslint',
-  'jest -c'
-]
+function usage()
+{
+  return require('../utils/usage').composeUsageInformation(
+    ['-c  --coverage', 'Generates Jest coverage results'],
+    ['-p  --parallel', 'Runs tools in parallel'],
+    ['-s  --silent  ', 'No output unless errors are encountered by tools']
+  )
+}
 
-module.exports = {description, run}
+function run(args)
+{
+  const minimist = require('minimist')
+  const {coverage, parallel, silent} = minimist(args, {
+    alias: {c: 'coverage', p: 'parallel', s: 'silent'},
+    boolean: ['c', 'coverage', 'p', 'parallel', 's', 'silent']
+  })
+  let tools = [
+    `tslint${silent ? ' -s' : ''}`,
+    `jest${coverage ? ' -c' : ''}${silent ? ' -s' : ''}`
+  ]
+
+  if (parallel)
+    tools = [tools]
+
+  return tools
+}
+
+module.exports = {description, run, usage}

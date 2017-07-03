@@ -1,15 +1,32 @@
 'use strict'
 
-const description = 'Transpiles TypeScript into ES modules, bundles ES modules with Rollup and adds autorun function call'
+const description = 'Transpiles TypeScript and bundles ES modules into single minified CommonJS module with Rollup and UglifyJS'
 
-const run = [
-  'shx rm -rf build/esm',
-  'tsc',
-  'rollup',
-  'autorun',
-  'log -w Cleaning up',
-  'shx rm -rf build/esm',
-  'log -s Build complete'
-]
+function usage()
+{
+  return require('../utils/usage').composeUsageInformation(
+    ['-s  --silent', 'No output unless errors are encountered by tools']
+  )
+}
 
-module.exports = {description, run}
+function run(args)
+{
+  const minimist = require('minimist')
+  const {development, silent} = minimist(args, {
+    alias: {d: 'development', s: 'silent'},
+    boolean: ['d', 'development', 's', 'silent']
+  })
+  const tools = [
+    'shx rm -rf build',
+    `tsc${silent ? ' -s' : ''}`,
+    `rollup${silent ? ' -s' : ''}`,
+    'shx rm -rf build/esm'
+  ]
+
+  if (!silent)
+    tools.push('log -s Build complete')
+
+  return tools
+}
+
+module.exports = {description, run, usage}

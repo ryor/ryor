@@ -4,16 +4,10 @@ const description = 'Verifies that tests pass and build completes succesfully an
 
 function usage()
 {
-  const {bold} = require('chalk')
-  const {EOL} = require('os')
-  const options = new Map([
+  return require('../utils/usage').composeUsageInformation(
     ['-p  --push   ', 'Pushes commit to Github'],
     ['-r  --release', 'Increments semver patch number in package.json file, creates tag with new version number and pushes commit and tag to Github']
-  ])
-  const args = '[options]'
-  const body = `${bold('Options:')}${EOL}${EOL}${Array.from(options.keys()).map(key => `  ${bold(key)}    ${options.get(key)}`).join(EOL)}`
-
-  return {args, body}
+  )
 }
 
 function run(args)
@@ -24,23 +18,31 @@ function run(args)
     boolean: ['p', 'push', 'r', 'release']
   })
 
-  if (_.length === 0)
-  {
-    const {bold} = require('chalk')
-
-    throw new Error(`A commmit message is required to run the ${bold('commit')} task`)
-  }
+  if (!release && _.length === 0)
+    throw new Error('A commmit message is required')
 
   const sequence = [
-    'test',
-    'build',
-    'shx rm -rf build coverage'
+    'log -w Verifying that tests pass and build completes successfully',
+    ['test -ps', 'build -s'],
+    'shx rm -rf build coverage',
   ]
+  let message = _.join(' ')
 
   if (release)
+  {
     sequence.push('patch')
 
-  sequence.push(`git commit ${_.join(' ')}`)
+    if (!message)
+    {
+      const packageJSONPath = resolve(__dirname, '../../package.json')
+      const packageJSON = require(packageJSONPath)
+      const semverParts = packageJSON.version.split('.')
+
+      message = `Version ${semverParts[0]}.${semverParts[1]}.${Number(semverParts[2]) + 1}`
+    }
+  }
+
+  sequence.push(`git commit ${message}`)
 
   if (release)
     sequence.push('git tag')

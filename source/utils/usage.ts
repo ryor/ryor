@@ -9,7 +9,7 @@ export const DEFAULT_DESCRIPTION:string = 'No description provided'
 export const DEFAULT_RUNNABLE_INFORMATION_HEADER:string = `${bold('Usage:')} node run [NAME]`
 export const MAIN_USAGE_INFORMATION_HEADER:string = `${bold('Usage:')} node run <runnable> [args...] [+ <runnable> [args...]] ...`
 export const NO_RUNNABLES_RESOLVED_MESSAGE:string = `No runnables found.`
-export const USAGE_RUNNABLE_DESCRIPTION:string = 'Outputs usage information. Specify [NAMES] for detailed information about those runnables.'
+export const USAGE_RUNNABLE_DESCRIPTION:string = 'Outputs usage information. Specify [NAMES] for detailed information about [DETERMINER] runnables.'
 export const USAGE_RUNNABLE_NAME:string = 'help'
 
 export function composeMainUsageInformation():string
@@ -82,7 +82,9 @@ export function composeMainUsageInformation():string
   if (runnablesWithUsageKeys.size > 0)
     section.set(
       USAGE_RUNNABLE_NAME,
-      USAGE_RUNNABLE_DESCRIPTION.replace('[NAMES]', commaSeperateStrings(Array.from(runnablesWithUsageKeys.keys()).sort().map((key:string):string => bold(`${key}`))))
+      USAGE_RUNNABLE_DESCRIPTION
+        .replace('[NAMES]', commaSeperateStrings(Array.from(runnablesWithUsageKeys.keys()).sort().map((key:string):string => bold(`${key}`))))
+        .replace('[DETERMINER]', runnablesWithUsageKeys.size === 1 ? 'that' : 'those')
     )
 
   if (sections.size > 0)
