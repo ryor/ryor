@@ -3,7 +3,7 @@ import {existsSync, readdirSync} from 'fs'
 import {EOL} from 'os'
 import {parse, resolve} from 'path'
 import {resolveAllRunnableModules, resolveRunnableModule} from './modules'
-import {capitalize, commaSeperateStrings, padStringWithSpaces} from './strings'
+import {capitalize, commaSeperateStrings, maxStringLength, padStringWithSpaces} from './strings'
 
 export const DEFAULT_DESCRIPTION:string = 'No description provided'
 export const DEFAULT_RUNNABLE_INFORMATION_HEADER:string = `${bold('Usage:')} node run [NAME]`
@@ -11,6 +11,22 @@ export const MAIN_USAGE_INFORMATION_HEADER:string = `${bold('Usage:')} node run 
 export const NO_RUNNABLES_RESOLVED_MESSAGE:string = `No runnables found.`
 export const USAGE_RUNNABLE_DESCRIPTION:string = 'Outputs usage information. Specify [NAMES] for detailed information about [DETERMINER] runnables.'
 export const USAGE_RUNNABLE_NAME:string = 'help'
+
+export function composeUsageDetailsList(items:Map<string, string>|Array<[string, string]>, type?:string, maxNameLength?:number):string
+{
+  if (Array.isArray(items))
+    items = new Map<string, string>(items)
+
+  const lines:string[] = type !== undefined && type !== '' ? [`${bold(`${capitalize(type)}:`)}${EOL}`] : []
+  const indent:string = type !== undefined && type !== '' ? '  ' : ''
+
+  if (maxNameLength === undefined)
+    maxNameLength = maxStringLength(Array.from(items.keys()))
+
+  items.forEach((description:string, name:string):number => lines.push(`${indent}${bold(padStringWithSpaces(name, maxNameLength!))}    ${description}`))
+
+  return lines.join(`${EOL}`)
+}
 
 export function composeMainUsageInformation():string
 {
@@ -94,26 +110,13 @@ export function composeMainUsageInformation():string
     if (section.size > 0)
       sections.set('Also available', section)
 
-    sections.forEach((map:Map<string, string>, type:string):void =>
-    {
-      const items:string[] = []
-
-      map.forEach((description:string, key:string):number => items.push(`  ${bold(padStringWithSpaces(key, maxKeyLength))}    ${description}`))
-
-      lists.push(`${bold(`${capitalize(type)}:`)}${EOL}${EOL}${items.join(EOL)}`)
-    })
+    sections.forEach((map:Map<string, string>, type:string):number => lists.push(composeUsageDetailsList(map, type, maxKeyLength)))
 
     body = lists.join(`${EOL}${EOL}`)
   }
 
   else if (section.size > 0)
-  {
-    const items:string[] = []
-
-    section.forEach((description:string, key:string):number => items.push(`${bold(padStringWithSpaces(key, maxKeyLength))}    ${description}`))
-
-    body = `${items.join(EOL)}`
-  }
+    body = composeUsageDetailsList(section, undefined, maxKeyLength)
 
   else
     return NO_RUNNABLES_RESOLVED_MESSAGE

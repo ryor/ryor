@@ -4,7 +4,7 @@ import {resolve} from 'path'
 import {Runner} from './Runner'
 import {handleError} from './utils/errors'
 import {parseCommandLineInput} from './utils/input'
-import {composeUsageInformation} from './utils/usage'
+import {composeUsageDetailsList, composeUsageInformation} from './utils/usage'
 
 export function run(input:string[] = []):void
 {
@@ -28,3 +28,5 @@ export function run(input:string[] = []):void
     handleError(error as Error)
   }
 }
+
+export {composeUsageDetailsList}
