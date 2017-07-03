@@ -4,9 +4,9 @@ const description = 'Bundles ES modules produced by TypeScript into single Commo
 
 function usage()
 {
-  return require('../../utils/usage').composeUsageInformation(
+  return require('../../utils/usage').composeUsageInformation([
     ['-s  --silent', 'No output unless errors are encountered by Rollup']
-  )
+  ])
 }
 
 function run(args)

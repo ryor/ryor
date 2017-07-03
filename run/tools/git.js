@@ -7,16 +7,12 @@ const description = 'Runs preconfigured Git commands'
 function usage()
 {
   const {bold} = require('chalk')
-  const {EOL} = require('os')
-  const commands = new Map([
-    ['commit', `Commits all current changes to Git repository ${bold('(commit message required)')}`],
-    ['push  ', 'Pushes commit to Github along with tag if one was created'],
-    ['tag   ', 'Tags latest commit with version pulled from package.json file']
-  ])
-  const args = `${bold('<command>')} [message]`
-  const body = `${bold('Commands:')}${EOL}${EOL}${Array.from(commands.keys()).map(key => `  ${bold(key)}    ${commands.get(key)}`).join(EOL)}`
 
-  return {args, body}
+  return require('../utils/usage').composeUsageInformation(undefined, [
+    ['commit', `Commits all current changes to Git repository ${bold('(commit message required)')}`],
+    ['push', 'Pushes commit to Github along with tag if one was created'],
+    ['tag', 'Tags latest commit with version pulled from package.json file']
+  ])
 }
 
 function run(args)

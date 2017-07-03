@@ -4,11 +4,11 @@ const description = 'Checks TypeScript for errors with TSLint and tests TypeScri
 
 function usage()
 {
-  return require('../utils/usage').composeUsageInformation(
+  return require('../utils/usage').composeUsageInformation([
     ['-c  --coverage', 'Generates Jest coverage results'],
     ['-p  --parallel', 'Runs tools in parallel'],
-    ['-s  --silent  ', 'No output unless errors are encountered by tools']
-  )
+    ['-s  --silent', 'No output unless errors are encountered by tools']
+  ])
 }
 
 function run(args)

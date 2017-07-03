@@ -4,10 +4,10 @@ const description = 'Verifies that tests pass and build completes succesfully an
 
 function usage()
 {
-  return require('../utils/usage').composeUsageInformation(
+  return require('../utils/usage').composeUsageInformation([
     ['-p  --push', 'Pushes commit to Github'],
     ['-r  --release', 'Increments semver patch number in package.json file, creates tag with new version number and pushes commit and tag to Github']
-  )
+  ])
 }
 
 function run(args)

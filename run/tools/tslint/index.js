@@ -4,9 +4,9 @@ const description = 'Checks TypeScript for errors with TSLint'
 
 function usage()
 {
-  return require('../../utils/usage').composeUsageInformation(
+  return require('../../utils/usage').composeUsageInformation([
     ['-s  --silent', 'No output unless errors are encountered']
-  )
+  ])
 }
 
 function run(args)

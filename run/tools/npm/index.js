@@ -6,10 +6,9 @@ const description = 'Runs preconfigured NPM publish command'
 
 function usage()
 {
-  const {bold} = require('chalk')
-  const {EOL} = require('os')
-
-  return {args:`${bold('publish')}`}
+  return require('../../utils/usage').composeUsageInformation(undefined, [
+    ['publish', 'Publishes latest build to NPM']
+  ])
 }
 
 function run(args)

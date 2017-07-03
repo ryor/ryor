@@ -6,10 +6,10 @@ const description = 'Logs messages with a bit of formatting'
 
 function usage()
 {
-  return require('./usage').composeUsageInformation(
-    ['-w  --wait   ', 'Adds hourglass character to message'],
+  return require('./usage').composeUsageInformation([
+    ['-w  --wait', 'Adds hourglass character to message'],
     ['-s  --success', 'Adds checkmark character to message']
-  )
+  ])
 }
 
 function wait(message)

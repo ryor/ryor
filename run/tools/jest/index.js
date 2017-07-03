@@ -4,11 +4,11 @@ const description = 'Tests TypeScript with Jest'
 
 function usage()
 {
-  return require('../../utils/usage').composeUsageInformation(
+  return require('../../utils/usage').composeUsageInformation([
     ['-c  --coverage', 'Generates coverage results'],
-    ['-s  --silent  ', 'No output unless tests fail'],
-    ['-v  --verbose ', 'Verbose test results']
-  )
+    ['-s  --silent', 'No output unless tests fail'],
+    ['-v  --verbose', 'Verbose test results']
+  ])
 }
 
 function run(args)

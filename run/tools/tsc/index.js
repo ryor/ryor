@@ -4,9 +4,9 @@ const description = 'Transpiles TypeScript into JavaScript ES modules'
 
 function usage()
 {
-  return require('../../utils/usage').composeUsageInformation(
+  return require('../../utils/usage').composeUsageInformation([
     ['-s  --silent', 'No output unless errors are encountered by TypeScript compiler']
-  )
+  ])
 }
 
 function run(args)
