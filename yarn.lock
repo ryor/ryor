@@ -1816,9 +1816,9 @@ rollup@^0.43.0:
   dependencies:
     source-map-support "^0.4.0"
 
-ryor@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/ryor/-/ryor-0.2.1.tgz#46f1a0c0a87477eefd9da6cec84a091915eaf5fe"
+ryor@0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/ryor/-/ryor-0.2.2.tgz#c8ec2fe2e6c43e0bbb70b3a5b8ce0d374601e0d9"
   dependencies:
     chalk "^2.0.1"
     cross-spawn "^5.1.0"
