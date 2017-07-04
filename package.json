@@ -1,6 +1,6 @@
 {
   "name": "ryor",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Roll your own lightweight task runner for your project",
   "repository": "ryor/ryor",
   "bugs": "https://github.com/ryor/ryor/issues",
@@ -22,7 +22,7 @@
     "jest": "^20.0.4",
     "minimist": "^1.2.0",
     "rollup": "^0.43.0",
-    "ryor": "0.2.2",
+    "ryor": "0.2.3",
     "shx": "^0.2.2",
     "tslint": "^5.4.3",
     "typescript": "^2.4.1"
