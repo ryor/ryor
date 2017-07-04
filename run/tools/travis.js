@@ -9,7 +9,7 @@ function description()
 
 const run = [
   'log -w Testing and building',
-  [['test -cps', 'build -s']],
+  ['test -cps', 'build -s'],
   'log -s All tests passed and build completed successfully',
   'log -w Uploading code coverage results to Codecov',
   'codecov'

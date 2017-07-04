@@ -17,7 +17,7 @@ function run(args)
     boolean: ['d', 'development', 's', 'silent']
   })
   const tools = [
-    'shx rm -rf build',
+    'shx rm -rf build/esm',
     `tsc${silent ? ' -s' : ''}`,
     `rollup${silent ? ' -s' : ''}`,
     'shx rm -rf build/esm'

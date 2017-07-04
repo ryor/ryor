@@ -6,29 +6,32 @@ declare module 'shell-quote' {
   export function parse(args:string):string[]
 }
 
-type RunnableDefinition = string | string[]
+interface Runnable
+{
+  run():Promise<RunnablesDefinition|void>
+}
 
-type RunnableFunction = (args?:string[]) => RunnableDefinition | void | Promise<RunnableDefinition | void>
-
-type DescriptionFactory = () => string
-
-type UsageInformationFactory = () => string | UsageInformation
+interface RunnableModule {
+  description?: string | DescriptionFactory
+  usage?: Usage | UsageFactory
+  run: RunnablesDefinition
+}
 
 interface UsageInformation {
   args?: string
   body?: string
 }
 
-interface RunnableModule {
-  description?: string | DescriptionFactory
-  usage?: string | UsageInformation | UsageInformationFactory
-  run: RunnableDefinition | RunnableFunction | Runnable
-}
+type DescriptionFactory = () => string
 
-interface Runnable
-{
-  command?: string
-  function?: RunnableFunction
-  args?: string[]
-  context?: string
-}
+type RunnableDefinition = Runnable | RunnableFunction | RunnableScript
+
+type RunnablesDefinition = RunnableDefinition | RunnableDefinition[]
+
+type RunnableFunction = (args?:string[]) => RunnablesDefinition | void | Promise<RunnablesDefinition | void>
+
+type RunnableScript = string | string[]
+
+type Usage = string | UsageInformation
+
+type UsageFactory = () => Usage
