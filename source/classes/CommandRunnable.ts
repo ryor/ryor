@@ -1,6 +1,6 @@
 import {bold} from 'chalk'
 import {spawn} from 'cross-spawn'
-import {resolve} from 'path'
+import * as path from 'path'
 
 export class CommandRunnable implements Runnable
 {
@@ -8,46 +8,52 @@ export class CommandRunnable implements Runnable
 
   public run():Promise<void>
   {
-    const {command, args}:CommandRunnable = this
-
-    switch (command)
+    switch (this.command)
     {
       case 'cd':
 
         // TODO: Make sure paths with directory names with spaces are handled properly
-        if (args.length > 0)
-          process.chdir(resolve(process.cwd(), args[0]))
+        if (this.args.length > 0)
+          process.chdir(path.resolve(process.cwd(), this.args[0]))
 
-        return  Promise.resolve()
+        return Promise.resolve()
 
       default:
         return new Promise<void>((resolve:() => void, reject:(error:string) => void):void =>
         {
-          const childProcess:NodeJS.EventEmitter = spawn(command, args, {env:process.env as {[key:string]:string}, stdio:'inherit'})
-          let error:string = ''
-
-          childProcess.on('error', (data:Buffer):string => error += data.toString())
-
-          childProcess.on('close', (code:number):void =>
+          try
           {
-            error = error.trim()
+            const childProcess:NodeJS.EventEmitter = spawn(this.command, this.args, {env:process.env as {[key:string]:string}, stdio:'inherit'})
+            let error:string = ''
 
-            if (code !== 0)
+            childProcess.on('error', (data:Buffer):string => error += data.toString())
+
+            childProcess.on('close', (code:number):void =>
             {
-              if (error === `Error: spawn ${command} ENOENT`)
-                error = `Could not resolve ${bold(command)}`
+              error = error.trim()
 
-              reject(error)
-            }
+              if (code !== 0)
+              {
+                if (error === `Error: spawn ${this.command} ENOENT`)
+                  error = `Could not resolve ${bold(this.command)}`
 
-            else
-            {
-              if (error !== '')
-                console.error(error)
+                reject(error)
+              }
 
-              resolve()
-            }
-          })
+              else
+              {
+                if (error !== '')
+                  console.error(error)
+
+                resolve()
+              }
+            })
+          }
+
+          catch (error)
+          {
+            reject(`Error encountered spawning child process with command ${bold(this.command)}: ${(error as Error).message}`)
+          }
         })
     }
   }

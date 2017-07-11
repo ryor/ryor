@@ -1,54 +1,66 @@
-import {existsSync} from 'fs'
+import * as minimist from 'minimist'
 import {EOL} from 'os'
-import {resolve} from 'path'
 import {CommandRunnable} from './classes/CommandRunnable'
 import {FunctionRunnable} from './classes/FunctionRunnable'
 import {Runner} from './classes/Runner'
 import {handleError} from './utils/errors'
 import {parseCommandLineInput} from './utils/input'
-import {composeUsageDetailsList, composeUsageInformation} from './utils/usage'
+import {ensureCorrectPathValue} from './utils/path'
+import {composeUsageInformation, composeUsageInformationList} from './utils/usage'
+
+export const RUN_DURATION_MESSAGE:string = 'Completed in [TIME]ms.'
 
 export function run(input:string[] = []):void
 {
-  const binDirectoryPath:string = resolve(process.cwd(), 'node_modules/.bin')
-  const env:{[key:string]:string} = process.env as {[key:string]:string}
+  const flags:string[] = []
   let outputRunDuration:boolean = false
   let startTime:number|undefined
 
-  if (existsSync(binDirectoryPath) && !env.PATH.includes(binDirectoryPath))
-    env.PATH = `${env.PATH}${process.platform === 'win32' ? ';' : ':'}${binDirectoryPath}`
+  if (input.length > 0)
+    while (input[0].charAt(0) === '-')
+      flags.push(input.shift()!)
+
+  if (flags.length > 0)
+  {
+    const minimistFunction:(args:string[], opts:minimist.Opts) => minimist.ParsedArgs = minimist
+    const parsedFlags:minimist.ParsedArgs = minimistFunction(flags, {
+      alias: {b: 'bin', t: 'time'},
+      boolean: ['b', 'bin', 't', 'time']
+    })
+
+    if (parsedFlags.bin === true)
+      input.unshift('-b')
+
+    if (parsedFlags.time === true)
+    {
+      outputRunDuration = true
+      startTime = Date.now()
+    }
+  }
 
   try
   {
-    if (input.length > 0)
+    if (input.length === 0 || input[0] === 'help')
     {
-      if (['-t', '--time'].includes(input[0]))
-      {
-        outputRunDuration = true
-        input = input.slice(1)
-      }
+      console.log(`${EOL}${composeUsageInformation(input.length > 1 ? input[1] : undefined)}${EOL}`)
 
-      if (input[0] === 'help')
-        console.log(`${EOL}${composeUsageInformation(input.length > 1 ? input[1] : undefined)}${EOL}`)
-
-      else
-      {
-        if (outputRunDuration)
-          startTime = Date.now()
-
-        new Runner(parseCommandLineInput(input))
-          .run()
-          .then(():void =>
-          {
-            if (outputRunDuration)
-              console.log(`Completed in ${Date.now() - startTime!}ms.`)
-          })
-          .catch(handleError)
-      }
+      if (outputRunDuration)
+        console.log(RUN_DURATION_MESSAGE.replace('[TIME]', String(Date.now() - startTime!)))
     }
 
     else
-      console.log(`${EOL}${composeUsageInformation()}${EOL}`)
+    {
+      ensureCorrectPathValue()
+
+      new Runner(parseCommandLineInput(input))
+        .run()
+        .then(():void =>
+        {
+          if (outputRunDuration)
+            console.log(RUN_DURATION_MESSAGE.replace('[TIME]', String(Date.now() - startTime!)))
+        })
+        .catch(handleError)
+    }
   }
 
   catch (error)
@@ -57,4 +69,4 @@ export function run(input:string[] = []):void
   }
 }
 
-export {CommandRunnable, FunctionRunnable, Runner, composeUsageDetailsList}
+export {CommandRunnable, FunctionRunnable, Runner, composeUsageInformationList}

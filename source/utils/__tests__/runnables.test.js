@@ -4,21 +4,21 @@ const {CommandRunnable} = require('../../classes/CommandRunnable')
 const {FunctionRunnable} = require('../../classes/FunctionRunnable')
 const {Runner} = require('../../classes/Runner')
 const {clear} = require('../modules')
-const {resolveRunnable} = require('../runnables')
+const {resolveRunnableFromScript} = require('../runnables')
 const rootDirectoryPath = resolve(__dirname, '../../..')
 
-test('Resolves runnables', () =>
+test('Resolves runnables from scripts', () =>
 {
   let runnable
 
   clear()
 
-  runnable = resolveRunnable('some-system-executable --arg1 --arg2 value')
+  runnable = resolveRunnableFromScript('some-system-executable --arg1 --arg2 value')
   expect(runnable).toBeInstanceOf(CommandRunnable)
   expect(runnable.command).toBe('some-system-executable')
   expect(runnable.args).toEqual(['--arg1', '--arg2', 'value'])
 
-  runnable = resolveRunnable(['some-system-executable', '--arg1', '--arg2', 'value'])
+  runnable = resolveRunnableFromScript(['some-system-executable', '--arg1', '--arg2', 'value'])
   expect(runnable).toBeInstanceOf(CommandRunnable)
   expect(runnable.command).toBe('some-system-executable')
   expect(runnable.args).toEqual(['--arg1', '--arg2', 'value'])
@@ -27,31 +27,31 @@ test('Resolves runnables', () =>
 
   clear()
 
-  runnable = resolveRunnable('build')
+  runnable = resolveRunnableFromScript('build')
   expect(runnable).toBeInstanceOf(FunctionRunnable)
   expect(runnable.func).toBeInstanceOf(Function)
   expect(runnable.args).toEqual([])
   expect(runnable.context).toBe('build')
 
-  runnable = resolveRunnable(['build'])
+  runnable = resolveRunnableFromScript(['build'])
   expect(runnable).toBeInstanceOf(FunctionRunnable)
   expect(runnable.func).toBeInstanceOf(Function)
   expect(runnable.args).toEqual([])
   expect(runnable.context).toBe('build')
 
-  runnable = resolveRunnable('deploy arg1 arg2')
+  runnable = resolveRunnableFromScript('deploy arg1 arg2')
   expect(runnable).toBeInstanceOf(FunctionRunnable)
   expect(runnable.func).toBeInstanceOf(Function)
   expect(runnable.args).toEqual(['arg1', 'arg2'])
   expect(runnable.context).toBe('deploy')
 
-  runnable = resolveRunnable(['deploy', 'arg1', 'arg2'])
+  runnable = resolveRunnableFromScript(['deploy', 'arg1', 'arg2'])
   expect(runnable).toBeInstanceOf(FunctionRunnable)
   expect(runnable.func).toBeInstanceOf(Function)
   expect(runnable.args).toEqual(['arg1', 'arg2'])
   expect(runnable.context).toBe('deploy')
 
-  runnable = resolveRunnable('test')
+  runnable = resolveRunnableFromScript('test')
   expect(runnable).toBeInstanceOf(Runner)
   expect(runnable.definitions).toEqual([
     'echo running tests',
@@ -68,18 +68,18 @@ test('Resolves runnables', () =>
 
   clear()
 
-  runnable = resolveRunnable('bundler')
+  runnable = resolveRunnableFromScript('bundler')
   expect(runnable).toBeInstanceOf(CommandRunnable)
   expect(runnable.command).toBe('echo')
   expect(runnable.args).toEqual(['bundling'])
 
-  runnable = resolveRunnable('tester')
+  runnable = resolveRunnableFromScript('tester')
   expect(runnable).toBeInstanceOf(FunctionRunnable)
   expect(runnable.func).toBeInstanceOf(Function)
   expect(runnable.args).toEqual([])
   expect(runnable.context).toBe('tester')
 
-  runnable = resolveRunnable('transpiler')
+  runnable = resolveRunnableFromScript('transpiler')
   expect(runnable).toBeInstanceOf(FunctionRunnable)
   expect(runnable.func).toBeInstanceOf(Function)
   expect(runnable.args).toEqual([])
@@ -88,13 +88,13 @@ test('Resolves runnables', () =>
   process.chdir(rootDirectoryPath)
 })
 
-test('Throws errors when invalid definition values are passed to resolveRunnable function', () =>
+test('Throws errors when invalid definition values are passed to resolveRunnableFromScript function', () =>
 {
-  expect(() => resolveRunnable()).toThrow(`Invalid definition passed to resolveRunnable function: ${bold('undefined')}`)
-  expect(() => resolveRunnable(true)).toThrow(`Invalid definition passed to resolveRunnable function: ${bold('true')}`)
-  expect(() => resolveRunnable(1)).toThrow(`Invalid definition passed to resolveRunnable function: ${bold('1')}`)
-  expect(() => resolveRunnable({})).toThrow(`Invalid definition passed to resolveRunnable function: ${bold('{}')}`)
-  expect(() => resolveRunnable('')).toThrow(`Invalid definition passed to resolveRunnable function: ${bold('empty string')}`)
+  expect(() => resolveRunnableFromScript()).toThrow(`Invalid runnable definition: ${bold('undefined')}`)
+  expect(() => resolveRunnableFromScript(true)).toThrow(`Invalid runnable definition: ${bold('true')}`)
+  expect(() => resolveRunnableFromScript(1)).toThrow(`Invalid runnable definition: ${bold('1')}`)
+  expect(() => resolveRunnableFromScript({})).toThrow(`Invalid runnable definition: ${bold('{}')}`)
+  expect(() => resolveRunnableFromScript('')).toThrow(`Invalid runnable definition: ${bold('empty string')}`)
 })
 
 test('Throws error when module contains invalid runnable definition', () =>
@@ -103,9 +103,9 @@ test('Throws error when module contains invalid runnable definition', () =>
 
   process.chdir(resolve(rootDirectoryPath, 'test-projects/invalid-definitions'))
 
-  expect(() => resolveRunnable('bundler')).toThrow(`Unexpected runnable definition encountered in ${bold('bundler')} module: ${bold('true')}`)
-  expect(() => resolveRunnable('tester')).toThrow(`Unexpected runnable definition encountered in ${bold('tester')} module: ${bold('{}')}`)
-  expect(() => resolveRunnable('transpiler')).toThrow(`Unexpected runnable definition encountered in ${bold('transpiler')} module: ${bold('empty string')}`)
+  expect(() => resolveRunnableFromScript('bundler')).toThrow(`Invalid runnable definition encountered in ${bold('bundler')} module: ${bold('true')}`)
+  expect(() => resolveRunnableFromScript('tester')).toThrow(`Invalid runnable definition encountered in ${bold('tester')} module: ${bold('{}')}`)
+  expect(() => resolveRunnableFromScript('transpiler')).toThrow(`Invalid runnable definition encountered in ${bold('transpiler')} module: ${bold('empty string')}`)
 
   process.chdir(rootDirectoryPath)
 })

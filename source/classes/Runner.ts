@@ -1,4 +1,4 @@
-import {resolveRunnable} from '../utils/runnables'
+import {resolveRunnableFromScript} from '../utils/runnables'
 import {CommandRunnable} from './CommandRunnable'
 import {FunctionRunnable} from './FunctionRunnable'
 
@@ -27,7 +27,7 @@ export class Runner implements Runnable
           ? definition
           : typeof definition === 'function'
             ? new FunctionRunnable(definition, [], this.context!)
-            : resolveRunnable(definition, this.context)
+            : resolveRunnableFromScript(definition as RunnableScript, this.context)
 
         promise = runnable.run()
 

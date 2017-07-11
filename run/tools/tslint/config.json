@@ -24,6 +24,6 @@
     "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
     "typedef": [true, "array-destructuring", "arrow-call-signature", "arrow-parameter", "call-signature", "member-variable-declaration", "object-destructuring", "parameter", "property-declaration", "variable-declaration"],
     "typedef-whitespace": false,
-    "whitespace": [true, "check-branch", "check-decl", "check-module", "check-operator", "check-preblock", "check-separator", "check-typecast"]
+    "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-preblock", "check-separator", "check-typecast"]
   }
 }

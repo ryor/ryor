@@ -4,6 +4,7 @@ const {run} = require('..')
 
 const rootDirectoryPath = resolve(__dirname, '../..')
 
+/*
 test('Adds node_modules/.bin directory to PATH if neccesary', () =>
 {
   const consoleLogMock = jest.spyOn(console, 'log').mockImplementation(value => {})
@@ -52,6 +53,7 @@ test('Adds node_modules/.bin directory to PATH if neccesary', () =>
 
   consoleLogMock.mockRestore()
 })
+*/
 
 test('Outputs usage information when no input values are passed to run function', () =>
 {

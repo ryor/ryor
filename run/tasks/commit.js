@@ -18,35 +18,18 @@ function run(args)
     boolean: ['p', 'push', 'r', 'release']
   })
 
-  if (!release && _.length === 0)
+  if (_.length === 0)
     throw new Error('A commmit message is required')
 
   const sequence = [
     'log -w Verifying that tests pass and build completes successfully',
     ['test -ps', 'build -s'],
     'shx rm -rf build coverage',
+    `git commit ${_.join(' ')}`
   ]
-  let message = _.join(' ')
 
   if (release)
-  {
-    sequence.push('patch')
-
-    if (!message)
-    {
-      const {resolve} = require('path')
-      const packageJSONPath = resolve(__dirname, '../../package.json')
-      const packageJSON = require(packageJSONPath)
-      const semverParts = packageJSON.version.split('.')
-
-      message = `Version ${semverParts[0]}.${semverParts[1]}.${Number(semverParts[2]) + 1}`
-    }
-  }
-
-  sequence.push(`git commit ${message}`)
-
-  if (release)
-    sequence.push('git tag')
+    sequence.push('-b npm version patch')
 
   if (push || release)
     sequence.push('git push')
