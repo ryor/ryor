@@ -5,7 +5,7 @@ import {resolve} from 'path'
 import {resolveAllRunnableModules} from '../modules'
 import {composeUsageInformationList} from './lists'
 
-export const MAIN_USAGE_INFORMATION_HEADER:string = `${bold('Usage:')} node run <runnable> [args...] [+ <runnable> [args...]] ...`
+export const MAIN_USAGE_INFORMATION_HEADER:string = `${bold('Usage:')} node run [options] <runnable> [args...] [+ [options] <runnable> [args...]] ...`
 export const NO_RUNNABLES_RESOLVED_MESSAGE:string = `No runnables found.`
 export const USAGE_COMMAND:string = 'help'
 export const USAGE_COMMAND_DESCRIPTION:string = `Use ${
@@ -25,9 +25,9 @@ export function composeMainUsageInformation():string
   const nodeModulesDirectoryPath:string = resolve(process.cwd(), 'node_modules')
   const nodeModulesBinDirectoryPath:string = resolve(nodeModulesDirectoryPath, '.bin')
   const header:string = MAIN_USAGE_INFORMATION_HEADER
-  let section:Map<string, string|undefined>
-  let maxKeyLength:number = 0
+  let minKeyLength:number = 0
   let body:string = ''
+  let section:Map<string, string|undefined>
 
   modules.forEach((typeModules:Map<string, RunnableModule>, type:string):void =>
   {
@@ -37,8 +37,8 @@ export function composeMainUsageInformation():string
     {
       runnableKeys.add(key)
 
-      if (key.length > maxKeyLength)
-        maxKeyLength = key.length
+      if (key.length > minKeyLength)
+        minKeyLength = key.length
 
       if (typeof description === 'function')
         description = description()
@@ -59,6 +59,7 @@ export function composeMainUsageInformation():string
   section = new Map<string, string|undefined>()
 
   if (runnablesWithUsageInformation.size > 0 || (existsSync(nodeModulesBinDirectoryPath) && readdirSync(nodeModulesBinDirectoryPath).length > 0))
+  {
     section.set(
       USAGE_COMMAND,
       runnablesWithUsageInformation.size > 0 && (existsSync(nodeModulesBinDirectoryPath) && readdirSync(nodeModulesBinDirectoryPath).length > 0)
@@ -67,6 +68,7 @@ export function composeMainUsageInformation():string
               ? `Use ${USAGE_COMMAND_DESCRIPTION.split('or')[1]}`
               : USAGE_COMMAND_DESCRIPTION.split(' or')[0]
     )
+  }
 
   if (sections.size > 0)
   {
@@ -75,13 +77,15 @@ export function composeMainUsageInformation():string
     if (section.size > 0)
       sections.set('Also available', section)
 
-    sections.forEach((map:Map<string, string|undefined>, type:string):number => lists.push(composeUsageInformationList(map, type, maxKeyLength)))
+    sections.forEach((map:Map<string, string|undefined>, type:string):number => lists.push(composeUsageInformationList(map, type, minKeyLength)))
 
     body = lists.join(`${EOL}${EOL}`)
   }
 
   else if (section.size > 0)
-    body = composeUsageInformationList(section, undefined, maxKeyLength)
+  {
+    body = composeUsageInformationList(section, undefined, minKeyLength)
+  }
 
   else
     return NO_RUNNABLES_RESOLVED_MESSAGE

@@ -25,9 +25,9 @@ export function parseRunnableScript(script:RunnableScript):CommandRunnable|Runna
         flags.push((script).shift()!)
 
     const minimistFunction:(args:string[], opts:minimist.Opts) => minimist.ParsedArgs = minimist
-    const parsedFlags:minimist.ParsedArgs = minimistFunction(flags, {alias: {b: 'bin'}, boolean: ['b', 'bin']})
+    const parsedFlags:minimist.ParsedArgs = minimistFunction(flags, {alias: {c: 'command'}, boolean: ['c', 'command']})
 
-    if (parsedFlags.bin === true)
+    if (parsedFlags.command === true)
       return new CommandRunnable(script[0], script.slice(1))
   }
 

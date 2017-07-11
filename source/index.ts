@@ -24,12 +24,12 @@ export function run(input:string[] = []):void
   {
     const minimistFunction:(args:string[], opts:minimist.Opts) => minimist.ParsedArgs = minimist
     const parsedFlags:minimist.ParsedArgs = minimistFunction(flags, {
-      alias: {b: 'bin', t: 'time'},
-      boolean: ['b', 'bin', 't', 'time']
+      alias: {c: 'command', t: 'time'},
+      boolean: ['c', 'command', 't', 'time']
     })
 
-    if (parsedFlags.bin === true)
-      input.unshift('-b')
+    if (parsedFlags.command === true)
+      input.unshift('-c')
 
     if (parsedFlags.time === true)
     {

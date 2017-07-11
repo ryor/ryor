@@ -5,12 +5,8 @@ import {parse, resolve} from 'path'
 import {resolveAllRunnableModules} from '../modules'
 import {composeUsageInformationList} from './lists'
 
-export const BIN_FLAG:string = '-b  --bin'
-export const BIN_FLAG_DESCRIPTION:string = `Runs executable in ${
-  bold('node_modules/.bin')
-} directory instead of runnable with matching name. Executables that share a name with a runnable are indicated with a ${
-  bold('*')
-} below.`
+export const COMMAND_FLAG:string = '-c  --command'
+export const COMMAND_FLAG_DESCRIPTION:string = `Skips runnable resolution. Executables that share a name with a runnable are indicated with a ${bold('*')} below.`
 export const BIN_USAGE_INFORMATION_HEADER:string = `${bold('Usage:')} node run [flag] ${bold('<executable>')} [args...]`
 export const NO_BIN_DIRECTORY_FOUND_MESSAGE:string = `No ${bold('node_modules/.bin')} directory found`
 export const NO_BIN_FILES_FOUND_MESSAGE:string = `The ${bold('node_modules/.bin')} directory is empty`
@@ -31,7 +27,7 @@ export function composeBinUsageInformation():string
   const modules:Map<string, Map<string, RunnableModule>> = resolveAllRunnableModules()
   const descriptions:Map<string, string|undefined> = new Map<string, string|undefined>()
   const runnableNames:Set<string> = new Set<string>()
-  let minNameLength:number = BIN_FLAG.length
+  let minNameLength:number = COMMAND_FLAG.length
   let maskedNamesCount:number = 0
 
   modules.forEach((typeModules:Map<string, RunnableModule>, type:string):void =>
@@ -73,7 +69,7 @@ export function composeBinUsageInformation():string
   })
 
   return [BIN_USAGE_INFORMATION_HEADER]
-    .concat(maskedNamesCount > 0 ? [composeUsageInformationList(new Map<string, string|undefined>([[BIN_FLAG, BIN_FLAG_DESCRIPTION]]), 'flag', minNameLength)] : [])
+    .concat(maskedNamesCount > 0 ? [composeUsageInformationList(new Map<string, string|undefined>([[COMMAND_FLAG, COMMAND_FLAG_DESCRIPTION]]), 'flag', minNameLength)] : [])
     .concat([composeUsageInformationList(descriptions, `command${descriptions.size > 1 ? 's' : ''}`, minNameLength)])
     .join(`${EOL}${EOL}`)
 }

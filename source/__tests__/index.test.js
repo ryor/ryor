@@ -4,57 +4,6 @@ const {run} = require('..')
 
 const rootDirectoryPath = resolve(__dirname, '../..')
 
-/*
-test('Adds node_modules/.bin directory to PATH if neccesary', () =>
-{
-  const consoleLogMock = jest.spyOn(console, 'log').mockImplementation(value => {})
-  let projectDirectoryPath
-  let binDirectoryPath
-
-  projectDirectoryPath = resolve(rootDirectoryPath, 'test-projects/empty')
-  binDirectoryPath = resolve(projectDirectoryPath, 'node_modules/.bin')
-  process.chdir(projectDirectoryPath)
-  run()
-  expect(process.env.PATH.includes(binDirectoryPath)).toBe(false)
-
-  projectDirectoryPath = resolve(rootDirectoryPath, 'test-projects/empty-run')
-  binDirectoryPath = resolve(projectDirectoryPath, 'node_modules/.bin')
-  process.chdir(projectDirectoryPath)
-  run()
-  expect(process.env.PATH.includes(binDirectoryPath)).toBe(false)
-
-  projectDirectoryPath = resolve(rootDirectoryPath, 'test-projects/only-tasks')
-  binDirectoryPath = resolve(projectDirectoryPath, 'node_modules/.bin')
-  process.chdir(projectDirectoryPath)
-  run()
-  expect(process.env.PATH.includes(binDirectoryPath)).toBe(false)
-
-  projectDirectoryPath = resolve(rootDirectoryPath, 'test-projects/only-tools')
-  binDirectoryPath = resolve(projectDirectoryPath, 'node_modules/.bin')
-  process.chdir(projectDirectoryPath)
-  run()
-  expect(process.env.PATH.includes(binDirectoryPath)).toBe(false)
-
-  projectDirectoryPath = resolve(rootDirectoryPath, 'test-projects/only-bin')
-  binDirectoryPath = resolve(projectDirectoryPath, 'node_modules/.bin')
-  process.chdir(projectDirectoryPath)
-  run()
-  expect(process.env.PATH.includes(binDirectoryPath)).toBe(true)
-
-  process.env.PATH = process.env.PATH.replace(binDirectoryPath, '')
-
-  projectDirectoryPath = resolve(rootDirectoryPath, 'test-projects/all')
-  binDirectoryPath = resolve(projectDirectoryPath, 'node_modules/.bin')
-  process.chdir(projectDirectoryPath)
-  run()
-  expect(process.env.PATH.includes(binDirectoryPath)).toBe(true)
-
-  process.chdir(rootDirectoryPath)
-
-  consoleLogMock.mockRestore()
-})
-*/
-
 test('Outputs usage information when no input values are passed to run function', () =>
 {
   const consoleLogMock = jest.spyOn(console, 'log').mockImplementation(value => log = value)
