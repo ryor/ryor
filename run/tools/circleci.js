@@ -15,7 +15,4 @@ const run = [
   'codecov'
 ]
 
-if (process.env.CIRCLE_BRANCH !== 'master')
-  run.push('npm publish')
-
 module.exports = {description, run}

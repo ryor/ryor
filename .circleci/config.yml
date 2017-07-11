@@ -8,3 +8,10 @@ jobs:
       - checkout
       - run: yarn
       - run: node run circleci
+      - run: |
+          if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$";
+          then
+            echo "A release, publishing"
+          else
+            echo "Not a release, skipping build"
+          fi
