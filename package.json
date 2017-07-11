@@ -2,6 +2,7 @@
   "name": "ryor",
   "version": "0.2.6",
   "description": "Roll your own lightweight task runner for your project",
+  "license": "MIT",
   "repository": "ryor/ryor",
   "bugs": "https://github.com/ryor/ryor/issues",
   "contributors": [
