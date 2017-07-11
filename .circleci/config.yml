@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/ryor
+    docker:
+      - image: circleci/node:6
+    steps:
+      - checkout
+      - run: npm install
+      - run: node run ci
