@@ -4,7 +4,7 @@ function description()
 {
   const {bold} = require('chalk')
 
-  return `Runs ${bold('test')} and ${bold('build')} tasks in parallel to speed up Travis builds and uploads code coverage results to Codecov`
+  return `Runs ${bold('test')} and ${bold('build')} tasks in parallel to speed up CircleCI builds and uploads code coverage results to Codecov`
 }
 
 const run = [
