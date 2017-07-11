@@ -13,7 +13,7 @@ Including **[ryor](https://www.npmjs.com/package/ryor)** as a project developmen
 
 ### No plugins
 
-Unlike task runners or pluggable build tools that require often clunky coordination between unevenly maintained 3rd-party plugins (Gulp, Grunt, Webpack, etc.), **ryor** exposes the tools that already [do one thing and do it well](https://en.wikipedia.org/wiki/Unix_philosophy) as CLIs or Node APIs and offers a convenient and robust means of writing custom "runnables".
+Unlike task runners or pluggable build tools that require often clunky coordination between unevenly maintained 3rd-party plugins (Gulp, Grunt, Webpack, etc.), **ryor** offers a convenient means of using the tools that already [do one thing and do it well](https://en.wikipedia.org/wiki/Unix_philosophy) as CLIs or Node APIs.
 
 ### Less clutter
 
@@ -21,15 +21,15 @@ Instead of cluttering of a project's root directory and/or package.json file wit
 
 ### Sequences
 
-Similar to shell, npm/yarn or [NPS](https://www.npmjs.com/package/nps) scripts, sequences can be composed that utilize runnables, either run in series or parallel.  If runnables defined as functions/Promises return sequences themselves, those operations are then run as well.
-
-### Simple to define
-
-Runnables can be defined in two subdirectories in a project's `run` directory, `tasks` and `tools`. Tasks are intended to be the main developer interface for a project, composing sequences that utilize other runnables. Tools are intended to be either "batteries included" versions of tools included as project dependencies, with all of the configuration details required to run properly, or functions/Promises that perform any necessary operations.  Runnables can also included an optional description, which is displayed in the usage information.
+Similar to shell, npm/yarn or [NPS](https://www.npmjs.com/package/nps) scripts, sequences can be composed that run in series or parallel.
 
 ### Simple to get usage information
 
 ```node run```
+
+or
+
+```node run help```
 
 ### Simple to use
 
