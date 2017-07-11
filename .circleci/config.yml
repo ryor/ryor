@@ -7,4 +7,4 @@ jobs:
     steps:
       - checkout
       - run: yarn
-      - run: node run ci
+      - run: node run circleci

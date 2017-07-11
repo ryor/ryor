@@ -12,7 +12,11 @@ const run = [
   ['test -cps', 'build -s'],
   'log -s All tests passed and build completed successfully',
   'log -w Uploading code coverage results to Codecov',
-  'codecov'
+  'codecov',
+  () =>
+  {
+    console.log(process.env.CIRCLE_BRANCH)
+  }
 ]
 
 module.exports = {description, run}
