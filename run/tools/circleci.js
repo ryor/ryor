@@ -12,11 +12,10 @@ const run = [
   ['test -cps', 'build -s'],
   'log -s All tests passed and build completed successfully',
   'log -w Uploading code coverage results to Codecov',
-  'codecov',
-  () =>
-  {
-    console.log(process.env.CIRCLE_BRANCH)
-  }
+  'codecov'
 ]
+
+if (process.env.CIRCLE_BRANCH !== 'master')
+  run.push('npm publish')
 
 module.exports = {description, run}
