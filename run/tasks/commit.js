@@ -29,7 +29,7 @@ function run(args)
   ]
 
   if (release)
-    sequence.push('-b npm version patch')
+    sequence.push('-c npm version patch')
 
   if (push || release)
     sequence.push('git push')
