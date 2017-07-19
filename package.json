@@ -1,6 +1,6 @@
 {
   "name": "ryor",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Roll your own lightweight task runner for your project",
   "license": "MIT",
   "repository": "ryor/ryor",
