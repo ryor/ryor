@@ -1,4 +1,4 @@
-import {resolveRunnableFromScript} from '../utils/runnables'
+import {resolveRunnableFromScript} from '../lib/runnables'
 import {CommandRunnable} from './CommandRunnable'
 import {FunctionRunnable} from './FunctionRunnable'
 

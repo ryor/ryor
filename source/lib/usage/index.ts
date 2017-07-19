@@ -6,7 +6,7 @@ import {composeRunnableUsageInformation} from './runnable'
 
 export {composeUsageInformationList}
 
-export function composeUsageInformation(value?:string):string
+export function composeUsageInformation(value?:string, configuration?:ConfigurationUsage):string
 {
   if (value !== undefined)
   {
@@ -22,5 +22,5 @@ export function composeUsageInformation(value?:string):string
     }
   }
 
-  return composeMainUsageInformation()
+  return composeMainUsageInformation(configuration)
 }

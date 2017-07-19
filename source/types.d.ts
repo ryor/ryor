@@ -6,6 +6,18 @@ declare module 'shell-quote' {
   export function parse(args:string):string[]
 }
 
+interface Configuration {
+  usage?: ConfigurationUsage
+}
+
+interface ConfigurationUsage {
+  types?: ConfigurationUsageTypes
+}
+
+interface ConfigurationUsageTypes {
+  order?: string[]
+}
+
 interface Runnable {
   run():Promise<RunnablesDefinition|void>
 }

@@ -16,7 +16,7 @@ export const USAGE_COMMAND_DESCRIPTION:string = `Use ${
   bold('node run help <runnable>')
 } for detailed usage information about the runnables above that provide it`
 
-export function composeMainUsageInformation():string
+export function composeMainUsageInformation(configuration?:ConfigurationUsage):string
 {
   const modules:Map<string, Map<string, RunnableModule>> = resolveAllRunnableModules()
   const sections:Map<string, Map<string, string|undefined>> = new Map<string, Map<string, string|undefined>>()
@@ -76,6 +76,17 @@ export function composeMainUsageInformation():string
 
     if (section.size > 0)
       sections.set('Also available', section)
+
+    if (configuration !== undefined && configuration.types !== undefined && configuration.types.order !== undefined)
+      configuration.types.order.forEach((type:string):void =>
+      {
+        if (sections.has(type))
+        {
+          lists.push(composeUsageInformationList(sections.get(type)!, type, minKeyLength))
+
+          sections.delete(type)
+        }
+      })
 
     sections.forEach((map:Map<string, string|undefined>, type:string):number => lists.push(composeUsageInformationList(map, type, minKeyLength)))
 
