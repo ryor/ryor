@@ -12,7 +12,7 @@
     "node": ">= 6.0.0"
   },
   "dependencies": {
-    "chalk": "^2.0.1",
+    "chalk": "^2.1.0",
     "cross-spawn": "^5.1.0",
     "minimist": "^1.2.0",
     "shell-quote": "^1.6.1"
@@ -20,13 +20,13 @@
   "devDependencies": {
     "@types/chalk": "^0.4.31",
     "@types/minimist": "^1.2.0",
-    "@types/node": "^8.0.18",
-    "codecov": "^2.2.0",
-    "jest": "^20.0.4",
-    "rollup": "^0.45.2",
+    "@types/node": "^8.0.28",
+    "codecov": "^2.3.0",
+    "jest": "^21.0.2",
+    "rollup": "^0.49.3",
     "ryor": "0.2.8",
     "shx": "^0.2.2",
-    "tslint": "^5.5.0",
-    "typescript": "^2.4.2"
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.2"
   }
 }

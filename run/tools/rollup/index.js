@@ -11,17 +11,18 @@ function usage()
 
 function run(args)
 {
-  const minimist = require('minimist')
-  const {silent} = minimist(args, {
+  const {silent} = require('minimist')(args, {
     alias: {s: 'silent'},
-    boolean: ['s:', 'silent']
+    boolean: ['s:', 'silent'],
+    unknown: value =>
+    {
+      const {bold} = require('chalk')
+
+      throw new Error(`Invalid value ${bold(value)} passed to ${bold('rollup')} tool.`)
+    }
   })
-  const sequence = ['rollup -c run/tools/rollup/config.js']
 
-  if (!silent)
-    sequence.unshift('log -w Bundling module with Rollup')
-
-  return sequence
+  return (silent ? [] : ['log -w Bundling module with Rollup']).concat('rollup -c run/tools/rollup/config.js --silent')
 }
 
 module.exports = {description, run, usage}

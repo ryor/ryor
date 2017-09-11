@@ -1,10 +1,12 @@
 import {EOL} from 'os'
 
 export default {
-  dest: 'build/index.js',
-  entry: 'build/esm/index.js',
+  input: 'build/esm/index.js',
+  output: {
+    file: 'build/index.js',
+    format: 'cjs'
+  },
   external: ['chalk', 'cross-spawn', 'fs', 'minimist',  'os', 'path', 'shell-quote'],
-  format: 'cjs',
   plugins: [{
     resolveId: (importee, importer) =>
     {
