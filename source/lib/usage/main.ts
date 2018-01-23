@@ -1,19 +1,19 @@
-import {bold} from 'chalk'
+import chalk from 'chalk'
 import {existsSync, readdirSync} from 'fs'
 import {EOL} from 'os'
 import {resolve} from 'path'
 import {resolveAllRunnableModules} from '../modules'
 import {composeUsageInformationList} from './lists'
 
-export const MAIN_USAGE_INFORMATION_HEADER:string = `${bold('Usage:')} node run [options] <runnable> [args...] [+ [options] <runnable> [args...]] ...`
+export const MAIN_USAGE_INFORMATION_HEADER:string = `${chalk.bold('Usage:')} node run [options] <runnable> [args...] [+ [options] <runnable> [args...]] ...`
 export const NO_RUNNABLES_RESOLVED_MESSAGE:string = `No runnables found.`
 export const USAGE_COMMAND:string = 'help'
 export const USAGE_COMMAND_DESCRIPTION:string = `Use ${
-  bold('node run help bin')
+  chalk.bold('node run help bin')
 } to list executables in ${
-  bold('node_modules/.bin')
+  chalk.bold('node_modules/.bin')
 } directory or ${
-  bold('node run help <runnable>')
+  chalk.bold('node run help <runnable>')
 } for detailed usage information about the runnables above that provide it`
 
 export function composeMainUsageInformation(configuration?:ConfigurationUsage):string
@@ -47,7 +47,7 @@ export function composeMainUsageInformation(configuration?:ConfigurationUsage):s
       {
         runnablesWithUsageInformation.add(key)
 
-        description = `${description !== undefined ? `${description}${description.endsWith('.') ? '' : '.'} ` : ''}Use ${bold.underline(`node run help ${key}`)} for detailed usage information.`
+        description = `${description !== undefined ? `${description}${description.endsWith('.') ? '' : '.'} ` : ''}Use ${chalk.bold.underline(`node run help ${key}`)} for detailed usage information.`
       }
 
       section.set(key, description)

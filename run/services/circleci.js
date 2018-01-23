@@ -1,8 +1,7 @@
 'use strict'
 
-function description()
-{
-  const {bold} = require('chalk')
+function description() {
+  const { bold } = require('chalk')
 
   return `Runs ${bold('test')} and ${bold('build')} tasks in parallel to speed up CircleCI builds and uploads code coverage results to Codecov`
 }
@@ -15,4 +14,4 @@ const run = [
   'codecov'
 ]
 
-module.exports = {description, run}
+module.exports = { description, run }

@@ -1,4 +1,4 @@
-import {bold} from 'chalk'
+import chalk from 'chalk'
 import {existsSync, readdirSync} from 'fs'
 import {EOL} from 'os'
 import {parse, resolve} from 'path'
@@ -6,10 +6,10 @@ import {resolveAllRunnableModules} from '../modules'
 import {composeUsageInformationList} from './lists'
 
 export const COMMAND_FLAG:string = '-c  --command'
-export const COMMAND_FLAG_DESCRIPTION:string = `Skips runnable resolution. Executables that share a name with a runnable are indicated with a ${bold('*')} below.`
-export const BIN_USAGE_INFORMATION_HEADER:string = `${bold('Usage:')} node run [flag] ${bold('<executable>')} [args...]`
-export const NO_BIN_DIRECTORY_FOUND_MESSAGE:string = `No ${bold('node_modules/.bin')} directory found`
-export const NO_BIN_FILES_FOUND_MESSAGE:string = `The ${bold('node_modules/.bin')} directory is empty`
+export const COMMAND_FLAG_DESCRIPTION:string = `Skips runnable resolution. Executables that share a name with a runnable are indicated with a ${chalk.bold('*')} below.`
+export const BIN_USAGE_INFORMATION_HEADER:string = `${chalk.bold('Usage:')} node run [flag] ${chalk.bold('<executable>')} [args...]`
+export const NO_BIN_DIRECTORY_FOUND_MESSAGE:string = `No ${chalk.bold('node_modules/.bin')} directory found`
+export const NO_BIN_FILES_FOUND_MESSAGE:string = `The ${chalk.bold('node_modules/.bin')} directory is empty`
 
 export function composeBinUsageInformation():string
 {

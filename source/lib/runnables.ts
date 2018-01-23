@@ -1,4 +1,4 @@
-import {bold} from 'chalk'
+import chalk from 'chalk'
 import * as minimist from 'minimist'
 import {parse} from 'shell-quote'
 import {CommandRunnable} from '../classes/CommandRunnable'
@@ -38,9 +38,9 @@ export function resolveRunnableFromScript(script:RunnableScript, context?:string
 {
   if (!isValidRunnableScript(script))
     throw new Error(`Invalid runnable definition${
-      context !== undefined ? ` encountered in ${bold(context)} module` : ''
+      context !== undefined ? ` encountered in ${chalk.bold(context)} module` : ''
     }: ${
-      bold(typeof script === 'string' ? script === '' ? 'empty string' : script : JSON.stringify(script))
+      chalk.bold(typeof script === 'string' ? script === '' ? 'empty string' : script : JSON.stringify(script))
     }`)
 
   const parsedScript:CommandRunnable|RunnableScript = parseRunnableScript(script)
@@ -83,5 +83,5 @@ export function resolveRunnableFromScript(script:RunnableScript, context?:string
   if (typeof definition === 'string')
     return resolveRunnableFromScript(definition, context)
 
-  throw new Error(`Invalid runnable definition encountered in ${bold(context)} module: ${bold(JSON.stringify(definition))}`)
+  throw new Error(`Invalid runnable definition encountered in ${chalk.bold(context)} module: ${chalk.bold(JSON.stringify(definition))}`)
 }

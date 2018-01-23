@@ -1,4 +1,4 @@
-import {bold} from 'chalk'
+import chalk from 'chalk'
 import {spawn} from 'cross-spawn'
 import * as path from 'path'
 
@@ -35,7 +35,7 @@ export class CommandRunnable implements Runnable
               if (code !== 0)
               {
                 if (error === `Error: spawn ${this.command} ENOENT`)
-                  error = `Could not resolve ${bold(this.command)}`
+                  error = `Could not resolve ${chalk.bold(this.command)}`
 
                 reject(error)
               }
@@ -52,7 +52,7 @@ export class CommandRunnable implements Runnable
 
           catch (error)
           {
-            reject(`Error encountered spawning child process with command ${bold(this.command)}: ${(error as Error).message}`)
+            reject(`Error encountered spawning child process with command ${chalk.bold(this.command)}: ${(error as Error).message}`)
           }
         })
     }

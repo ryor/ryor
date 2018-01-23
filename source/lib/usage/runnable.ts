@@ -1,13 +1,13 @@
-import {bold} from 'chalk'
+import chalk from 'chalk'
 import {EOL} from 'os'
 import {resolveRunnableModule} from '../modules'
 
-export const RUNNABLE_USAGE_INFORMATION_HEADER:string = `${bold('Usage:')} node run [NAME]`
+export const RUNNABLE_USAGE_INFORMATION_HEADER:string = `${chalk.bold('Usage:')} node run [NAME]`
 
 export function composeRunnableUsageInformation(name:string):string
 {
   const runnableModule:RunnableModule|undefined = resolveRunnableModule(name)
-  let header:string = RUNNABLE_USAGE_INFORMATION_HEADER.replace('[NAME]', bold(name))
+  let header:string = RUNNABLE_USAGE_INFORMATION_HEADER.replace('[NAME]', chalk.bold(name))
   let description:string|undefined
   let body:string|undefined
 

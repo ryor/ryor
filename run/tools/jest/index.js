@@ -2,8 +2,7 @@
 
 const description = 'Tests TypeScript with Jest'
 
-function usage()
-{
+function usage() {
   return require('../../utils/usage').composeUsageInformation([
     ['-c  --coverage', 'Generates coverage results'],
     ['-s  --silent', 'No output unless tests fail'],
@@ -11,27 +10,23 @@ function usage()
   ])
 }
 
-function run(args)
-{
+function run(args) {
   const minimist = require('minimist')
-  const {coverage, silent, verbose} = minimist(args, {
-    alias: {c: 'coverage', s: 'silent', v: 'verbose'},
+  const { coverage, silent, verbose } = minimist(args, {
+    alias: { c: 'coverage', s: 'silent', v: 'verbose' },
     boolean: ['c', 'coverage', 's:', 'silent', 'v', 'verbose']
   })
 
   if (silent)
-    return new Promise((resolve, reject) =>
-    {
-      const {spawn} = require('cross-spawn')
+    return new Promise((resolve, reject) => {
+      const { spawn } = require('cross-spawn')
       const childProcess = spawn('jest', ['-c', 'run/tools/jest/config.json'].concat(coverage ? ['--coverage'] : []))
       let stderr = ''
 
-      childProcess.stderr.on('data', data => stderr += data)
+      childProcess.stderr.on('data', data => (stderr += data))
 
-      childProcess.on('close', code =>
-      {
-        if (code !== 0)
-          reject('One or more Jest tests failed.')
+      childProcess.on('close', code => {
+        if (code !== 0) reject('One or more Jest tests failed.')
 
         resolve()
       })
@@ -46,4 +41,4 @@ function run(args)
   ]
 }
 
-module.exports = {description, usage, run}
+module.exports = { description, usage, run }
