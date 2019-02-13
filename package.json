@@ -1,6 +1,6 @@
 {
   "name": "ryor",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "description": "Roll your own lightweight task runner for your project",
   "author": "Scott Steven Rodriguez <scott@movecodemove.com> (http://movecodemove.com)",
   "license": "MIT",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "chalk": "^2.4.2",
+    "cli-truncate": "^1.1.0",
     "cross-spawn": "^6.0.5",
     "minimist": "^1.2.0",
     "shell-quote": "^1.6.1"
@@ -21,7 +22,6 @@
     "@types/minimist": "^1.2.0",
     "@types/node": "^11.9.3",
     "@types/shell-quote": "^1.6.1",
-    "cli-truncate": "^1.1.0",
     "codecov": "^3.2.0",
     "jest": "^24.1.0",
     "rollup": "^1.1.2",

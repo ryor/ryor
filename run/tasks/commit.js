@@ -11,7 +11,7 @@ function usage () {
 
 function run (args) {
   const minimist = require('minimist')
-  const { push, release } = minimist(args, {
+  const { _, push, release } = minimist(args, {
     alias: { p: 'push', r: 'release' },
     boolean: ['p', 'push', 'r', 'release']
   })
@@ -19,7 +19,7 @@ function run (args) {
     'log -w Verifying that tests pass and build completes successfully',
     ['test -ps', 'build -s'],
     'shx rm -rf build coverage',
-    'git commit'
+    `git commit ${_.join(' ')}`
   ]
 
   if (release) sequence.push('-c npm version patch')

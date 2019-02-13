@@ -30,7 +30,7 @@ function run (args) {
       return [
         'log -w Committing changes to Git repository',
         'git add -A',
-        `git commit ${comment ? `-m ${args.slice(1).join(' ')}` : ''} --quiet`
+        `git commit ${comment ? `-m "${comment}"` : ''} --quiet`
       ]
 
     case 'push':
