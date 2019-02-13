@@ -1,9 +1,9 @@
-const {resolve} = require('path')
-const {clear, getPossibleModuleTypes, resolveAllRunnableModules} = require('../modules')
+/* eslint-env jest */
+const { resolve } = require('path')
+const { clear, getPossibleModuleTypes, resolveAllRunnableModules, resolveRunnableModule } = require('../modules')
 const rootDirectoryPath = resolve(__dirname, '../../..')
 
-test('Gets possible module types', () =>
-{
+test('Gets possible module types', () => {
   let types
 
   process.chdir(resolve(rootDirectoryPath, `test-projects/empty`))
@@ -41,8 +41,7 @@ test('Gets possible module types', () =>
   process.chdir(rootDirectoryPath)
 })
 
-test('Resolves all runnable modules', () =>
-{
+test('Resolves all runnable modules', () => {
   let modules
 
   process.chdir(resolve(rootDirectoryPath, `test-projects/empty`))
@@ -85,12 +84,11 @@ test('Resolves all runnable modules', () =>
   process.chdir(rootDirectoryPath)
 })
 
-test('Throws error when attempt is made to resolve module with syntax error', () =>
-{
+test('Throws error when attempt is made to resolve module with syntax error', () => {
   process.chdir(resolve(rootDirectoryPath, `test-projects/syntax-error`))
-
+  clear()
   expect(() => resolveRunnableModule('bundler')).toThrow()
+  jest.resetModules()
   expect(() => resolveAllRunnableModules()).toThrow()
-
   process.chdir(rootDirectoryPath)
 })

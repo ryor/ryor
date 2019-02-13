@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import * as minimist from 'minimist'
+import minimist from 'minimist'
 import {parse} from 'shell-quote'
 import {CommandRunnable} from '../classes/CommandRunnable'
 import {FunctionRunnable} from '../classes/FunctionRunnable'
@@ -11,10 +11,10 @@ export function isValidRunnableScript(script:RunnableScript):boolean
   return (typeof script === 'string' && script !== '') || (Array.isArray(script) && script.length > 0)
 }
 
-export function parseRunnableScript(script:RunnableScript):CommandRunnable|RunnableScript
+export function parseRunnableScript(script:RunnableScript|string):CommandRunnable|RunnableScript
 {
   if (typeof script === 'string')
-    script = parse(script)
+    script = parse(script) as string[]
 
   if ((script[0]).startsWith('-'))
   {
@@ -22,13 +22,12 @@ export function parseRunnableScript(script:RunnableScript):CommandRunnable|Runna
 
     if (script.length > 0)
       while ((script[0]).charAt(0) === '-')
-        flags.push((script).shift()!)
+        flags.push((script as string[]).shift()!)
 
-    const minimistFunction:(args:string[], opts:minimist.Opts) => minimist.ParsedArgs = minimist
-    const parsedFlags:minimist.ParsedArgs = minimistFunction(flags, {alias: {c: 'command'}, boolean: ['c', 'command']})
+    const parsedFlags:minimist.ParsedArgs = minimist(flags, {alias: {c: 'command'}, boolean: ['c', 'command']})
 
     if (parsedFlags.command === true)
-      return new CommandRunnable(script[0], script.slice(1))
+      return new CommandRunnable(script[0], (script as string[]).slice(1))
   }
 
   return script

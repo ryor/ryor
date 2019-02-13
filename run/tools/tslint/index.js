@@ -2,11 +2,11 @@
 
 const description = 'Checks TypeScript for errors with TSLint'
 
-function usage() {
+function usage () {
   return require('../../utils/usage').composeUsageInformation([['-s  --silent', 'No output unless errors are encountered']])
 }
 
-function run(args) {
+function run (args) {
   const log = require('../../utils/log')
   const minimist = require('minimist')
   const { silent } = minimist(args, {

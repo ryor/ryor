@@ -1,1 +1,1 @@
-module.exports = {run:true}
+module.exports = { run: true }

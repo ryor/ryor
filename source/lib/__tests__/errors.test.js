@@ -1,9 +1,9 @@
-const {handleError} = require('../errors')
+/* eslint-env jest */
+const { handleError } = require('../errors')
 
-test('Handles errors', () =>
-{
-  const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(value => output = value)
-  const processExitMock = jest.spyOn(process, 'exit').mockImplementation(code => exitCode = code)
+test('Handles errors', () => {
+  const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(value => (output = value))
+  const processExitMock = jest.spyOn(process, 'exit').mockImplementation(code => (exitCode = code))
   let error = new SyntaxError('Syntax Error Message')
   let output = ''
   let exitCode = 0

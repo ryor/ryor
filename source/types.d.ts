@@ -2,10 +2,6 @@ declare module 'cross-spawn' {
   export function spawn(command:string, args?:string[], options?:{}):NodeJS.EventEmitter
 }
 
-declare module 'shell-quote' {
-  export function parse(args:string):string[]
-}
-
 interface Configuration {
   usage?: ConfigurationUsage
 }

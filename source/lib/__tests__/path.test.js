@@ -1,12 +1,10 @@
-const {bold} = require('chalk')
-const {resolve} = require('path')
-const {ensureCorrectPathValue} = require('../path')
+/* eslint-env jest */
+const { resolve } = require('path')
+const { ensureCorrectPathValue } = require('../path')
 
 const rootDirectoryPath = resolve(__dirname, '../../..')
 
-test('Adds node_modules/.bin directory to PATH if neccesary', () =>
-{
-  const consoleLogMock = jest.spyOn(console, 'log').mockImplementation(value => {})
+test('Adds node_modules/.bin directory to PATH if neccesary', () => {
   let projectDirectoryPath
   let binDirectoryPath
 
@@ -49,6 +47,4 @@ test('Adds node_modules/.bin directory to PATH if neccesary', () =>
   expect(process.env.PATH.includes(binDirectoryPath)).toBe(true)
 
   process.chdir(rootDirectoryPath)
-
-  consoleLogMock.mockRestore()
 })

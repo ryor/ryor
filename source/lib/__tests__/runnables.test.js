@@ -1,14 +1,14 @@
-const {bold} = require('chalk')
-const {resolve} = require('path')
-const {CommandRunnable} = require('../../classes/CommandRunnable')
-const {FunctionRunnable} = require('../../classes/FunctionRunnable')
-const {Runner} = require('../../classes/Runner')
-const {clear} = require('../modules')
-const {resolveRunnableFromScript} = require('../runnables')
+/* eslint-env jest */
+const { bold } = require('chalk')
+const { resolve } = require('path')
+const { CommandRunnable } = require('../../classes/CommandRunnable')
+const { FunctionRunnable } = require('../../classes/FunctionRunnable')
+const { Runner } = require('../../classes/Runner')
+const { clear } = require('../modules')
+const { resolveRunnableFromScript } = require('../runnables')
 const rootDirectoryPath = resolve(__dirname, '../../..')
 
-test('Resolves runnables from scripts', () =>
-{
+test('Resolves runnables from scripts', () => {
   let runnable
 
   clear()
@@ -88,8 +88,7 @@ test('Resolves runnables from scripts', () =>
   process.chdir(rootDirectoryPath)
 })
 
-test('Throws errors when invalid definition values are passed to resolveRunnableFromScript function', () =>
-{
+test('Throws errors when invalid definition values are passed to resolveRunnableFromScript function', () => {
   expect(() => resolveRunnableFromScript()).toThrow(`Invalid runnable definition: ${bold('undefined')}`)
   expect(() => resolveRunnableFromScript(true)).toThrow(`Invalid runnable definition: ${bold('true')}`)
   expect(() => resolveRunnableFromScript(1)).toThrow(`Invalid runnable definition: ${bold('1')}`)
@@ -97,8 +96,7 @@ test('Throws errors when invalid definition values are passed to resolveRunnable
   expect(() => resolveRunnableFromScript('')).toThrow(`Invalid runnable definition: ${bold('empty string')}`)
 })
 
-test('Throws error when module contains invalid runnable definition', () =>
-{
+test('Throws error when module contains invalid runnable definition', () => {
   clear()
 
   process.chdir(resolve(rootDirectoryPath, 'test-projects/invalid-definitions'))

@@ -1,3 +1,4 @@
+/* eslint-env jest */
 const {bold} = require('chalk')
 const {resolve} = require('path')
 const {composeUsageInformation} = require('../usage')

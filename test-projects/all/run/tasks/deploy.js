@@ -1,6 +1,5 @@
-function run()
-{
+function run () {
   return () => console.log('deploying')
 }
 
-module.exports = {run}
+module.exports = { run }

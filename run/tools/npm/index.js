@@ -1,14 +1,12 @@
 'use strict'
 
-const REQUIRED_ENVIRONMENT_VARIABLE = 'NPM_TOKEN'
-
 const description = 'Runs preconfigured NPM publish command'
 
-function usage() {
+function usage () {
   return require('../../utils/usage').composeUsageInformation(undefined, [['publish', 'Publishes latest build to NPM']])
 }
 
-function run(args) {
+function run (args) {
   const { bold } = require('chalk')
 
   if (args.length === 0 || args[0] !== 'publish') {
@@ -23,8 +21,7 @@ function run(args) {
   const { resolve } = require('path')
   const buildDirectoryPath = resolve(process.cwd(), 'build')
 
-  if (!existsSync(buildDirectoryPath) || !existsSync(resolve(buildDirectoryPath, 'index.js')))
-    throw new Error(`Module not found. Make sure to run ${bold('build')} before running ${bold('npm publish')}.`)
+  if (!existsSync(buildDirectoryPath) || !existsSync(resolve(buildDirectoryPath, 'index.js'))) { throw new Error(`Module not found. Make sure to run ${bold('build')} before running ${bold('npm publish')}.`) }
 
   if (!process.env.NPM_TOKEN) throw new Error(`${bold('NPM_TOKEN')} environment variable required for ${bold('npm publish')} is not set.`)
 

@@ -5,4 +5,4 @@ const run = [
   'tester coverage'
 ]
 
-module.exports = {description, run}
+module.exports = { description, run }

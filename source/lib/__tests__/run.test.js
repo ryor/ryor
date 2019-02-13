@@ -1,11 +1,11 @@
-const {bold} = require('chalk')
-const {resolve} = require('path')
-const {run} = require('../run')
+/* eslint-env jest */
+const { bold } = require('chalk')
+const { resolve } = require('path')
+const { run } = require('../run')
 const rootDirectoryPath = resolve(__dirname, '../../..')
 
-test('Outputs usage information when no input values are passed to run function', () =>
-{
-  const consoleLogMock = jest.spyOn(console, 'log').mockImplementation(value => log = value)
+test('Outputs usage information when no input values are passed to run function', () => {
+  const consoleLogMock = jest.spyOn(console, 'log').mockImplementation(value => (log = value))
   let log = ''
 
   run()
@@ -15,15 +15,12 @@ test('Outputs usage information when no input values are passed to run function'
   consoleLogMock.mockRestore()
 })
 
-test('Outputs error messages', () =>
-{
+test('Outputs error messages', () => {
   const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(error => errors.push(error))
-  const processExitMock = jest.spyOn(process, 'exit').mockImplementation(exitCode =>
-  {
+  const processExitMock = jest.spyOn(process, 'exit').mockImplementation(exitCode => {
     exitCodes.push(exitCode)
 
-    if (++exits === 2)
-      resolver()
+    if (++exits === 2) { resolver() }
   })
   let errors = []
   let exitCodes = []
@@ -36,10 +33,8 @@ test('Outputs error messages', () =>
   run(['bundler'])
   process.chdir(rootDirectoryPath)
 
-  return new Promise(resolve =>
-  {
-    resolver = () =>
-    {
+  return new Promise(resolve => {
+    resolver = () => {
       expect(errors.length).toBe(2)
       expect(errors.filter(error => error.trim() === `Could not resolve ${bold('unresolvable')}`).length).toBe(1)
       expect(errors.filter(error => error.includes('SyntaxError')).length).toBe(1)

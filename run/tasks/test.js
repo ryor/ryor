@@ -2,7 +2,7 @@
 
 const description = 'Checks TypeScript for errors with TSLint and tests TypeScript with Jest'
 
-function usage() {
+function usage () {
   return require('../utils/usage').composeUsageInformation([
     ['-c  --coverage', 'Generates Jest coverage results'],
     ['-p  --parallel', 'Runs tools in parallel'],
@@ -10,7 +10,7 @@ function usage() {
   ])
 }
 
-function run(args) {
+function run (args) {
   const minimist = require('minimist')
   const { coverage, parallel, silent } = minimist(args, {
     alias: { c: 'coverage', p: 'parallel', s: 'silent' },

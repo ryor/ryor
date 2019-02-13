@@ -4,7 +4,7 @@ const VALID_COMMANDS = ['commit', 'push', 'tag']
 
 const description = 'Runs preconfigured Git commands'
 
-function usage() {
+function usage () {
   const { bold } = require('chalk')
 
   return require('../utils/usage').composeUsageInformation(undefined, [
@@ -14,21 +14,24 @@ function usage() {
   ])
 }
 
-function run(args) {
+function run (args) {
   const { bold } = require('chalk')
 
   if (args.length === 0) throw new Error(`A command is required to use the ${bold('git')} tool. Accepts ${bold('commit')}, ${bold('push')} and ${bold('tag')}.`)
 
   const command = args[0]
 
-  if (!VALID_COMMANDS.includes(command))
-    throw new Error(`Invalid command ${bold(command)} passed to ${bold('git')} tool. Accepts ${bold('commit')}, ${bold('push')} and ${bold('tag')}.`)
+  if (!VALID_COMMANDS.includes(command)) throw new Error(`Invalid command ${bold(command)} passed to ${bold('git')} tool. Accepts ${bold('commit')}, ${bold('push')} and ${bold('tag')}.`)
 
   switch (args[0]) {
     case 'commit':
-      if (args.length < 2) throw new Error('A message is required for Git commit')
+      const comment = args.length > 1 ? args.slice(1).join(' ') : undefined
 
-      return ['log -w Committing changes to Git repository', 'git add -A', `git commit -m '${args.slice(1).join(' ')}' --quiet`]
+      return [
+        'log -w Committing changes to Git repository',
+        'git add -A',
+        `git commit ${comment ? `-m ${args.slice(1).join(' ')}` : ''} --quiet`
+      ]
 
     case 'push':
       return ['log -w Pushing Git repository to Github', 'git push --quiet --follow-tags']

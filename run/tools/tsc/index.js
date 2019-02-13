@@ -2,11 +2,11 @@
 
 const description = 'Transpiles TypeScript into JavaScript ES modules'
 
-function usage() {
+function usage () {
   return require('../../utils/usage').composeUsageInformation([['-s  --silent', 'No output unless errors are encountered by TypeScript compiler']])
 }
 
-function run(args) {
+function run (args) {
   const minimist = require('minimist')
   const { silent } = minimist(args, {
     alias: { s: 'silent' },

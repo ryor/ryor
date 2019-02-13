@@ -11,4 +11,4 @@ const run = [
   'echo all tests passed successfully'
 ]
 
-module.exports = {description, run}
+module.exports = { description, run }

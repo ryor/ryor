@@ -1,8 +1,7 @@
-const {resolve} = require('path')
-const {Runner} = require('../Runner')
+/* eslint-env jest */
+const { Runner } = require('../Runner')
 
-test('Initializes Runner instances', () =>
-{
+test('Initializes Runner instances', () => {
   let runner = new Runner()
 
   expect(runner.definitions).toEqual([])
@@ -19,12 +18,11 @@ test('Initializes Runner instances', () =>
   expect(runner.context).toBe('transpiler')
 })
 
-test('Confirms calling Runner instance run() just calls Runner instance next()', () =>
-{
+test('Confirms calling Runner instance run() just calls Runner instance next()', () => {
   const runner = new Runner()
   let nextCalled = false
 
-  runner.next = () => nextCalled = true
+  runner.next = () => (nextCalled = true)
 
   runner.run()
 

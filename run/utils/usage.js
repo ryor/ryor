@@ -1,6 +1,6 @@
 'use strict'
 
-function composeUsageInformation(options, commands) {
+function composeUsageInformation (options, commands) {
   const { bold } = require('chalk')
   const { EOL } = require('os')
   const { composeUsageInformationList } = require('ryor')
