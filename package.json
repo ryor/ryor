@@ -1,7 +1,7 @@
 {
   "name": "ryor",
   "version": "0.2.11",
-  "description": "Roll your own lightweight task runner for your project",
+  "description": "(R)oll (y)our (o)wn task (r)unner for your project",
   "author": "Scott Steven Rodriguez <scott@movecodemove.com> (http://movecodemove.com)",
   "license": "MIT",
   "repository": "ryor/ryor",

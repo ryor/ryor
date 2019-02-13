@@ -1,4 +1,4 @@
-## Roll Your Own (Task) Runner for Node.js Projects
+## (R)oll (Y)our (O)wn Task (R)unner for Node.js Projects
 
 [![Circle CI](https://circleci.com/gh/ryor/ryor.svg?&style=shield)](https://circleci.com/gh/ryor/ryor)
 [![Codecov](https://img.shields.io/codecov/c/github/ryor/ryor.svg)](https://codecov.io/gh/ryor/ryor)
