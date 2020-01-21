@@ -14,7 +14,7 @@ export default {
       }
     },
     {
-      transformBundle: source =>
+      renderChunk: source =>
         source
           .replace(`Object.defineProperty(exports, '__esModule', { value: true });${EOL}${EOL}`, '')
           .replace('exports.run = run', 'exports = configuration => run(process.argv.slice(2), configuration)')
