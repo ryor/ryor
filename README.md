@@ -1,6 +1,6 @@
 ## (R)oll (Y)our (O)wn Task (R)unner for Node.js Projects
 
-[![Circle CI](https://circleci.com/gh/ryor/ryor.svg?&style=shield)](https://circleci.com/gh/ryor/ryor)
+[![Gitlab Pipelines](https://gitlab.com/ryor-/ryor/badges/master/pipeline.svg)](https://gitlab.com/ryor-/ryor/pipelines)
 [![Codecov](https://img.shields.io/codecov/c/github/ryor/ryor.svg)](https://codecov.io/gh/ryor/ryor)
 [![License](https://img.shields.io/github/license/ryor/ryor.svg)](https://github.com/ryor/ryor/blob/master/LICENSE)
 
