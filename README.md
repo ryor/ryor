@@ -2,8 +2,6 @@
 
 [![Circle CI](https://circleci.com/gh/ryor/ryor.svg?&style=shield)](https://circleci.com/gh/ryor/ryor)
 [![Codecov](https://img.shields.io/codecov/c/github/ryor/ryor.svg)](https://codecov.io/gh/ryor/ryor)
-[![David-DM dependencies](https://david-dm.org/ryor/ryor/master.svg)](https://david-dm.org/ryor/ryor/master)
-[![David-DM devDependencies](https://david-dm.org/ryor/ryor/dev-status.svg)](https://david-dm.org/ryor/ryor/master#info=devDependencies)
 [![License](https://img.shields.io/github/license/ryor/ryor.svg)](https://github.com/ryor/ryor/blob/master/LICENSE)
 
 ### No system dependencies
