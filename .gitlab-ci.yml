@@ -1,14 +1,18 @@
-image: node:slim
+image: node:latest
 
 variables:
   GIT_DEPTH: "3"
+
+stages:
+ - test
+ - deploy
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - .npm/
 
-run:
+test:
   script:
     - npm config set cache "$(pwd)/.npm"
     - npm ci --no-audit --prefer-offline
