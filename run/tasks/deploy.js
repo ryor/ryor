@@ -5,6 +5,7 @@ module.exports = {
   run: [
     'shx cp package.json README.md build',
     () => require('fs').writeFileSync('build/.npmrc', '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'),
-    'cd build && npm publish'
+    'cd build',
+    'npm publish'
   ]
 }
