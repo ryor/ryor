@@ -1,4 +1,4 @@
-image: node:alpine
+image: node:slim
 
 variables:
   GIT_DEPTH: "3"
