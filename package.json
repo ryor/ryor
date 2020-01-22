@@ -22,7 +22,6 @@
     "@types/minimist": "^1.2.0",
     "@types/node": "^13.1.8",
     "@types/shell-quote": "^1.6.1",
-    "codecov": "^3.6.1",
     "jest": "^24.9.0",
     "rollup": "^1.29.1",
     "ryor": "0.2.12",
