@@ -28,4 +28,5 @@ build:
 deploy:
   stage: deploy
   script: echo "deploy"
-  only: tags
+  only:
+    - tags
