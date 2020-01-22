@@ -8,7 +8,7 @@ cache:
   paths:
     - .npm/
 
-job:
+all-tasks:
   script:
     - npm config set cache "$(pwd)/.npm"
     - npm ci --no-audit --prefer-offline
