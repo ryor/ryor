@@ -14,9 +14,6 @@ module.exports = {
       boolean: ['b', 'build', 'p', 'push', 'r', 'release', 't', 'test']
     })
     const message = _.join(' ').trim()
-
-    // if (!message) throw new Error('A message is required for the commit.')
-
     const sequence = []
     const parallelSequence = []
     const doPush = push || release
@@ -40,7 +37,7 @@ module.exports = {
 
     sequence.push(
       'git add -A',
-      `git commit -q`
+      `git commit -q ${message ? ` -m "${message}"` : ''}`
     )
 
     if (doPush) sequence.push('git push --quiet --follow-tags')
