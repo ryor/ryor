@@ -40,6 +40,8 @@ module.exports = {
       `git commit -q ${message ? ` -m "${message}"` : ''}`
     )
 
+    if (release) sequence.push('npm version patch')
+
     if (doPush) sequence.push('git push --quiet --follow-tags')
 
     return sequence
