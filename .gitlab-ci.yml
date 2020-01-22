@@ -10,7 +10,7 @@ cache:
 
 run:
   script:
-    - npm install
+    - npm ci
     - node run test -cp
     - node run build
-    - if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$"; then echo "publish" fi
+    - if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$"; then echo "publish"; fi
