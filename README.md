@@ -1,8 +1,8 @@
 ## (R)oll (Y)our (O)wn Task (R)unner for Node.js Projects
 
-[![pipeline](https://gitlab.com/ryor-/ryor/badges/master/pipeline.svg)]
-[![coverage](https://gitlab.com/ryor-/ryor/badges/master/coverage.svg)]
-[![license](https://img.shields.io/badge/License-MIT-green.svg)]
+![pipeline](https://gitlab.com/ryor-/ryor/badges/master/pipeline.svg)
+![coverage](https://gitlab.com/ryor-/ryor/badges/master/coverage.svg)
+![license](https://img.shields.io/badge/License-MIT-green.svg)
 
 ### No system dependencies
 
