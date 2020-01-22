@@ -1,8 +1,7 @@
-import { EOL } from 'os'
-
 export default {
   input: 'build/esm/index.js',
   output: {
+    esModule: false,
     file: 'build/index.js',
     format: 'cjs'
   },
@@ -16,8 +15,11 @@ export default {
     {
       renderChunk: source =>
         source
-          .replace(`Object.defineProperty(exports, '__esModule', { value: true });${EOL}${EOL}`, '')
-          .replace('exports.run = run', 'exports = configuration => run(process.argv.slice(2), configuration)')
+          .replace('exports.run = run;', '')
+          .replace(
+            'exports.CommandRunnable',
+            'exports = configuration => run(process.argv.slice(2), configuration);\nexports.CommandRunnable'
+          )
           .replace(/exports/g, 'module.exports')
     }
   ]
