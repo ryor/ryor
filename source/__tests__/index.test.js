@@ -1,9 +1,9 @@
 /* eslint-env jest */
-const index = require('..')
-
 test('Confirms module exports', () => {
-  expect(index.run).toBeDefined()
-  expect(index.CommandRunnable).toBeDefined()
-  expect(index.FunctionRunnable).toBeDefined()
-  expect(index.composeUsageInformationList).toBeDefined()
+  const moduleExports = require('..').default
+
+  expect(moduleExports.run).toBeDefined()
+  expect(moduleExports.CommandRunnable).toBeDefined()
+  expect(moduleExports.FunctionRunnable).toBeDefined()
+  expect(moduleExports.composeUsageInformationList).toBeDefined()
 })

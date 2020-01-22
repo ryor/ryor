@@ -11,10 +11,24 @@ module.exports = {
       boolean: ['s', 'silent']
     })
     const sequence = [
-      'shx rm -rf build/esm',
+      'shx rm -rf build',
       `tsc${silent ? ' -s' : ''}`,
       `rollup${silent ? ' -s' : ''}`,
-      'shx rm -rf build/esm'
+      'shx rm -rf build/esm',
+      () => {
+        const { copyFileSync, readFileSync, writeFileSync } = require('fs')
+        const json = JSON.parse(readFileSync('package.json'))
+
+        delete json.devDependencies
+
+        json.bin = {
+          ryor: './cli'
+        }
+
+        copyFileSync('README.md', 'build/README.md')
+        writeFileSync('build/cli.js', '#!/usr/bin/env node\nrequire("./index").run()')
+        writeFileSync('build/package.json', JSON.stringify(json, null, ' '))
+      }
     ]
 
     if (!silent) sequence.push('log -s Build complete')

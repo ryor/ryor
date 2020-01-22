@@ -6,17 +6,18 @@ function usage () {
   return require('../utils/usage').composeUsageInformation([
     ['-c  --coverage', 'Generates Jest coverage results'],
     ['-p  --parallel', 'Runs tools in parallel'],
+    ['-f  --fix', 'Fix errors that can be handled automatically by ESlist'],
     ['-s  --silent', 'No output unless errors are encountered by tools']
   ])
 }
 
 function run (args) {
   const minimist = require('minimist')
-  const { coverage, parallel, silent } = minimist(args, {
-    alias: { c: 'coverage', p: 'parallel', s: 'silent' },
-    boolean: ['c', 'coverage', 'p', 'parallel', 's', 'silent']
+  const { coverage, fix, parallel, silent } = minimist(args, {
+    alias: { c: 'coverage', f: 'fix', p: 'parallel', s: 'silent' },
+    boolean: ['c', 'coverage', 'f', 'fix', 'p', 'parallel', 's', 'silent']
   })
-  let tools = [`eslint${silent ? ' -s' : ''}`, `jest${coverage ? ' -c' : ''}${silent ? ' -s' : ''}`]
+  let tools = [`eslint${fix ? ' -f' : ''}${silent ? ' -q' : ''}`, `jest${coverage ? ' -c' : ''}${silent ? ' -s' : ''}`]
 
   if (parallel) tools = [tools]
 

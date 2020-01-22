@@ -3,45 +3,44 @@
 module.exports = {
   description: 'Commits all current changes to Git repository',
   usage: require('../utils/usage').composeUsageInformation([
-    ['-b  --build', 'Commit changes only if build completes successfully'],
     ['-t  --test', 'Commit changes only if all tests pass'],
-    ['-p  --push', 'Push commit'],
-    ['-r  --release', 'Pushes new tag after verifying tests pass and build completes succesfully']
+    ['-b  --build', 'Commit changes only if build completes successfully'],
+    ['-r  --release', 'Updates package.json semver patch number and creates version tag for commit'],
+    ['-p  --push', 'Pushes commit after verifying tests pass and build completes succesfully']
   ]),
   run: args => {
     const { _, build, push, release, test } = require('minimist')(args, {
       alias: { b: 'build', p: 'push', r: 'release', t: 'test' },
       boolean: ['b', 'build', 'p', 'push', 'r', 'release', 't', 'test']
     })
-    const message = _.join(' ')
-
-    if (!message) { throw new Error('A message is required for the commit') }
-
+    const message = _.join(' ').trim()
     const sequence = []
+    const parallelSequence = []
+    const doPush = push || release
+    const doBuild = build || doPush
+    const doTest = test || doPush
+    let logMessage = ''
 
-    if (test || release) {
-      sequence.push(
-        'log -w Verifying that all tests pass',
-        'test -ps'
-      )
+    if (doTest) {
+      logMessage += 'Verifying that all tests pass'
+      parallelSequence.push('test -fps')
     }
 
-    if (build || release) {
-      sequence.push(
-        'log -w Verifying that build completes successfully',
-        'build -s',
-        'shx rm -rf build'
-      )
+    if (doBuild) {
+      logMessage += `${logMessage ? ' and' : 'Verifying that'} build completes successfully`
+      parallelSequence.push('build -s')
     }
+
+    if (doBuild || doTest) sequence.push(`log -w ${logMessage}`, parallelSequence)
+
+    if (doBuild) sequence.push('shx rm -rf build')
 
     sequence.push(
       'git add -A',
-      `git commit -qm' "${message}"`
+      // `git commit -q'"${message ? ` -m ${message}` : ''}"`
     )
 
-    if (release) sequence.push('npm version patch')
-
-    if (push || release) sequence.push('git push --quiet --follow-tags')
+    // if (doPush) sequence.push('git push --quiet --follow-tags')
 
     return sequence
   }
