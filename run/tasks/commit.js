@@ -1,29 +1,44 @@
 'use strict'
 
 module.exports = {
-  description: 'Verifies that tests pass and build completes succesfully and then commits changes to Git repository',
+  description: 'Commits all current changes to Git repository',
   usage: require('../utils/usage').composeUsageInformation([
-    ['-p  --push', 'Pushes commit to Github'],
-    ['-r  --release', 'Increments semver patch number in package.json file, creates tag with new version number and pushes commit and tag to Github']
+    ['-b  --build',   'Commit changes only if build completes successfully'],
+    ['-t  --test',    'Commit changes only if all tests pass'],
+    ['-p  --push',    'Push commit'],
+    ['-r  --release', 'Increments package patch number and tags and pushes commit']
   ]),
   run: args => {
-    const { _, push, release } = require('minimist')(args, {
-      alias: { p: 'push', r: 'release' },
-      boolean: ['p', 'push', 'r', 'release']
+    const { _, build, push, release, test } = require('minimist')(args, {
+      alias: { b: 'build', p: 'push', r: 'release', t: 'test' },
+      boolean: ['b', 'build', 'p', 'push', 'r', 'release', 't', 'test']
     })
-    const sequence = [
-      /*
-      'log -w Verifying that tests pass and build completes successfully',
-      ['test -ps', 'build -s'],
-      'shx rm -rf build',
-      'git add -A',
-      `${release ? 'npm version patch -m' : 'git commit -qm'} ${_.join(' ')}`
-      */
-     'git add -A',
-     `git commit -qm "${_.join(' ')}"`
-    ]
+    const message = _.join(' ')
 
-    // if (push || release) sequence.push('git push --quiet --follow-tags')
+    if (!message)
+      throw new Error(`A message is required for the commit`)
+
+    const sequence = []
+
+    if (test)
+      sequence.push(
+        'log -w Verifying that all tests pass',
+        'test -ps'
+      )
+
+    if (build)
+      sequence.push(
+        'log -w Verifying that build completes successfully',
+        'build -s',
+        'shx rm -rf build'
+      )
+
+    sequence.push(
+      'git add -A',
+      `${release ? 'npm version patch -m' : 'git commit -qm'} "${message}"`
+    )
+
+    if (push || release) sequence.push('git push --quiet --follow-tags')
 
     return sequence
   }
