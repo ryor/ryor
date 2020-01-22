@@ -3,14 +3,29 @@ image: node:alpine
 variables:
   GIT_DEPTH: "3"
 
+stages:
+  - test
+  - build
+  - deploy
+
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - node_modules/
 
-before_script:
-  - npm install
+install_dependencies:
+  stage: .pre
+  script: npm install
 
-run-ryor-runnable:
-  script:
-  - node run
+test:
+  stage: test
+  script: node run test -cp && echo "codecov"
+
+build:
+  stage: build
+  script: node run build -s
+
+deploy:
+  stage: deploy
+  script: echo "deploy"
+  only: tags
