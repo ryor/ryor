@@ -10,6 +10,7 @@ cache:
 
 run:
   script:
+    - npm config set cache "$(pwd)/.npm"
     - npm ci --no-audit --prefer-offline
     - node run test -cp
     - node run build
