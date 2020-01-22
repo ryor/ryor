@@ -1,4 +1,8 @@
-image: node:latest
+image: node:alpine
+
+stages:
+  - test
+  - publish
 
 variables:
   GIT_DEPTH: "3"
@@ -8,13 +12,22 @@ cache:
   paths:
     - .npm/
 
-all-tasks:
+test:
+  stage: test
   script:
     - npm config set cache "$(pwd)/.npm"
     - npm ci --no-audit --prefer-offline
     - node run test -cp
-    - node run build
-    - if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$"; then node run deploy; fi
   coverage: /All\sfiles.*?\s+(\d+.\d+)/
   only:
     - master
+
+publish:
+  stage: test
+  script:
+    - npm config set cache "$(pwd)/.npm"
+    - npm ci --no-audit --prefer-offline
+    - node run build
+    - node run publish
+  only:
+    - tags
