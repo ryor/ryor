@@ -13,8 +13,9 @@ all-tasks:
     - npm config set cache "$(pwd)/.npm"
     - npm ci --no-audit --prefer-offline
     - node run test -cp
+    - node run build
     - echo -e
       "if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$";
-        then echo 'Publishing to NPM';
+        then node run npm publish;
       fi;"
   coverage: /All\sfiles.*?\s+(\d+.\d+)/
