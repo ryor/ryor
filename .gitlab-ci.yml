@@ -3,30 +3,14 @@ image: node:alpine
 variables:
   GIT_DEPTH: "3"
 
-stages:
-  - test
-  - build
-  - deploy
-
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - node_modules/
 
-install_dependencies:
-  stage: .pre
-  script: npm install
-
-test:
-  stage: test
-  script: node run test -cp && echo "codecov"
-
-build:
-  stage: build
-  script: node run build -s
-
-deploy:
-  stage: deploy
-  script: echo "deploy"
-  only:
-    - tags
+run:
+  script:
+    - npm install
+    - node run test -cp
+    - node run build
+    - if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$"; then echo "publish" fi
