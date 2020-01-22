@@ -4,8 +4,8 @@
   "description": "(R)oll (y)our (o)wn task (r)unner for your project",
   "author": "Scott Steven Rodriguez <scott@movecodemove.com> (http://movecodemove.com)",
   "license": "MIT",
-  "repository": "ryor/ryor",
-  "bugs": "https://github.com/ryor/ryor/issues",
+  "repository": "gitlab:ryor-/ryor",
+  "bugs": "https://gitlab.com/ryor-/ryor/issues",
   "engines": {
     "node": ">= 6.0.0"
   },
