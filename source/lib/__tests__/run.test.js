@@ -22,8 +22,8 @@ test('Outputs error messages', () => {
 
     if (++exits === 2) { resolver() }
   })
-  let errors = []
-  let exitCodes = []
+  const errors = []
+  const exitCodes = []
   let exits = 0
   let resolver
 

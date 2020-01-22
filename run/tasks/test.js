@@ -1,6 +1,6 @@
 'use strict'
 
-const description = 'Checks TypeScript for errors with TSLint and tests TypeScript with Jest'
+const description = 'Checks source and runnables code for errors with ESLint and Jest'
 
 function usage () {
   return require('../utils/usage').composeUsageInformation([
@@ -16,7 +16,7 @@ function run (args) {
     alias: { c: 'coverage', p: 'parallel', s: 'silent' },
     boolean: ['c', 'coverage', 'p', 'parallel', 's', 'silent']
   })
-  let tools = [`tslint${silent ? ' -s' : ''}`, `jest${coverage ? ' -c' : ''}${silent ? ' -s' : ''}`]
+  let tools = [`eslint${silent ? ' -s' : ''}`, `jest${coverage ? ' -c' : ''}${silent ? ' -s' : ''}`]
 
   if (parallel) tools = [tools]
 

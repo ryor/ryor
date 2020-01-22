@@ -13,8 +13,8 @@ module.exports = {
     const sequence = [
       'shx rm -rf build/esm',
       `tsc${silent ? ' -s' : ''}`,
-      `rollup${silent ? ' -s' : ''}`
-      // 'shx rm -rf build/esm'
+      `rollup${silent ? ' -s' : ''}`,
+      'shx rm -rf build/esm'
     ]
 
     if (!silent) sequence.push('log -s Build complete')

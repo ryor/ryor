@@ -3,9 +3,9 @@
 module.exports = {
   description: 'Commits all current changes to Git repository',
   usage: require('../utils/usage').composeUsageInformation([
-    ['-b  --build',   'Commit changes only if build completes successfully'],
-    ['-t  --test',    'Commit changes only if all tests pass'],
-    ['-p  --push',    'Push commit'],
+    ['-b  --build', 'Commit changes only if build completes successfully'],
+    ['-t  --test', 'Commit changes only if all tests pass'],
+    ['-p  --push', 'Push commit'],
     ['-r  --release', 'Pushes new tag after verifying tests pass and build completes succesfully']
   ]),
   run: args => {
@@ -15,23 +15,24 @@ module.exports = {
     })
     const message = _.join(' ')
 
-    if (!message)
-      throw new Error(`A message is required for the commit`)
+    if (!message) { throw new Error('A message is required for the commit') }
 
     const sequence = []
 
-    if (test || release)
+    if (test || release) {
       sequence.push(
         'log -w Verifying that all tests pass',
         'test -ps'
       )
+    }
 
-    if (build || release)
+    if (build || release) {
       sequence.push(
         'log -w Verifying that build completes successfully',
         'build -s',
         'shx rm -rf build'
       )
+    }
 
     sequence.push(
       'git add -A',
