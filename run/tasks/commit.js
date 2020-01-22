@@ -20,6 +20,12 @@ module.exports = {
 
     const sequence = []
 
+    if (test || release)
+      sequence.push(
+        'log -w Verifying that all tests pass',
+        'test -ps'
+      )
+
     if (build || release)
       sequence.push(
         'log -w Verifying that build completes successfully',
@@ -27,16 +33,12 @@ module.exports = {
         'shx rm -rf build'
       )
 
-    if (test || release)
-      sequence.push(
-        'log -w Verifying that all tests pass',
-        'test -ps'
-      )
-
     sequence.push(
       'git add -A',
-      `${release ? 'npm version patch -m' : 'git commit -qm'} "${message}"`
+      `git commit -qm' "${message}"`
     )
+
+    if (release) sequence.push('npm version patch')
 
     if (push || release) sequence.push('git push --quiet --follow-tags')
 

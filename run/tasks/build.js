@@ -14,8 +14,7 @@ module.exports = {
       'shx rm -rf build/esm',
       `tsc${silent ? ' -s' : ''}`,
       `rollup${silent ? ' -s' : ''}`,
-      'shx rm -rf build/esm',
-      'shx cp package.json README.md build'
+      'shx rm -rf build/esm'
     ]
 
     if (!silent) sequence.push('log -s Build complete')
