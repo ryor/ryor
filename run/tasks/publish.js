@@ -4,8 +4,7 @@ module.exports = {
   description: 'Publishes latest build to npm registry',
   run: [
     'cd build',
-    // eslint-disable-next-line no-template-curly-in-string
-    () => require('fs').writeFileSync('.npmrc', '//registry.npmjs.org/:_authToken=${NPM_TOKEN}')
-    // 'npm publish'
+    () => require('fs').writeFileSync('.npmrc', `//registry.npmjs.org/:_authToken=${process.env.NPM_TOKEN}`),
+    'npm publish'
   ]
 }
