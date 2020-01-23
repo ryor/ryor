@@ -18,6 +18,7 @@
     "shell-quote": "^1.7.2"
   },
   "devDependencies": {
+    "@types/cross-spawn": "^6.0.1",
     "@types/minimist": "^1.2.0",
     "@types/node": "^13.1.8",
     "@types/shell-quote": "^1.6.1",

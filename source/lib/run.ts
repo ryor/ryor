@@ -11,13 +11,13 @@ export const RUN_DURATION_MESSAGE:string = 'Completed in [TIME]ms.'
 
 export const DEFAULT_TRUNCATION_COLUMNS:number = 100
 
-export function run (input:string[] = [], configuration:Configuration = {}):void {
+export function run (input:string[] = process.argv.slice(2), configuration:Configuration = {}):void {
   const flags:string[] = []
   let outputRunDuration:boolean = false
   let startTime:number|undefined
 
   if (input.length > 0) {
-    while (input[0].charAt(0) === '-') { flags.push(input.shift()!) }
+    while (input[0].charAt(0) === '-') flags.push(input.shift()!)
   }
 
   if (flags.length > 0) {
@@ -26,7 +26,7 @@ export function run (input:string[] = [], configuration:Configuration = {}):void
       boolean: ['c', 'command', 't', 'time']
     })
 
-    if (parsedFlags.command === true) { input.unshift('-c') }
+    if (parsedFlags.command === true) input.unshift('-c')
 
     if (parsedFlags.time === true) {
       outputRunDuration = true
@@ -43,14 +43,14 @@ export function run (input:string[] = [], configuration:Configuration = {}):void
           .join(EOL)
         }${EOL}`)
 
-      if (outputRunDuration) { console.log(RUN_DURATION_MESSAGE.replace('[TIME]', String(Date.now() - startTime!))) }
+      if (outputRunDuration) console.log(RUN_DURATION_MESSAGE.replace('[TIME]', String(Date.now() - startTime!)))
     } else {
       ensureCorrectPathValue()
 
       new Runner(parseCommandLineInput(input))
         .run()
         .then(():void => {
-          if (outputRunDuration) { console.log(RUN_DURATION_MESSAGE.replace('[TIME]', String(Date.now() - startTime!))) }
+          if (outputRunDuration) console.log(RUN_DURATION_MESSAGE.replace('[TIME]', String(Date.now() - startTime!)))
         })
         .catch(handleError)
     }
