@@ -19,13 +19,13 @@ module.exports = {
     if (both || source) {
       if (!quiet) sequence.push(`log -w Checking for${fix ? ' and fixing ' : ' '}errors in source TypeScript with ESLint`)
 
-      sequence.push(`npx eslint -c run/tools/eslint/config.source.yml source --ext .js,.ts${fix ? ' --fix' : ''}`)
+      sequence.push(`eslint -c run/tools/eslint/config.source.yml source --ext .js,.ts${fix ? ' --fix' : ''}`)
     }
 
     if (both || runnables) {
       if (!quiet) sequence.push(`log -w Checking for${fix ? ' and fixing ' : ' '}errors in runnables JavaScript with ESLint`)
 
-      sequence.push(`npx eslint -c run/tools/eslint/config.run.yml run${fix ? ' --fix' : ''}`)
+      sequence.push(`eslint -c run/tools/eslint/config.run.yml run${fix ? ' --fix' : ''}`)
     }
 
     return sequence
