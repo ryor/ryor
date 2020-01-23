@@ -11,7 +11,7 @@ export const RUN_DURATION_MESSAGE:string = 'Completed in [TIME]ms.'
 
 export const DEFAULT_TRUNCATION_COLUMNS:number = 100
 
-export function run (input:string[] = process.argv.slice(2), configuration:Configuration = {}):void {
+export function run (input:string[] = [], configuration:Configuration = {}):void {
   const flags:string[] = []
   let outputRunDuration:boolean = false
   let startTime:number|undefined

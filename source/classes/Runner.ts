@@ -27,7 +27,7 @@ export class Runner implements Runnable {
         if (runnable instanceof FunctionRunnable) {
           promise = promise
             .then((result:RunnablesDefinition|void):Promise<void>|void => {
-              if (result !== undefined) { return new Runner(Array.isArray(result) ? result : [result], runnable.context).run() }
+              if (result) return new Runner(Array.isArray(result) ? result : [result], runnable.context).run()
             })
         }
       }

@@ -1,6 +1,6 @@
 /* eslint-env jest */
 test('Confirms module exports', () => {
-  const moduleExports = require('..').default
+  const moduleExports = require('..')
 
   expect(moduleExports.run).toBeDefined()
   expect(moduleExports.CommandRunnable).toBeDefined()

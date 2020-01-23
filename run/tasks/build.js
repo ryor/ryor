@@ -14,21 +14,23 @@ module.exports = {
       'shx rm -rf build',
       `tsc${silent ? ' -s' : ''}`,
       `rollup${silent ? ' -s' : ''}`,
-      'shx rm -rf build/esm',
       () => {
-        const { copyFileSync, readFileSync, writeFileSync } = require('fs')
-        const json = JSON.parse(readFileSync('package.json'))
+        const { readFileSync, writeFileSync } = require('fs')
 
-        delete json.devDependencies
-
-        json.bin = {
-          ryor: './cli'
-        }
-
-        copyFileSync('README.md', 'build/README.md')
-        writeFileSync('build/cli.js', '#!/usr/bin/env node\nrequire("./index").run()')
-        writeFileSync('build/package.json', JSON.stringify(json, null, ' '))
-      }
+        writeFileSync(
+          'build/index.js',
+          readFileSync('build/index.js')
+            .toString()
+            .replace('exports.run = run;', '')
+            .replace(
+              'exports.CommandRunnable',
+              'exports = configuration => run(process.argv.slice(2), configuration);\nexports.CommandRunnable'
+            )
+            .replace(/exports/g, 'module.exports')
+        )
+      },
+      'shx rm -rf build/esm',
+      'shx cp package.json README.md build'
     ]
 
     if (!silent) sequence.push('log -s Build complete')
