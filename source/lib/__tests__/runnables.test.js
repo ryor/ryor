@@ -53,7 +53,7 @@ test('Resolves runnables from scripts', () => {
 
   runnable = resolveRunnableFromScript('test')
   expect(runnable).toBeInstanceOf(Runner)
-  expect(runnable.definitions).toEqual([
+  expect(runnable.sequence).toEqual([
     'echo running tests',
     [
       'echo running test 1 in parallel',

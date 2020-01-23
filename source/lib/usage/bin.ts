@@ -41,7 +41,7 @@ export function composeBinUsageInformation ():string {
       let description:string|undefined
 
       if (existsSync(packageJSONPath)) {
-        const packageJSON:{description?:string} = require(packageJSONPath) as {description?:string}
+        const packageJSON:{description?:string} = <{description?:string}>require(packageJSONPath)
 
         if (packageJSON.description !== undefined && packageJSON.description.length > 0) { description = packageJSON.description }
 

@@ -37,10 +37,10 @@ export function resolveRunnableModule (name:string):RunnableModule|undefined {
       if (!existsSync(jsFilePath)) jsFilePath = resolve(typeDirectoryPath, name, 'index.js')
 
       if (existsSync(jsFilePath)) {
-        const jsModule:RunnableModule|{run?:{}} = require(jsFilePath) as RunnableModule|{run?:{}}
+        const jsModule:RunnableModule|{run?:{}} = <RunnableModule|{run?:{}}>require(jsFilePath)
 
         if (jsModule.run !== undefined) {
-          resolvedModule = jsModule as RunnableModule
+          resolvedModule = <RunnableModule>jsModule
 
           if (resolvedModules === undefined) resolvedModules = new Map<string, RunnableModule>()
 
@@ -69,9 +69,9 @@ export function resolveAllRunnableModules ():Map<string, Map<string, RunnableMod
         if (!existsSync(jsFilePath)) jsFilePath = resolve(typeDirectoryPath, name, 'index.js')
 
         if (existsSync(jsFilePath)) {
-          const jsModule:RunnableModule|{run?:{}} = require(jsFilePath) as RunnableModule|{run?:{}}
+          const jsModule:RunnableModule|{run?:{}} = <RunnableModule|{run?:{}}>require(jsFilePath)
 
-          if (jsModule.run !== undefined) typeModules.set(name, jsModule as RunnableModule)
+          if (jsModule.run !== undefined) typeModules.set(name, <RunnableModule>jsModule)
         }
       })
 

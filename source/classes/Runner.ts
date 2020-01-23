@@ -4,39 +4,24 @@ import { FunctionRunnable } from './FunctionRunnable'
 
 export class Runner implements Runnable {
   // eslint-disable-next-line no-useless-constructor
-  public constructor (public definitions:RunnablesDefinition[] = [], public context?:string) {}
+  public constructor (public sequence:RunnablesDefinition[] = [], public context?:string) {}
 
-  public run ():Promise<void> {
-    return this.next()
-  }
+  public async run ():Promise<void> {
+    while (this.sequence.length > 0) {
+      const sequenceItem:RunnablesDefinition = this.sequence.shift()!
 
-  private next ():Promise<void> {
-    if (this.definitions.length > 0) {
-      const definition:RunnablesDefinition = this.definitions.shift()!
-      let promise:Promise<RunnablesDefinition|void|void[]>
+      if (this.context !== undefined && Array.isArray(sequenceItem)) {
+        await Promise.all((sequenceItem as string[]).map((value:RunnablesDefinition):Promise<void> => new Runner([value], this.context).run()))
+      } else {
+        const runnable:Runnable = sequenceItem instanceof CommandRunnable || sequenceItem instanceof FunctionRunnable || sequenceItem instanceof Runner
+          ? sequenceItem
+          : typeof sequenceItem === 'function'
+            ? new FunctionRunnable(sequenceItem, [], this.context!)
+            : resolveRunnableFromScript(sequenceItem as RunnableScript, this.context)
+        let result = await runnable.run()
 
-      if (this.context !== undefined && Array.isArray(definition)) { promise = Promise.all((definition as string[]).map((value:RunnablesDefinition):Promise<void> => new Runner([value], this.context).run())) } else {
-        const runnable:Runnable = definition instanceof CommandRunnable || definition instanceof FunctionRunnable || definition instanceof Runner
-          ? definition
-          : typeof definition === 'function'
-            ? new FunctionRunnable(definition, [], this.context!)
-            : resolveRunnableFromScript(definition as RunnableScript, this.context)
-
-        promise = runnable.run()
-
-        if (runnable instanceof FunctionRunnable) {
-          promise = promise
-            .then((result:RunnablesDefinition|void):Promise<void>|void => {
-              if (result) return new Runner(Array.isArray(result) ? result : [result], runnable.context).run()
-            })
-        }
+        if (runnable instanceof FunctionRunnable && result) result = await new Runner(Array.isArray(result) ? result : [result], runnable.context).run()
       }
-
-      return promise.then(():Promise<void>|void => {
-        if (this.definitions.length > 0) { return this.next() }
-      })
     }
-
-    return Promise.resolve()
   }
 }

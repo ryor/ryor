@@ -11,18 +11,18 @@ export function isValidRunnableScript (script:RunnableScript):boolean {
 }
 
 export function parseRunnableScript (script:RunnableScript|string):CommandRunnable|RunnableScript {
-  if (typeof script === 'string') { script = parse(script) as string[] }
+  if (typeof script === 'string') { script = <string[]>parse(script) }
 
   if ((script[0]).startsWith('-')) {
     const flags:string[] = []
 
     if (script.length > 0) {
-      while ((script[0]).charAt(0) === '-') { flags.push((script as string[]).shift()!) }
+      while ((script[0]).charAt(0) === '-') { flags.push((<string[]>script).shift()!) }
     }
 
     const parsedFlags:minimist.ParsedArgs = minimist(flags, { alias: { c: 'command' }, boolean: ['c', 'command'] })
 
-    if (parsedFlags.command === true) { return new CommandRunnable(script[0], (script as string[]).slice(1)) }
+    if (parsedFlags.command === true) { return new CommandRunnable(script[0], (<string[]>script).slice(1)) }
   }
 
   return script
@@ -41,7 +41,7 @@ export function resolveRunnableFromScript (script:RunnableScript, context?:strin
 
   if (parsedScript instanceof CommandRunnable) { return parsedScript }
 
-  const strings:string[] = parsedScript as string[]
+  const strings:string[] = <string[]>parsedScript
   const name:string = strings[0]
   const args:string[] = strings.slice(1)
 
@@ -63,11 +63,11 @@ export function resolveRunnableFromScript (script:RunnableScript, context?:strin
     return definition
   }
 
-  if (Array.isArray(definition)) { return new Runner(definition, context) }
+  if (Array.isArray(definition)) return new Runner(definition, context)
 
-  if (typeof definition === 'function') { return new FunctionRunnable(definition, args, context) }
+  if (typeof definition === 'function') return new FunctionRunnable(definition, args, context)
 
-  if (typeof definition === 'string') { return resolveRunnableFromScript(definition, context) }
+  if (typeof definition === 'string') return resolveRunnableFromScript(definition, context)
 
   throw new Error(`Invalid runnable definition encountered in ${chalk.bold(context)} module: ${chalk.bold(JSON.stringify(definition))}`)
 }

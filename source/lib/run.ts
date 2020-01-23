@@ -39,7 +39,7 @@ export function run (input:string[] = [], configuration:Configuration = {}):void
       console.log(`${EOL}${
         composeUsageInformation(input.length > 1 ? input[1] : undefined, configuration.usage)
           .split(EOL)
-          .map((line) => cliTruncate(line, process.stdout.columns as number || DEFAULT_TRUNCATION_COLUMNS))
+          .map((line) => cliTruncate(line, <number>process.stdout.columns || DEFAULT_TRUNCATION_COLUMNS))
           .join(EOL)
         }${EOL}`)
 
@@ -55,6 +55,6 @@ export function run (input:string[] = [], configuration:Configuration = {}):void
         .catch(handleError)
     }
   } catch (error) {
-    handleError(error as Error)
+    handleError(<Error>error)
   }
 }
