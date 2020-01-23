@@ -11,7 +11,7 @@ export class CommandRunnable implements Runnable {
       case 'cd':
 
         // TODO: Make sure paths with directory names with spaces are handled properly
-        if (this.args.length > 0) { process.chdir(path.resolve(process.cwd(), this.args[0])) }
+        if (this.args.length > 0) process.chdir(path.resolve(process.cwd(), this.args[0]))
 
         return Promise.resolve()
 
