@@ -7,8 +7,7 @@
   "repository": "gitlab:ryor-/ryor",
   "bugs": "https://gitlab.com/ryor-/ryor/issues",
   "engines": {
-    "node": ">= 8.5.0",
-    "npm": ">= 5.2.0"
+    "node": ">= 7.6.0"
   },
   "dependencies": {
     "chalk": "^3.0.0",
