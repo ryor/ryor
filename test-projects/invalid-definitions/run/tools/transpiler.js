@@ -1,1 +1,1 @@
-module.exports = { run: '' }
+export const run = ''

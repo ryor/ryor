@@ -1,1 +1,1 @@
-module.exports = { run: true }
+export const run = true

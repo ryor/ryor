@@ -1,3 +1,1 @@
-const run = 'echo bundling
-
-module.exports = {description, run}
+export const run = 'echo bundling

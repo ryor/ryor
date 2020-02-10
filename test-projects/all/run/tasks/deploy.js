@@ -1,5 +1,1 @@
-function run () {
-  return () => console.log('deploying')
-}
-
-module.exports = { run }
+export const run = () => (console.log('deploying'))

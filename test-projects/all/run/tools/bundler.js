@@ -1,5 +1,3 @@
-const description = 'Bundles code'
+export const description = 'Bundles code'
 
-const run = 'echo bundling'
-
-module.exports = { description, run }
+export const run = 'echo bundling'

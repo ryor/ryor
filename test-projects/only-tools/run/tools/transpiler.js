@@ -1,7 +1,3 @@
-const description = 'Transpiles code'
+export const description = 'Transpiles code'
 
-function run () {
-  return () => console.log('transpiling')
-}
-
-module.exports = { description, run }
+export const run = () => () => console.log('transpiling')

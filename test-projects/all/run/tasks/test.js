@@ -1,8 +1,6 @@
-const description = 'Tests project'
+export const description = 'Tests project'
 
-const run = [
+export const run = [
   'echo testing',
   'tester coverage'
 ]
-
-module.exports = { description, run }

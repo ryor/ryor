@@ -1,6 +1,8 @@
+import esm from 'esm'
 import { existsSync, readdirSync, statSync } from 'fs'
 import { parse, resolve } from 'path'
 
+const esmRequire: NodeRequire = esm(module)
 let possibleModuleTypes:string[]|undefined
 let resolvedModules:Map<string, RunnableModule>|undefined
 
@@ -37,7 +39,7 @@ export function resolveRunnableModule (name:string):RunnableModule|undefined {
       if (!existsSync(jsFilePath)) jsFilePath = resolve(typeDirectoryPath, name, 'index.js')
 
       if (existsSync(jsFilePath)) {
-        const jsModule:RunnableModule|{run?:{}} = <RunnableModule|{run?:{}}>require(jsFilePath)
+        const jsModule:RunnableModule|{run?:{}} = <RunnableModule|{run?:{}}>esmRequire(jsFilePath)
 
         if (jsModule.run !== undefined) {
           resolvedModule = <RunnableModule>jsModule
@@ -69,7 +71,7 @@ export function resolveAllRunnableModules ():Map<string, Map<string, RunnableMod
         if (!existsSync(jsFilePath)) jsFilePath = resolve(typeDirectoryPath, name, 'index.js')
 
         if (existsSync(jsFilePath)) {
-          const jsModule:RunnableModule|{run?:{}} = <RunnableModule|{run?:{}}>require(jsFilePath)
+          const jsModule:RunnableModule|{run?:{}} = <RunnableModule|{run?:{}}>esmRequire(jsFilePath)
 
           if (jsModule.run !== undefined) typeModules.set(name, <RunnableModule>jsModule)
         }
