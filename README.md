@@ -16,9 +16,9 @@ Unlike task runners or pluggable build tools that require often clunky coordinat
 
 Instead of cluttering of a project's root directory and/or package.json file with configuration files/details, runnables can be neatly self-contained.
 
-### Sequences
+### Concurrency
 
-Similar to shell, npm/yarn or [NPS](https://www.npmjs.com/package/nps) scripts, sequences can be composed that run in series or parallel.
+Similar to shell, npm or [NPS](https://www.npmjs.com/package/nps) scripts, sequences can be composed that run runnables either serially or concurrently.
 
 ### Simple to get usage information
 
