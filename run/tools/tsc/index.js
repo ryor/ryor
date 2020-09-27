@@ -1,12 +1,8 @@
-'use strict'
+export const description = 'Transpiles TypeScript into JavaScript ES modules'
 
-const description = 'Transpiles TypeScript into JavaScript ES modules'
+export const usage = () => require('../../utils/usage').composeUsageInformation([['-s  --silent', 'No output unless errors are encountered by TypeScript compiler']])
 
-function usage () {
-  return require('../../utils/usage').composeUsageInformation([['-s  --silent', 'No output unless errors are encountered by TypeScript compiler']])
-}
-
-function run (args) {
+export const run = args => {
   const minimist = require('minimist')
   const { silent } = minimist(args, {
     alias: { s: 'silent' },
@@ -18,5 +14,3 @@ function run (args) {
 
   return sequence
 }
-
-module.exports = { description, run, usage }

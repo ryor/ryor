@@ -23,11 +23,10 @@ test:
     - master
 
 publish:
-  stage: test
+  stage: publish
   script:
     - npm config set cache "$(pwd)/.npm"
     - npm ci --no-audit --prefer-offline
-    - node run build
-    - node run publish
+    - node run build + publish
   only:
     - tags

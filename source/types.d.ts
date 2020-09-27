@@ -1,46 +1,24 @@
-interface Configuration {
-  usage?: ConfigurationUsage
+/* eslint no-use-before-define: off */
+
+export type Configuration = { usage?: UsageConfiguration }
+
+export type Runnable = string | RunnableFunction
+
+export type RunnableFunction = (args?:string[]) => Runnable | RunnableSequence | undefined
+
+export type RunnableModule = {
+  description?: string | (() => string)
+  usage?: Usage | (() => Usage)
+  run: Runnable | RunnableSequence
 }
 
-interface ConfigurationUsage {
-  types?: ConfigurationUsageTypes
-}
+export type RunnableSequence = (Runnable | RunnableSequence)[]
 
-interface ConfigurationUsageTypes {
-  order?: string[]
-}
+export type Usage = string | UsageInformation
 
-interface DescriptionFactory {
-  (): string;
-}
+export type UsageConfiguration = { types?: { order?: string[] } }
 
-interface Runnable {
-  run():Promise<RunnablesDefinition|void>
-}
-
-interface RunnableFunction {
-  (args?:string[]): RunnablesDefinition | void | Promise<RunnablesDefinition | void>
-}
-
-interface RunnableModule {
-  description?: string | DescriptionFactory
-  usage?: Usage | UsageFactory
-  run: RunnablesDefinition
-}
-
-interface UsageFactory {
-  (): Usage
-}
-
-interface UsageInformation {
+export type UsageInformation = {
   args?: string
   body?: string
 }
-
-type RunnableDefinition = Runnable | RunnableFunction | RunnableScript
-
-type RunnablesDefinition = RunnableDefinition | RunnableDefinition[]
-
-type RunnableScript = string | string[]
-
-type Usage = string | UsageInformation

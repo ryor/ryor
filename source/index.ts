@@ -1,4 +1,2 @@
-export { CommandRunnable } from './classes/CommandRunnable'
-export { FunctionRunnable } from './classes/FunctionRunnable'
-export { run } from './lib/run'
-export { composeUsageInformationList } from './lib/usage'
+export { composeUsageInformationList } from './composeUsageInformationList'
+export { runCommandLineInput } from './runCommandLineInput'

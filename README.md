@@ -35,35 +35,3 @@ or
 or
 
 ```node run <runnable> [...args] + <runnable> [...args] + <runnable> [...args]```
-
-### Templates
-
-#### Node modules
-
-[Simple Node module](https://github.com/ryor/ryor-module)<br>
-[Simple Node module with CLI](https://github.com/ryor/ryor-cli)
-
-#### Static site generators
-
-[Inferno SPA static site generator](https://github.com/ryor/ryor-static-gen-inferno)<br>
-[Preact SPA static site generator](https://github.com/ryor/ryor-static-gen-preact)<br>
-[React SPA static site generator](https://github.com/ryor/ryor-static-gen-react)
-
-#### Desktop/Mobile applications
-
-[Electron](https://github.com/ryor/ryor-electron)<br>
-[React Native](https://github.com/ryor/ryor-react-native)
-
-#### Serverless APIs
-
-[Serverless - AWS Lambda](https://github.com/ryor/ryor-serverless-aws)<br>
-[Serverless - Google Functions](https://github.com/ryor/ryor-serverless-google)<br>
-[Serverless - OpenWhisk](https://github.com/ryor/ryor-serverless-openwhisk)
-
-### Utility
-
-[Command-line utility for initializing projects from ryor templates](https://github.com/ryor/ryor-init)
-
-### Documentation
-
-Coming soon.

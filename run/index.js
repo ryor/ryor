@@ -1,7 +1,2 @@
-require('ryor')({
-  usage: {
-    types: {
-      order: ['tasks', 'tools', 'utils']
-    }
-  }
-})
+// require('ryor')()
+require('../build')()

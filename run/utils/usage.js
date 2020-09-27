@@ -1,6 +1,4 @@
-'use strict'
-
-function composeUsageInformation (options, commands) {
+export const composeUsageInformation = (options, commands) => {
   const { bold } = require('chalk')
   const { EOL } = require('os')
   const { composeUsageInformationList } = require('ryor')
@@ -25,5 +23,3 @@ function composeUsageInformation (options, commands) {
     body: lists.join(`${EOL}${EOL}`)
   }
 }
-
-module.exports = { composeUsageInformation }

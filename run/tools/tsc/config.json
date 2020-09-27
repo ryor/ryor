@@ -3,11 +3,12 @@
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "alwaysStrict": true,
+    "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["ES2017", "ScriptHost"],
+    "lib": ["ES2018", "ScriptHost"],
     "module": "ES6",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noEmitOnError": true,
     "noImplicitAny": true,
@@ -16,9 +17,7 @@
     "noUnusedLocals": true,
     "outDir": "../../../build/esm",
     "strictNullChecks": true,
-    "target": "ES2017"
+    "target": "ES2018"
   },
-  "include": [
-    "../../../source"
-  ]
+  "include": ["../../../source"]
 }
