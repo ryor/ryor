@@ -1,8 +1,8 @@
 {
   "name": "ryor",
-  "version": "0.4.1",
-  "description": "(R)oll (y)our (o)wn task (r)unner for your project",
-  "author": "Scott Steven Rodriguez <scott@movecodemove.com> (http://movecodemove.com)",
+  "version": "0.4.0",
+  "description": "(R)oll (Y)our (O)wn task (R)unner for your project",
+  "author": "Scott Steven Rodriguez <scott@movecodemove.com> (https://movecodemove.com)",
   "license": "MIT",
   "repository": "gitlab:ryor-repos/ryor",
   "bugs": "https://gitlab.com/ryor-repos/ryor/issues",
