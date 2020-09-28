@@ -1,6 +1,6 @@
 {
   "name": "ryor",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "(R)oll (y)our (o)wn task (r)unner for your project",
   "author": "Scott Steven Rodriguez <scott@movecodemove.com> (http://movecodemove.com)",
   "license": "MIT",
@@ -30,7 +30,7 @@
     "@typescript-eslint/parser": "^4.2.0",
     "jest": "^26.4.2",
     "rollup": "^2.28.2",
-    "ryor": "^0.3.3",
+    "ryor": "^0.4.0",
     "shx": "^0.3.2",
     "standardx": "^5.0.0",
     "terser": "^5.3.2",

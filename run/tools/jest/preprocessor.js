@@ -28,9 +28,9 @@ module.exports = {
           .replace(", stdio: ['ignore', 1, 2]", '')
           .replace(
             "let error:string = ''",
-            "let error:string = ''\n\n\
-             childProcess.stderr!.on('data', (data:any):void => { process.stderr.write(data) })\n\
-             childProcess.stdout!.on('data', (data:any):void => { process.stdout.write(data) })"
+            "let error:string = ''\n\n" +
+            "childProcess.stderr!.on('data', (data:any):void => { process.stderr.write(data) })\n" +
+            "childProcess.stdout!.on('data', (data:any):void => { process.stdout.write(data) })"
           )
       }
 

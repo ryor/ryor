@@ -18,13 +18,13 @@ export const run = args => {
   if (both || source) {
     if (!quiet) sequence.push(`log -w Checking for${fix ? ' and fixing ' : ' '}errors in source TypeScript with Standard`)
 
-    sequence.push(`standardx --env node --parser @typescript-eslint/parser --plugin @typescript-eslint/eslint-plugin source/*.ts${fix ? ' --fix' : ''}`)
+    sequence.push(`standardx --parser @typescript-eslint/parser --plugin @typescript-eslint/eslint-plugin source/*.ts${fix ? ' --fix' : ''}`)
   }
 
   if (both || runnables) {
     if (!quiet) sequence.push(`log -w Checking for${fix ? ' and fixing ' : ' '}errors in runnables JavaScript with Standard`)
 
-    sequence.push(`standardx --env node run/**/*.js${fix ? ' --fix' : ''}`)
+    sequence.push(`standardx run/**/*.js${fix ? ' --fix' : ''}`)
   }
 
   return sequence
