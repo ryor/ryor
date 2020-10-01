@@ -14,32 +14,32 @@ export const run = args => {
   })
   const message = _.join(' ').trim()
   const sequence = []
-  const concurrentSequence = []
   const doPush = push || release
   const doBuild = build || doPush
   const doTest = test || doPush
-  let logMessage = ''
+  const preCommit = ['-c']
+  let preCommitMessage = ''
 
   if (doTest) {
-    logMessage += 'Verifying that all tests pass'
-    concurrentSequence.push('test -fps')
+    preCommit.push('test -fps')
+    preCommitMessage = 'Verifying that all tests pass'
   }
 
   if (doBuild) {
-    logMessage += `${logMessage ? ' and' : 'Verifying that'} build completes successfully`
-    concurrentSequence.push('build -s')
+    preCommit.push('build -s')
+    preCommitMessage += `${preCommitMessage ? ' and' : 'Verifying that'} build completes successfully`
   }
 
-  if (doBuild || doTest) sequence.push(`log -w ${logMessage}`, ['-c', ...concurrentSequence])
+  if (doBuild || doTest) sequence.push(`log -w ${preCommitMessage}`, preCommit)
 
   if (doBuild) sequence.push('shx rm -rf build')
 
   sequence.push(
     'git add -A',
-    `git commit -q ${message ? ` -m "${message}"` : ''}`
+    release
+      ? `npm version patch -f ${message ? ` -m "${message}"` : ''}`
+      : `git commit -q${message ? `m "${message}"` : ''}`
   )
-
-  if (release) sequence.push('npm version patch')
 
   if (doPush) sequence.push('git push --quiet --follow-tags')
 

@@ -12,7 +12,7 @@ export function runShellCommand (command:string, args:string[] = []):Promise<voi
   }
 
   return new Promise<void>((resolve:() => void, reject:(error:Error) => void):void => {
-    const childProcess:ChildProcess = spawn(command, args, { env: process.env, stdio: ['ignore', 1, 2] })
+    const childProcess:ChildProcess = spawn(command, args, { env: process.env, stdio: 'inherit' })
     let error:string = ''
 
     childProcess.on('error', (data:Buffer):void => { error += data.toString() })

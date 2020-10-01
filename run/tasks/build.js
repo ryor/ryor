@@ -6,6 +6,7 @@ export const usage = () => require('../utils/usage').composeUsageInformation([[
 ]])
 
 export const run = args => {
+  const { readFileSync, writeFileSync } = require('fs')
   const { development, silent } = require('minimist')(args, {
     alias: { d: 'development', s: 'silent' },
     boolean: ['d', 'development', 's', 'silent']
@@ -14,27 +15,30 @@ export const run = args => {
     'shx rm -rf build',
     `tsc${silent ? ' -s' : ''}`,
     `rollup${silent ? ' -s' : ''}`,
-    () => {
-      const { readFileSync, writeFileSync } = require('fs')
-      const packageJSON = JSON.parse(readFileSync('package.json').toString())
+    ['-c',
+      () => {
+        const packageJSON = JSON.parse(readFileSync('package.json').toString())
 
-      delete packageJSON.devDependencies
+        delete packageJSON.devDependencies
 
-      writeFileSync('build/package.json', JSON.stringify(packageJSON, null, '  '))
-
-      writeFileSync(
-        'build/index.js',
-        readFileSync('build/index.js')
-          .toString()
-          .replace(
-            'exports.runCommandLineInput = runCommandLineInput;',
-            'exports = configuration => runCommandLineInput(process.argv.slice(2), configuration);'
-          )
-          .replace(/exports/g, 'module.exports')
-      )
-    },
-    'shx cp README.md build',
-    'shx rm -rf build/esm build/node_modules'
+        writeFileSync('build/package.json', JSON.stringify(packageJSON, null, '  '))
+      },
+      () => {
+        writeFileSync(
+          'build/index.js',
+          readFileSync('build/index.js')
+            .toString()
+            .replace('exports.composeUsageInformationList = composeUsageInformationList;', '')
+            .replace(
+              'exports.runCommandLineInput = runCommandLineInput;',
+              'module.exports = configuration => runCommandLineInput(process.argv.slice(2), configuration);\n' +
+              'module.exports.composeUsageInformationList = composeUsageInformationList;'
+            )
+        )
+      },
+      'shx cp README.md build',
+      'shx rm -rf build/esm build/node_modules'
+    ]
   ]
 
   if (!development) sequence.push(`terser${silent ? ' -s' : ''}`)

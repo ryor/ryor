@@ -1,19 +1,20 @@
 const { resolve } = require('path')
 
 describe('Confirm constant value:', () => {
-  test('RUN_DURATION_TEMPLATE', () => {
-    expect(require('../source/runCommandLineInput').RUN_DURATION_TEMPLATE).toBe('Completed in [TIME]ms.')
+  test('DURATION_TEMPLATE', () => {
+    expect(require('../source/runCommandLineInput').DURATION_TEMPLATE).toBe('Completed in [DURATION]ms.')
   })
 })
 
 describe('Runs CLI input', () => {
   const { bold } = require('chalk')
+  const { EOL } = require('os')
   const { runCommandLineInput } = require('../source/runCommandLineInput')
   let exitCode, output
 
   beforeAll(() => {
-    jest.spyOn(console, 'error').mockImplementation(data => { output += data })
-    jest.spyOn(console, 'log').mockImplementation(data => { output += data })
+    jest.spyOn(console, 'error').mockImplementation(data => { output += data + EOL })
+    jest.spyOn(console, 'log').mockImplementation(data => { output += data + EOL })
     jest.spyOn(process, 'exit').mockImplementation(code => { exitCode = code })
   })
 
@@ -41,27 +42,33 @@ describe('Runs CLI input', () => {
     expect(exitCode).toBe(0)
   })
 
+  test('resolves and runs "transpiler" runnable in "only-tools" test project (with duration)', async () => {
+    process.chdir(resolve(__dirname, 'test-projects/only-tools'))
+    await runCommandLineInput(['-d', 'transpiler'])
+    expect(output.trim()).toMatch(new RegExp('^transpiling' + EOL + 'Completed in ([0-9]+)ms.'))
+    expect(exitCode).toBe(0)
+  })
+
   test('outputs main usage information for "all" test project when no args are passed to run function', async () => {
     const cliTruncate = require('cli-truncate')
-    const { EOL } = require('os')
     const { getOutputColumnCount } = require('../source/getOutputColumnCount')
     const expectedMainUsageInformation = require('./test-projects/expectedMainUsageInformation')
-    const expectedOutput = `${EOL}${expectedMainUsageInformation['all'].split(EOL).map(line => cliTruncate(line, getOutputColumnCount())).join(EOL)}${EOL}`
+    const expectedOutput = `${expectedMainUsageInformation['all'].split(EOL).map(line => cliTruncate(line, getOutputColumnCount())).join(EOL)}`
 
     process.chdir(resolve(__dirname, 'test-projects/all'))
 
     await runCommandLineInput()
-    expect(output).toBe(expectedOutput)
+    expect(output.trim()).toBe(expectedOutput)
     expect(exitCode).toBe(0)
 
     output = ''
     await runCommandLineInput([])
-    expect(output).toBe(expectedOutput)
+    expect(output.trim()).toBe(expectedOutput)
     expect(exitCode).toBe(0)
 
     output = ''
     await runCommandLineInput(['help'])
-    expect(output).toBe(expectedOutput)
+    expect(output.trim()).toBe(expectedOutput)
     expect(exitCode).toBe(0)
   })
 })

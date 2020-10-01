@@ -1,4 +1,3 @@
-import minimist from 'minimist'
 import { EOL } from 'os'
 import { ensureCorrectPathValue } from './ensureCorrectPathValue'
 import { outputUsageInformation } from './outputUsageInformation'
@@ -6,25 +5,20 @@ import { runRunnableSequence } from './runRunnableSequence'
 import { parseCommandLineInput } from './parseCommandLineInput'
 import type { Configuration } from './types'
 
-const RUN_DURATION_TEMPLATE:string = 'Completed in [TIME]ms.'
+const DURATION_TEMPLATE:string = 'Completed in [DURATION]ms.'
+
+const SHORT_DURATION_FLAG:string = '-d'
+
+const LONG_DURATION_FLAG:string = '--duration'
 
 export async function runCommandLineInput (args:string[] = [], configuration:Configuration = {}):Promise<void> {
-  const options:string[] = []
-  let outputTime:boolean = false
+  let outputDuration:boolean = false
   let startTime:number|undefined
 
   if (args.length > 0) {
-    while (args[0].charAt(0) === '-') options.push(args.shift()!)
-  }
-
-  if (options.length > 0) {
-    const { time }:minimist.ParsedArgs = minimist(options, {
-      alias: { t: 'time' },
-      boolean: ['t', 'time']
-    })
-
-    if (time === true) {
-      outputTime = true
+    if (typeof args[0] === 'string' && [SHORT_DURATION_FLAG, LONG_DURATION_FLAG].includes(args[0])) {
+      args.shift()
+      outputDuration = true
       startTime = Date.now()
     }
   }
@@ -37,7 +31,7 @@ export async function runCommandLineInput (args:string[] = [], configuration:Con
       await runRunnableSequence(parseCommandLineInput(args))
     }
 
-    if (outputTime) console.log(RUN_DURATION_TEMPLATE.replace('[TIME]', String(Date.now() - startTime!)))
+    if (outputDuration) console.log(DURATION_TEMPLATE.replace('[DURATION]', String(Date.now() - startTime!)))
 
     process.exit(0)
   } catch (error) {
