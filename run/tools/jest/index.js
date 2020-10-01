@@ -13,28 +13,13 @@ export const run = args => {
   })
 
   if (silent) {
-    return new Promise((resolve, reject) => {
-      const { spawn } = require('cross-spawn')
-      const childProcess = spawn('jest',
-        ['-c', 'run/tools/jest/config.json']
-          .concat(coverage ? ['--coverage'] : [])
-          .concat(verbose ? ['--verbose'] : [])
-      )
-      let stderr = ''
-
-      childProcess.stderr.on('data', data => (stderr += data))
-
-      childProcess.on('close', code => {
-        if (code !== 0) reject(new Error('One or more Jest tests failed.'))
-
-        resolve()
-      })
-    })
+    return new Promise((resolve, reject) =>
+      require('cross-spawn')('jest', ['-c', 'run/tools/jest/config.json'].concat(coverage ? ['--coverage'] : []))
+        .on('close', code => (code === 0 ? resolve() : reject(new Error('One or more Jest tests failed.')))))
   }
 
   return [
-    'log -w Testing TypeScript with Jest',
-    'echo',
+    'log -w Testing TypeScript with Jest\n',
     `jest -c run/tools/jest/config.json --no-cache ${coverage ? ' --coverage' : ''}${verbose ? ' --verbose' : ''} ${_.join(' ')}`,
     'echo',
     'log -s All tests passed'
