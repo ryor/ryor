@@ -37,15 +37,14 @@ describe('Runs CLI input', () => {
 
   test('resolves and runs "transpiler" runnable in "only-tools" test project', async () => {
     process.chdir(resolve(__dirname, 'test-projects/only-tools'))
+
     await runCommandLineInput(['transpiler'])
     expect(output.trim()).toBe('transpiling')
     expect(exitCode).toBe(0)
-  })
 
-  test('resolves and runs "transpiler" runnable in "only-tools" test project (with duration)', async () => {
-    process.chdir(resolve(__dirname, 'test-projects/only-tools'))
+    output = ''
     await runCommandLineInput(['-d', 'transpiler'])
-    expect(output.trim()).toMatch(new RegExp('^transpiling' + EOL + 'Completed in ([0-9]+)ms.'))
+    expect(output.trim()).toMatch(new RegExp('transpiling' + EOL + 'Completed in ([0-9]+)ms.'))
     expect(exitCode).toBe(0)
   })
 
@@ -67,8 +66,13 @@ describe('Runs CLI input', () => {
     expect(exitCode).toBe(0)
 
     output = ''
-    await runCommandLineInput(['help'])
-    expect(output.trim()).toBe(expectedOutput)
+    await runCommandLineInput(['-d'])
+    expect(output.trim()).toMatch(/Completed in ([0-9]+)ms.$/)
+    expect(exitCode).toBe(0)
+
+    output = ''
+    await runCommandLineInput(['-d', 'help'])
+    expect(output.trim()).toMatch(/Completed in ([0-9]+)ms.$/)
     expect(exitCode).toBe(0)
   })
 })
