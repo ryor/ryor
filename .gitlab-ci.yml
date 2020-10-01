@@ -2,10 +2,11 @@ image: node:alpine
 
 stages:
   - test
+  - build
   - publish
 
 variables:
-  GIT_DEPTH: "3"
+  GIT_DEPTH: 1
 
 cache:
   key: npm
@@ -19,14 +20,31 @@ test:
     - npm ci --no-audit --prefer-offline
     - node run test -cp
   coverage: /All\sfiles.*?\s+(\d+.\d+)/
+  artifacts:
+    paths:
+      - node_modules/
+
+build:
+  stage: build
+  script:
+    - node run build
+  dependencies:
+    - test
+  artifacts:
+    paths:
+      - build/
+      - node_modules/
   only:
-    - master
+    - tags
 
 publish:
   stage: publish
   script:
-    - npm config set cache "$(pwd)/.npm"
-    - npm ci --no-audit --prefer-offline
-    - node run build + publish
+    - node run publish
+  dependencies:
+    - build
+  artifacts:
+    paths:
+      - node_modules/
   only:
     - tags
