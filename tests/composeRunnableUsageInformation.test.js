@@ -1,17 +1,17 @@
-const { ERROR_TEMPLATE, HEADER_TEMPLATE } = require('../source/composeRunnableUsageInformation')
+/* eslint-env jest */
+
+import { bold } from 'chalk'
+import { EOL } from 'os'
+import { resolve } from 'path'
+import { ERROR_TEMPLATE, HEADER_TEMPLATE, composeRunnableUsageInformation } from '../source/composeRunnableUsageInformation'
+import { INVALID_RUNNABLE_ERROR_TEMPLATE, NO_RUNNABLE_ERROR_TEMPLATE } from '../source/requireRunnableModule'
 
 describe('Confirm constant values:', () => {
-  const { bold } = require('chalk')
-
   test('ERROR_TEMPLATE', () => expect(ERROR_TEMPLATE).toBe(`Runnable ${bold('[NAME]')} could not be resolved.`))
   test('HEADER_TEMPLATE', () => expect(HEADER_TEMPLATE).toBe(`${bold('Usage:')} node run ${bold('[NAME]')}`))
 })
 
 describe('Compose runnable usage information', () => {
-  const { EOL } = require('os')
-  const { resolve } = require('path')
-  const { composeRunnableUsageInformation } = require('../source/composeRunnableUsageInformation')
-
   test('throws Error when runnable module cannot be resolved', async () => {
     const name = 'unresolvable'
 
@@ -33,7 +33,6 @@ describe('Compose runnable usage information', () => {
   })
 
   test('throws errors when runnable modules are invalid', async () => {
-    const { INVALID_RUNNABLE_ERROR_TEMPLATE, NO_RUNNABLE_ERROR_TEMPLATE } = require('../source/requireRunnableModule')
     const projectDirectoryPath = resolve(__dirname, 'test-projects/invalid-definitions')
     let name, path
 
@@ -76,10 +75,10 @@ describe('Compose runnable usage information', () => {
     expect(await composeRunnableUsageInformation(name)).toBe(HEADER_TEMPLATE.replace('[NAME]', name))
 
     name = 'deploy'
-    expect(await composeRunnableUsageInformation(name)).toBe([HEADER_TEMPLATE.replace('[NAME]', name), 'Deploys project'].join(EOL+EOL))
+    expect(await composeRunnableUsageInformation(name)).toBe([HEADER_TEMPLATE.replace('[NAME]', name), 'Deploys project'].join(EOL + EOL))
 
     name = 'test'
-    expect(await composeRunnableUsageInformation(name)).toBe([HEADER_TEMPLATE.replace('[NAME]', name), 'Tests project'].join(EOL+EOL))
+    expect(await composeRunnableUsageInformation(name)).toBe([HEADER_TEMPLATE.replace('[NAME]', name), 'Tests project'].join(EOL + EOL))
   })
 
   test('for runnables in "only-tools" test project', async () => {
@@ -89,13 +88,13 @@ describe('Compose runnable usage information', () => {
     process.chdir(resolve(__dirname, 'test-projects/only-tools'))
 
     name = 'bundler'
-    expect(await composeRunnableUsageInformation(name)).toBe([HEADER_TEMPLATE.replace('[NAME]', name), usage].join(EOL+EOL))
+    expect(await composeRunnableUsageInformation(name)).toBe([HEADER_TEMPLATE.replace('[NAME]', name), usage].join(EOL + EOL))
 
     name = 'tester'
-    expect(await composeRunnableUsageInformation(name)).toBe([HEADER_TEMPLATE.replace('[NAME]', name), 'Tests code', usage].join(EOL+EOL))
+    expect(await composeRunnableUsageInformation(name)).toBe([HEADER_TEMPLATE.replace('[NAME]', name), 'Tests code', usage].join(EOL + EOL))
 
     name = 'transpiler'
-    expect(await composeRunnableUsageInformation(name)).toBe([HEADER_TEMPLATE.replace('[NAME]', name), 'Transpiles code', usage].join(EOL+EOL))
+    expect(await composeRunnableUsageInformation(name)).toBe([HEADER_TEMPLATE.replace('[NAME]', name), 'Transpiles code', usage].join(EOL + EOL))
   })
 
   test('for runnables in "all" test project', async () => {
@@ -104,19 +103,19 @@ describe('Compose runnable usage information', () => {
     process.chdir(resolve(__dirname, 'test-projects/all'))
 
     name = 'git'
-    expectedResult = [`${HEADER_TEMPLATE.replace('[NAME]', name)} <command>`, 'Runs preconfigured Git commands', '-c  --commit  Commits code'].join(EOL+EOL)
+    expectedResult = [`${HEADER_TEMPLATE.replace('[NAME]', name)} <command>`, 'Runs preconfigured Git commands', '-c  --commit  Commits code'].join(EOL + EOL)
     expect(await composeRunnableUsageInformation(name)).toBe(expectedResult)
 
     name = 'bundler'
-    expectedResult = [`${HEADER_TEMPLATE.replace('[NAME]', name)} [options]`, '-q  --quit  Stays quiet.'].join(EOL+EOL)
+    expectedResult = [`${HEADER_TEMPLATE.replace('[NAME]', name)} [options]`, '-q  --quit  Stays quiet.'].join(EOL + EOL)
     expect(await composeRunnableUsageInformation(name)).toBe(expectedResult)
 
     name = 'transpiler'
-    expectedResult = [HEADER_TEMPLATE.replace('[NAME]', name), 'Transpiles code', '-q  --quit  Stays quiet.'].join(EOL+EOL)
+    expectedResult = [HEADER_TEMPLATE.replace('[NAME]', name), 'Transpiles code', '-q  --quit  Stays quiet.'].join(EOL + EOL)
     expect(await composeRunnableUsageInformation(name)).toBe(expectedResult)
 
     name = 'tester'
-    expectedResult = [`${HEADER_TEMPLATE.replace('[NAME]', name)} (with Jest!)`, 'Tests code'].join(EOL+EOL)
+    expectedResult = [`${HEADER_TEMPLATE.replace('[NAME]', name)} (with Jest!)`, 'Tests code'].join(EOL + EOL)
     expect(await composeRunnableUsageInformation(name)).toBe(expectedResult)
   })
 })

@@ -1,13 +1,13 @@
-describe('Runs runnable sequence', () => {
-  const { resolve } = require('path')
-  const { ensureCorrectPathValue } = require('../source/ensureCorrectPathValue')
-  const { runRunnableSequence } = require('../source/runRunnableSequence')
+/* eslint-env jest */
 
+import { resolve } from 'path'
+import { ensureCorrectPathValue } from '../source/ensureCorrectPathValue'
+import { runRunnableSequence } from '../source/runRunnableSequence'
+
+describe('Runs runnable sequence', () => {
   afterAll(() => jest.restoreAllMocks())
 
-  test('with empty sequence', async () => {
-    expect(await runRunnableSequence([])).toBe(undefined)
-  })
+  test('with empty sequence', async () => expect(await runRunnableSequence([])).toBe(undefined))
 
   test('with single runnable', async () => {
     let output

@@ -1,8 +1,10 @@
-describe('Resolve runnable module(s)', () => {
-  const { EOL } = require('os')
-  const { resolve } = require('path')
-  const { resolveRunnableModule } = require('../source/resolveRunnableModule')
+/* eslint-env jest */
 
+import { resolve } from 'path'
+import { INVALID_RUNNABLE_ERROR_TEMPLATE, NO_RUNNABLE_ERROR_TEMPLATE } from '../source/requireRunnableModule'
+import { resolveRunnableModule } from '../source/resolveRunnableModule'
+
+describe('Resolve runnable module(s)', () => {
   test('undefined when runnable modules directory cannot be resolved', async () => {
     process.chdir(resolve(__dirname, 'test-projects/empty'))
 
@@ -26,7 +28,6 @@ describe('Resolve runnable module(s)', () => {
   })
 
   test('throws errors when modules are invalid', async () => {
-    const { INVALID_RUNNABLE_ERROR_TEMPLATE, NO_RUNNABLE_ERROR_TEMPLATE } = require('../source/requireRunnableModule')
     const projectDirectoryPath = resolve(__dirname, 'test-projects/invalid-definitions')
     let name, path
 

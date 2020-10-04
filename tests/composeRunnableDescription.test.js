@@ -1,24 +1,22 @@
-describe('Compose runnable description', () => {
-  const { bold } = require('chalk')
-  const { composeRunnableDescription } = require('../source/composeRunnableDescription')
+/* eslint-env jest */
 
-  test('with no description or usage defined', () => {
-    expect(composeRunnableDescription('runnable', {})).toBe('')
-  })
+import { bold } from 'chalk'
+import { composeRunnableDescription } from '../source/composeRunnableDescription'
+
+describe('Compose runnable description', () => {
+  test('with no description or usage defined', () => expect(composeRunnableDescription('runnable', {})).toBe(''))
 
   test('with description string and no usage defined', () => {
-    const name = 'runnable'
     const description = 'Does a thing'
 
-    expect(composeRunnableDescription(name, { description })).toBe(description)
+    expect(composeRunnableDescription('runnable', { description })).toBe(description)
   })
 
   test('with description function and no usage defined', () => {
-    const name = 'runnable'
     const descriptionText = 'Does a thing'
     const description = () => descriptionText
 
-    expect(composeRunnableDescription(name, { description })).toBe(descriptionText)
+    expect(composeRunnableDescription('runnable', { description })).toBe(descriptionText)
   })
 
   test('with no description and usage defined', () => {

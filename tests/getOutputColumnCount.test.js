@@ -1,9 +1,9 @@
-const { DEFAULT_OUTPUT_COLUMN_COUNT, getOutputColumnCount } = require('../source/getOutputColumnCount')
+/* eslint-env jest */
+
+import { DEFAULT_OUTPUT_COLUMN_COUNT, getOutputColumnCount } from '../source/getOutputColumnCount'
 
 describe('Confirm constant value:', () => {
-  test('DEFAULT_OUTPUT_COLUMN_COUNT', () => {
-    expect(DEFAULT_OUTPUT_COLUMN_COUNT).toBe(100)
-  })
+  test('DEFAULT_OUTPUT_COLUMN_COUNT', () => expect(DEFAULT_OUTPUT_COLUMN_COUNT).toBe(100))
 })
 
 describe('Get output column count:', () => {

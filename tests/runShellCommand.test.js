@@ -1,9 +1,11 @@
+/* eslint-env jest */
+
+import { bold } from 'chalk'
+import { resolve } from 'path'
+import { ensureCorrectPathValue } from '../source/ensureCorrectPathValue'
+import { runShellCommand } from '../source/runShellCommand'
+
 describe('Run shell command', () => {
-  const { bold } = require('chalk')
-  const { EOL } = require('os')
-  const { resolve } = require('path')
-  const { ensureCorrectPathValue } = require('../source/ensureCorrectPathValue')
-  const { runShellCommand } = require('../source/runShellCommand')
   let args, output
 
   beforeAll(() => {
@@ -14,7 +16,7 @@ describe('Run shell command', () => {
     ensureCorrectPathValue()
   })
 
-  beforeEach(() => output = '')
+  beforeEach(() => { output = '' })
 
   afterAll(() => jest.restoreAllMocks())
 
@@ -44,8 +46,8 @@ describe('Run shell command', () => {
     jest.mock('cross-spawn', () => ({
       spawn: () => ({
         on: (event, callback) => {
-          if (event === 'error') callback('Some child process error')
-          if (event === 'close') callback(1)
+          if (event === 'error') callback(new Error('Some child process error'))
+          if (event === 'close') callback(1) // eslint-disable-line
         },
         stderr: { on: () => {} },
         stdout: { on: () => {} }
@@ -55,7 +57,7 @@ describe('Run shell command', () => {
     try {
       await require('../source/runShellCommand').runShellCommand('command')
     } catch (error) {
-      expect(error.message).toBe('Some child process error')
+      expect(error.message).toBe('Error: Some child process error')
     }
 
     jest.unmock('cross-spawn')
@@ -78,8 +80,6 @@ describe('Run shell command', () => {
   })
 
   test('executable in node_modules/.bin directory', async () => {
-    let result
-
     args = ['Did', 'something.']
     await runShellCommand('log', args)
     expect(output.trim()).toBe(args.join(' '))

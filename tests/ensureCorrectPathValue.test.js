@@ -1,4 +1,7 @@
-const { DEFAULT_DIVIDER, WINDOWS_DIVIDER, WINDOWS_IDENTIFIER } = require('../source/ensureCorrectPathValue')
+/* eslint-env jest */
+
+import { resolve } from 'path'
+import { DEFAULT_DIVIDER, WINDOWS_DIVIDER, WINDOWS_IDENTIFIER, ensureCorrectPathValue } from '../source/ensureCorrectPathValue'
 
 describe('Confirm constant values:', () => {
   test('DEFAULT_DIVIDER', () => expect(DEFAULT_DIVIDER).toBe(':'))
@@ -7,13 +10,11 @@ describe('Confirm constant values:', () => {
 })
 
 describe('Ensures PATH environment variable has correct value', () => {
-  const { resolve } = require('path')
-  const { ensureCorrectPathValue } = require('../source/ensureCorrectPathValue')
   const { env } = process
   const PATH = env.PATH
   let binDirectoryPath, projectDirectoryPath
 
-  afterEach(() => env.PATH = PATH)
+  afterEach(() => { env.PATH = PATH })
 
   test('does not include node_modules/.bin directory when none exists', () => {
     projectDirectoryPath = resolve(__dirname, 'test-projects/empty')

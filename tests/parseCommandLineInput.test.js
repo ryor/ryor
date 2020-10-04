@@ -1,6 +1,8 @@
-describe('Parses command line input into runnable sequence', () => {
-  const { parseCommandLineInput } = require('../source/parseCommandLineInput')
+/* eslint-env jest */
 
+import { parseCommandLineInput } from '../source/parseCommandLineInput'
+
+describe('Parses command line input into runnable sequence', () => {
   test('with one runnable defined', () => {
     const arg1 = 'build'
 

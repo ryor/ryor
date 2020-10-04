@@ -1,15 +1,13 @@
-describe('Confirm constant value:', () => {
-  test('DEFAULT_DESCRIPTION', () => {
-    const { DEFAULT_DESCRIPTION } = require('../source/composeUsageInformationListItem')
+/* eslint-env jest */
 
-    expect(DEFAULT_DESCRIPTION).toBe('No description provided')
-  })
+import { bold } from 'chalk'
+import { DEFAULT_DESCRIPTION, composeUsageInformationListItem } from '../source/composeUsageInformationListItem'
+
+describe('Confirm constant value:', () => {
+  test('DEFAULT_DESCRIPTION', () => expect(DEFAULT_DESCRIPTION).toBe('No description provided'))
 })
 
 describe('Compose usage information list item', () => {
-  const { bold } = require('chalk')
-  const { DEFAULT_DESCRIPTION, composeUsageInformationListItem } = require('../source/composeUsageInformationListItem')
-
   test('with only name defined', () => {
     const name = 'runnable'
     const result = composeUsageInformationListItem(name)

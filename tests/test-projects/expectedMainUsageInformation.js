@@ -1,9 +1,9 @@
-const { bold } = require('chalk')
-const { HEADER } = require('../../source/composeMainUsageInformation')
+import { bold } from 'chalk'
+import { HEADER } from '../../source/composeMainUsageInformation'
 
 module.exports = {
 
-  'all':
+  all:
 
 `${HEADER}
 

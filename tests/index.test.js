@@ -1,7 +1,8 @@
-test('Module exports two functions: composeUsageInformationList and runCommandLineInput', () => {
-  const moduleExports = require('../source')
+/* eslint-env jest */
 
-  expect(Object.keys(moduleExports).length).toBe(2)
-  expect(typeof moduleExports.composeUsageInformationList).toBe('function')
-  expect(typeof moduleExports.runCommandLineInput).toBe('function')
+import { composeUsageInformationList, runCommandLineInput } from '../source'
+
+test('Module exports two functions: composeUsageInformationList and runCommandLineInput', () => {
+  expect(typeof composeUsageInformationList).toBe('function')
+  expect(typeof runCommandLineInput).toBe('function')
 })

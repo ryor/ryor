@@ -1,6 +1,8 @@
-describe('Checks for a valid runnable', () => {
-  const { isValidRunnable } = require('../source/isValidRunnable')
+/* eslint-env jest */
 
+import { isValidRunnable } from '../source/isValidRunnable'
+
+describe('Checks for a valid runnable', () => {
   test('returns false for falsy values', () => {
     expect(isValidRunnable()).toEqual(false)
     expect(isValidRunnable(undefined)).toEqual(false)

@@ -1,4 +1,7 @@
-const { INVALID_RUNNABLE_ERROR_TEMPLATE, NO_RUNNABLE_ERROR_TEMPLATE } = require('../source/requireRunnableModule')
+/* eslint-env jest */
+
+import { resolve } from 'path'
+import { INVALID_RUNNABLE_ERROR_TEMPLATE, NO_RUNNABLE_ERROR_TEMPLATE, requireRunnableModule } from '../source/requireRunnableModule'
 
 describe('Confirm constant values:', () => {
   test('INVALID_RUNNABLE_ERROR_TEMPLATE', () => expect(INVALID_RUNNABLE_ERROR_TEMPLATE).toBe('Invalid runnable defined in [PATH]'))
@@ -6,9 +9,6 @@ describe('Confirm constant values:', () => {
 })
 
 describe('Require runnable module(s)', () => {
-  const { resolve } = require('path')
-  const { requireRunnableModule } = require('../source/requireRunnableModule')
-
   test('throws errors when runnable modules are invalid', async () => {
     const projectDirectoryPath = resolve(__dirname, 'test-projects/invalid-definitions')
     let path, abbreviatedPath

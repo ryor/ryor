@@ -1,7 +1,9 @@
-describe('Resolve all runnable modules', () => {
-  const { resolve } = require('path')
-  const { resolveAllRunnableModules } = require('../source/resolveAllRunnableModules')
+/* eslint-env jest */
 
+import { resolve } from 'path'
+import { resolveAllRunnableModules } from '../source/resolveAllRunnableModules'
+
+describe('Resolve all runnable modules', () => {
   test('in "only-untyped" test project', async () => {
     process.chdir(resolve(__dirname, 'test-projects/only-untyped'))
 

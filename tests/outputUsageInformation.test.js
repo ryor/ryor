@@ -1,16 +1,18 @@
-describe('Output usage information', () => {
-  const cliTruncate = require('cli-truncate')
-  const { EOL } = require('os')
-  const { resolve } = require('path')
-  const { NO_RUNNABLES_RESOLVED_MESSAGE } = require('../source/composeMainUsageInformation')
-  const { HEADER_TEMPLATE } = require('../source/composeRunnableUsageInformation')
-  const { outputUsageInformation } = require('../source/outputUsageInformation')
-  const expectedMainUsageInformation = require('./test-projects/expectedMainUsageInformation')
-  let consoleLogMock, output
+/* eslint-env jest */
 
-  beforeAll(() => {
-    consoleLogMock = jest.spyOn(console, 'log').mockImplementation(message => { output += `${output === '' ? '' : '\n'}${message}` })
-  })
+import cliTruncate from 'cli-truncate'
+import { EOL } from 'os'
+import { resolve } from 'path'
+import { NO_RUNNABLES_RESOLVED_MESSAGE } from '../source/composeMainUsageInformation'
+import { HEADER_TEMPLATE } from '../source/composeRunnableUsageInformation'
+import { getOutputColumnCount } from '../source/getOutputColumnCount'
+import { outputUsageInformation } from '../source/outputUsageInformation'
+import expectedMainUsageInformation from './test-projects/expectedMainUsageInformation'
+
+describe('Output usage information', () => {
+  let output
+
+  beforeAll(() => jest.spyOn(console, 'log').mockImplementation(message => { output += `${output === '' ? '' : '\n'}${message}` }))
 
   afterAll(() => jest.restoreAllMocks())
 
@@ -37,21 +39,19 @@ describe('Output usage information', () => {
   })
 
   test('for "all" test project', async () => {
-    const { getOutputColumnCount } = require('../source/getOutputColumnCount')
-    const outputColumnCount =  getOutputColumnCount()
-    let expectedOutput, runnableName
+    const outputColumnCount = getOutputColumnCount()
+    let runnableName
 
     process.chdir(resolve(__dirname, 'test-projects/all'))
 
     output = ''
     await outputUsageInformation()
-    expectedOutput = `${EOL}${expectedMainUsageInformation['all'].split(EOL).map(line => cliTruncate(line, outputColumnCount)).join(EOL)}${EOL}`
-    expect(output).toBe(expectedOutput)
+    expect(output).toBe(`${EOL}${expectedMainUsageInformation.all.split(EOL).map(line => cliTruncate(line, outputColumnCount)).join(EOL)}${EOL}`)
 
     output = ''
     runnableName = 'unresolvable'
     await outputUsageInformation(runnableName)
-    expect(output).toBe(`${EOL}${expectedMainUsageInformation['all'].split(EOL).map(line => cliTruncate(line, outputColumnCount)).join(EOL)}${EOL}`)
+    expect(output).toBe(`${EOL}${expectedMainUsageInformation.all.split(EOL).map(line => cliTruncate(line, outputColumnCount)).join(EOL)}${EOL}`)
 
     output = ''
     runnableName = 'build'

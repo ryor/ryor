@@ -1,15 +1,18 @@
-const { resolve } = require('path')
+/* eslint-env jest */
+
+import { bold } from 'chalk'
+import cliTruncate from 'cli-truncate'
+import { EOL } from 'os'
+import { resolve } from 'path'
+import { getOutputColumnCount } from '../source/getOutputColumnCount'
+import { DURATION_TEMPLATE, runCommandLineInput } from '../source/runCommandLineInput'
+import expectedMainUsageInformation from './test-projects/expectedMainUsageInformation'
 
 describe('Confirm constant value:', () => {
-  test('DURATION_TEMPLATE', () => {
-    expect(require('../source/runCommandLineInput').DURATION_TEMPLATE).toBe('Completed in [DURATION]ms.')
-  })
+  test('DURATION_TEMPLATE', () => expect(DURATION_TEMPLATE).toBe('Completed in [DURATION]ms.'))
 })
 
 describe('Runs CLI input', () => {
-  const { bold } = require('chalk')
-  const { EOL } = require('os')
-  const { runCommandLineInput } = require('../source/runCommandLineInput')
   let exitCode, output
 
   beforeAll(() => {
@@ -49,10 +52,7 @@ describe('Runs CLI input', () => {
   })
 
   test('outputs main usage information for "all" test project when no args are passed to run function', async () => {
-    const cliTruncate = require('cli-truncate')
-    const { getOutputColumnCount } = require('../source/getOutputColumnCount')
-    const expectedMainUsageInformation = require('./test-projects/expectedMainUsageInformation')
-    const expectedOutput = `${expectedMainUsageInformation['all'].split(EOL).map(line => cliTruncate(line, getOutputColumnCount())).join(EOL)}`
+    const expectedOutput = `${expectedMainUsageInformation.all.split(EOL).map(line => cliTruncate(line, getOutputColumnCount())).join(EOL)}`
 
     process.chdir(resolve(__dirname, 'test-projects/all'))
 

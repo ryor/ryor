@@ -1,6 +1,8 @@
-describe('Checks for a valid runnable sequence', () => {
-  const { isValidRunnableSequence } = require('../source/isValidRunnableSequence')
+/* eslint-env jest */
 
+import { isValidRunnableSequence } from '../source/isValidRunnableSequence'
+
+describe('Checks for a valid runnable sequence', () => {
   test('returns false for individual invalid runnables', () => {
     expect(isValidRunnableSequence()).toEqual(false)
     expect(isValidRunnableSequence(undefined)).toEqual(false)
