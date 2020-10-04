@@ -28,7 +28,7 @@ describe('Run shell command', () => {
     }
   })
 
-  test('throws error when subprocess does not exit cleanly', async () => {
+  test('throws error when child process does not exit cleanly', async () => {
     try {
       await runShellCommand('fail')
     } catch (error) {
@@ -46,7 +46,7 @@ describe('Run shell command', () => {
     jest.mock('cross-spawn', () => ({
       spawn: () => ({
         on: (event, callback) => {
-          if (event === 'error') callback(new Error('Some child process error'))
+          if (event === 'error') callback('Some error') // eslint-disable-line
           if (event === 'close') callback(1) // eslint-disable-line
         },
         stderr: { on: () => {} },
@@ -57,9 +57,32 @@ describe('Run shell command', () => {
     try {
       await require('../source/runShellCommand').runShellCommand('command')
     } catch (error) {
-      expect(error.message).toBe('Error: Some child process error')
+      expect(error.message).toBe('Some error')
     }
 
+    jest.unmock('cross-spawn')
+    jest.resetModules()
+  })
+
+  test('outputs any possible error output emitted from child process even when subprocess exits cleanly', async () => {
+    const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(data => { output += data })
+
+    jest.resetModules()
+    jest.mock('cross-spawn', () => ({
+      spawn: () => ({
+        on: (event, callback) => {
+          if (event === 'error') callback('Some error') // eslint-disable-line
+          if (event === 'close') callback(0) // eslint-disable-line
+        },
+        stderr: { on: () => {} },
+        stdout: { on: () => {} }
+      })
+    }))
+
+    await require('../source/runShellCommand').runShellCommand('command')
+    expect(output).toBe('Some error')
+
+    consoleErrorMock.mockRestore()
     jest.unmock('cross-spawn')
     jest.resetModules()
   })

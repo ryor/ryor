@@ -6,7 +6,7 @@ import type { Runnable, RunnableModule, RunnableSequence } from './types'
 
 export async function runRunnable (runnable:Runnable, context?:string):Promise<Runnable | RunnableSequence | void> {
   if (typeof runnable === 'function') return runnable()
-  else {
+  else if (typeof runnable === 'string') {
     const args:string[] = parseStringRunnable(runnable)
 
     if (args.length > 0) {

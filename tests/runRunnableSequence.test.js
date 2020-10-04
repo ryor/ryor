@@ -5,16 +5,20 @@ import { ensureCorrectPathValue } from '../source/ensureCorrectPathValue'
 import { runRunnableSequence } from '../source/runRunnableSequence'
 
 describe('Runs runnable sequence', () => {
+  let output
+
+  beforeAll(() => {
+    jest.spyOn(process.stdout, 'write').mockImplementation(data => { output += data })
+    jest.spyOn(console, 'log').mockImplementation(data => { output += data })
+  })
+
+  beforeEach(() => { output = '' })
+
   afterAll(() => jest.restoreAllMocks())
 
   test('with empty sequence', async () => expect(await runRunnableSequence([])).toBe(undefined))
 
   test('with single runnable', async () => {
-    let output
-
-    jest.spyOn(process.stdout, 'write').mockImplementation(data => { output += data })
-    jest.spyOn(console, 'log').mockImplementation(data => { output += data })
-
     process.chdir(resolve(__dirname, 'test-projects/all'))
     ensureCorrectPathValue()
 
@@ -50,11 +54,6 @@ describe('Runs runnable sequence', () => {
   })
 
   test('with multiple runnables (including nested sequences)', async () => {
-    let output
-
-    jest.spyOn(process.stdout, 'write').mockImplementation(data => { output += data })
-    jest.spyOn(console, 'log').mockImplementation(data => { output += data })
-
     process.chdir(resolve(__dirname, 'test-projects/all'))
     ensureCorrectPathValue()
 
@@ -81,11 +80,6 @@ describe('Runs runnable sequence', () => {
   })
 
   test('with multiple runnables concurrently', async () => {
-    let output
-
-    jest.spyOn(process.stdout, 'write').mockImplementation(data => { output += data })
-    jest.spyOn(console, 'log').mockImplementation(data => { output += data })
-
     process.chdir(resolve(__dirname, 'test-projects/all'))
     ensureCorrectPathValue()
 
