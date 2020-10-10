@@ -1,4 +1,4 @@
-export const description = 'Checks source TypeScript and runnables and tests JavaScript for errors with Standard'
+export const description = 'Checks source TypeScript and runnables and tests JavaScript for errors and conformity with Standard formatting'
 
 export const usage = () => require('../utils/usage').composeUsageInformation([[
   '-c  --concurrent', 'Run tests concurrently',

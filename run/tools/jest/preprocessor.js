@@ -3,7 +3,8 @@ const transpileTS = require('typescript').transpile
 
 const esOptions = {
   babelrc: false,
-  plugins: [require.resolve('@babel/plugin-transform-modules-commonjs')]
+  plugins: [require.resolve('@babel/plugin-transform-modules-commonjs')],
+  sourceMaps: 'inline'
 }
 
 const tsOptions = {
@@ -16,6 +17,6 @@ module.exports = {
   process: (source, path) => {
     if (path.endsWith('.ts')) return transpileTS(source.replace(/^const/gm, 'export const').replace(/^function/gm, 'export function'), tsOptions, path)
 
-    return transpileES(source, esOptions).code
+    return transpileES(source, { ...esOptions, sourceFileName: path }).code
   }
 }
