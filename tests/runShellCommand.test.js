@@ -108,6 +108,10 @@ describe('Run shell command', () => {
     expect(output.trim()).toBe(args.join(' '))
 
     output = ''
+    await runShellCommand('wait-log', args)
+    expect(output.trim()).toBe(args.join(' '))
+
+    output = ''
     await runShellCommand('output-error')
     expect(output.trim()).toBe('Error')
   })
