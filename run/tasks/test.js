@@ -4,17 +4,17 @@ export const usage = () => require('../utils/usage').composeUsageInformation([
   ['-c  --coverage', 'Generates Jest coverage results'],
   ['-f  --fix', 'Fix errors that can be handled automatically by Standard'],
   ['-p  --concurrent', 'Runs tools concurrently'],
-  ['-s  --silent', 'No output unless errors are encountered by tools']
+  ['-q  --quiet', 'No output unless errors are encountered by tools']
 ])
 
 export const run = args => {
-  const { coverage, fix, concurrent, silent } = require('minimist')(args, {
-    alias: { c: 'coverage', f: 'fix', p: 'concurrent', s: 'silent' },
-    boolean: ['c', 'coverage', 'f', 'fix', 'p', 'concurrent', 's', 'silent']
+  const { coverage, fix, concurrent, quiet } = require('minimist')(args, {
+    alias: { c: 'coverage', f: 'fix', p: 'concurrent', q: 'quiet' },
+    boolean: ['c', 'coverage', 'f', 'fix', 'p', 'concurrent', 'q', 'quiet']
   })
   const sequence = [
-    `standard${fix ? ' -f' : ''}${silent ? ' -q' : ''}`,
-    `jest${coverage ? ' -c' : ''}${silent ? ' -s' : ''}`
+    `standard${fix ? ' -f' : ''}${quiet ? ' -q' : ''}`,
+    `jest${coverage ? ' -c' : ''}${quiet ? ' -q' : ''}`
   ]
 
   if (concurrent) sequence.unshift('-c')

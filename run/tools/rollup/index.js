@@ -1,13 +1,13 @@
 export const description = 'Bundles ES modules produced by TypeScript into single CommonJS module with Rollup'
 
 export const usage = () => require('../../utils/usage').composeUsageInformation([[
-  '-s  --silent', 'No output unless errors are encountered by Rollup'
+  '-q  --quiet', 'No output unless errors are encountered by Rollup'
 ]])
 
 export const run = args => {
-  const { silent } = require('minimist')(args, {
-    alias: { s: 'silent' },
-    boolean: ['s:', 'silent'],
+  const { quiet } = require('minimist')(args, {
+    alias: { q: 'quiet' },
+    boolean: ['q', 'quiet'],
     unknown: value => {
       const { bold } = require('chalk')
 
@@ -16,7 +16,7 @@ export const run = args => {
   })
   const sequence = []
 
-  if (!silent) sequence.push('log -w Bundling module with Rollup')
+  if (!quiet) sequence.push('log -w Bundling module with Rollup')
 
   sequence.push(
     'rollup -c run/tools/rollup/config.js --silent',

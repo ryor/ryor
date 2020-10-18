@@ -2,19 +2,19 @@ export const description = 'Transpiles TypeScript and bundles ES modules into si
 
 export const usage = () => require('../utils/usage').composeUsageInformation([[
   '-d  --development', 'Development build (skips minification)',
-  '-s  --silent', 'No output unless errors are encountered by tools'
+  '-q  --quiet', 'No output unless errors are encountered by tools'
 ]])
 
 export const run = args => {
   const { readFileSync, writeFileSync } = require('fs')
-  const { development, silent } = require('minimist')(args, {
-    alias: { d: 'development', s: 'silent' },
-    boolean: ['d', 'development', 's', 'silent']
+  const { development, quiet } = require('minimist')(args, {
+    alias: { d: 'development', q: 'quiet' },
+    boolean: ['d', 'development', 'q', 'quiet']
   })
   const sequence = [
     'shx rm -rf build',
-    `tsc${silent ? ' -s' : ''}`,
-    `rollup${silent ? ' -s' : ''}`,
+    `tsc${quiet ? ' -q' : ''}`,
+    `rollup${quiet ? ' -q' : ''}`,
     ['-c',
       () => {
         const packageJSON = JSON.parse(readFileSync('package.json').toString())
@@ -41,9 +41,9 @@ export const run = args => {
     ]
   ]
 
-  if (!development) sequence.push(`terser${silent ? ' -s' : ''}`)
+  if (!development) sequence.push(`terser${quiet ? ' -s' : ''}`)
 
-  if (!silent) sequence.push('log -s Build complete')
+  if (!quiet) sequence.push('log -s Build complete')
 
   return sequence
 }

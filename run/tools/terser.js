@@ -1,13 +1,13 @@
 export const description = 'Minifies production build code with Terser'
 
 export const run = args => {
-  const { silent } = require('minimist')(args, {
-    alias: { s: 'silent' },
-    boolean: ['s:', 'silent']
+  const { quiet } = require('minimist')(args, {
+    alias: { q: 'quiet' },
+    boolean: ['q', 'quiet']
   })
   const sequence = []
 
-  if (!silent) sequence.push('log -w Minifying module with Terser')
+  if (!quiet) sequence.push('log -w Minifying module with Terser')
 
   sequence.push('terser build/index.js --compress --mangle --output build/index.js')
 
