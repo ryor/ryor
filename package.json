@@ -18,22 +18,22 @@
     "shell-quote": "^1.7.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
-    "@rollup/plugin-node-resolve": "^9.0.0",
+    "@babel/core": "^7.12.7",
+    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
+    "@rollup/plugin-node-resolve": "^10.0.0",
     "@types/cross-spawn": "^6.0.2",
     "@types/esm": "^3.2.0",
-    "@types/minimist": "^1.2.0",
-    "@types/node": "^14.11.8",
+    "@types/minimist": "^1.2.1",
+    "@types/node": "^14.14.9",
     "@types/shell-quote": "^1.7.0",
-    "@typescript-eslint/eslint-plugin": "^4.4.0",
-    "@typescript-eslint/parser": "^4.4.0",
-    "jest": "^26.5.2",
-    "rollup": "^2.29.0",
+    "@typescript-eslint/eslint-plugin": "^4.8.1",
+    "@typescript-eslint/parser": "^4.8.1",
+    "jest": "^26.6.3",
+    "rollup": "^2.33.3",
     "ryor": "^0.4.4",
-    "shx": "^0.3.2",
-    "standardx": "^5.0.0",
-    "terser": "^5.3.4",
-    "typescript": "^4.0.3"
+    "shx": "^0.3.3",
+    "standardx": "^7.0.0",
+    "terser": "^5.5.0",
+    "typescript": "^4.1.2"
   }
 }
