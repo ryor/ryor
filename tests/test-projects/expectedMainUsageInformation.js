@@ -1,5 +1,6 @@
 import { bold } from 'chalk'
-import { HEADER } from '../../source/composeMainUsageInformation'
+import { FOOTER, HEADER } from '../../source/composeMainUsageInformation'
+import { USAGE_TIP_TEMPLATE } from '../../source/composeRunnableDescription'
 
 module.exports = {
 
@@ -15,14 +16,16 @@ ${bold('Tasks:')}
 
 ${bold('Tools:')}
 
-  ${bold('bundler')}       No description provided
-  ${bold('tester')}        Tests code
-  ${bold('transpiler')}    Transpiles code
+  ${bold('bundler')}       ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'bundler')}
+  ${bold('tester')}        Tests code. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'tester')}
+  ${bold('transpiler')}    Transpiles code. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'transpiler')}
 
 ${bold('Other:')}
 
-  ${bold('git')}           Runs preconfigured Git commands
-  ${bold('npm')}           Runs preconfigured NPM commands`,
+  ${bold('git')}           Runs preconfigured Git commands. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'git')}
+  ${bold('npm')}           Runs preconfigured NPM commands. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'npm')}
+
+${FOOTER}`,
 
   'all-sorted':
 
@@ -30,9 +33,9 @@ ${bold('Other:')}
 
 ${bold('Tools:')}
 
-  ${bold('bundler')}       No description provided
-  ${bold('tester')}        Tests code
-  ${bold('transpiler')}    Transpiles code
+  ${bold('bundler')}       ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'bundler')}
+  ${bold('tester')}        Tests code. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'tester')}
+  ${bold('transpiler')}    Transpiles code. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'transpiler')}
 
 ${bold('Tasks:')}
 
@@ -42,8 +45,10 @@ ${bold('Tasks:')}
 
 ${bold('Other:')}
 
-  ${bold('git')}           Runs preconfigured Git commands
-  ${bold('npm')}           Runs preconfigured NPM commands`,
+  ${bold('git')}           Runs preconfigured Git commands. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'git')}
+  ${bold('npm')}           Runs preconfigured NPM commands. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'npm')}
+
+${FOOTER}`,
 
   'only-tools':
 
@@ -51,9 +56,11 @@ ${bold('Other:')}
 
 ${bold('Tools:')}
 
-  ${bold('bundler')}       No description provided
-  ${bold('tester')}        Tests code
-  ${bold('transpiler')}    Transpiles code`,
+  ${bold('bundler')}       ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'bundler')}
+  ${bold('tester')}        Tests code. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'tester')}
+  ${bold('transpiler')}    Transpiles code. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'transpiler')}
+
+${FOOTER}`,
 
   'only-untyped':
 
@@ -61,6 +68,8 @@ ${bold('Tools:')}
 
 ${bold('build')}     No description provided
 ${bold('deploy')}    Deploys project
-${bold('test')}      Tests project`
+${bold('test')}      Tests project
+
+${FOOTER}`
 
 }

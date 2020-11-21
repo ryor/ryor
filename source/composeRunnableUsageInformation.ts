@@ -13,8 +13,8 @@ export async function composeRunnableUsageInformation (name:string):Promise<stri
 
   if (!runnableModule) throw new Error(ERROR_TEMPLATE.replace('[NAME]', name))
 
-  let header:string = HEADER_TEMPLATE.replace('[NAME]', name)
   const description:string = composeRunnableDescription(name, runnableModule)
+  let header:string = HEADER_TEMPLATE.replace('[NAME]', name)
   let body:string|undefined
 
   if (runnableModule.usage) {

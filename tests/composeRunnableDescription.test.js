@@ -1,7 +1,11 @@
 /* eslint-env jest */
 
 import { bold } from 'chalk'
-import { composeRunnableDescription } from '../source/composeRunnableDescription'
+import { USAGE_TIP_TEMPLATE, composeRunnableDescription } from '../source/composeRunnableDescription'
+
+describe('Confirm constant values:', () => {
+  test('USAGE_TIP_TEMPLATE', () => expect(USAGE_TIP_TEMPLATE).toBe(`Use ${bold.underline('node run help [NAME]')} for detailed usage information.`))
+})
 
 describe('Compose runnable description', () => {
   test('with no description or usage defined', () => expect(composeRunnableDescription('runnable', {})).toBe(''))
@@ -24,7 +28,7 @@ describe('Compose runnable description', () => {
     const usage = 'Just use it.'
 
     expect(composeRunnableDescription(name, { usage })).toBe('')
-    expect(composeRunnableDescription(name, { usage }, true)).toBe(`Use ${bold.underline(`node run help ${name}`)} for detailed usage information.`)
+    expect(composeRunnableDescription(name, { usage }, true)).toBe(USAGE_TIP_TEMPLATE.replace('[NAME]', name))
   })
 
   test('with description string (that doesn\'t end with a period) and usage defined', () => {
@@ -33,7 +37,7 @@ describe('Compose runnable description', () => {
     const usage = () => 'Just use it.'
 
     expect(composeRunnableDescription(name, { description, usage })).toBe(description)
-    expect(composeRunnableDescription(name, { description, usage }, true)).toBe(`${description}. Use ${bold.underline(`node run help ${name}`)} for detailed usage information.`)
+    expect(composeRunnableDescription(name, { description, usage }, true)).toBe(`${description}. ${USAGE_TIP_TEMPLATE.replace('[NAME]', name)}`)
   })
 
   test('with description string (that ends with a period) and usage defined', () => {
@@ -42,6 +46,6 @@ describe('Compose runnable description', () => {
     const usage = () => 'Just use it.'
 
     expect(composeRunnableDescription(name, { description, usage })).toBe(description)
-    expect(composeRunnableDescription(name, { description, usage }, true)).toBe(`${description} Use ${bold.underline(`node run help ${name}`)} for detailed usage information.`)
+    expect(composeRunnableDescription(name, { description, usage }, true)).toBe(`${description} ${USAGE_TIP_TEMPLATE.replace('[NAME]', name)}`)
   })
 })

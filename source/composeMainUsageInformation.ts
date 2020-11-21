@@ -7,6 +7,8 @@ import type { RunnableModule, UsageConfiguration } from './types'
 
 export const HEADER:string = `${bold('Usage:')} node run [option] <runnable> [args...] [+ <runnable> [args...]] ...`
 
+export const FOOTER:string = `Use ${bold('node run help <runnable>')} for detailed usage information about any runnables above that provide it`
+
 export const NO_RUNNABLES_RESOLVED_MESSAGE:string = 'No runnables found.'
 
 export async function composeMainUsageInformation (configuration?:UsageConfiguration):Promise<string> {
@@ -14,6 +16,7 @@ export async function composeMainUsageInformation (configuration?:UsageConfigura
 
   if (allModules.size === 0) return NO_RUNNABLES_RESOLVED_MESSAGE
 
+  const EOL2:string = EOL + EOL
   const sortedModules:Map<string, Map<string, RunnableModule>> = new Map()
   const untypedModules = allModules.get('untyped')
   let minNameLength:number = 0
@@ -43,12 +46,12 @@ export async function composeMainUsageInformation (configuration?:UsageConfigura
   sortedModules.forEach((typeModules:Map<string, RunnableModule>, type:string):void => {
     const items:Map<string, string> = new Map()
 
-    typeModules.forEach((module:RunnableModule, name:string):Map<string, string> => items.set(name, composeRunnableDescription(name, module)))
+    typeModules.forEach((module:RunnableModule, name:string):Map<string, string> => items.set(name, composeRunnableDescription(name, module, true)))
 
     lists.push(composeUsageInformationList(items, type === 'untyped' ? undefined : type, minNameLength))
   })
 
-  body = lists.join(EOL + EOL)
+  body = lists.join(EOL2)
 
-  return HEADER + EOL + EOL + body
+  return HEADER + EOL2 + body + EOL2 + FOOTER
 }
