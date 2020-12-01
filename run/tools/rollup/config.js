@@ -7,5 +7,5 @@ export default {
     format: 'cjs'
   },
   external: ['chalk', 'cli-truncate', 'cross-spawn', 'esm', 'minimist', 'shell-quote'],
-  plugins: [nodeResolve()]
+  plugins: [nodeResolve({ preferBuiltins: true })]
 }

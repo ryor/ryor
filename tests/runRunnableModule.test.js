@@ -119,7 +119,15 @@ describe('Runs runnable module', () => {
     expect(output.trim()).toBe('Testing without coverage results')
 
     output = ''
-    await runRunnableModule({ run: 'tester coverage' }, 'runnable')
+    await runRunnableModule({ run: 'tester --coverage' }, 'runnable')
     expect(output.trim()).toBe('Testing with coverage results')
+
+    output = ''
+    await runRunnableModule({ run: 'transpiler' }, 'runnable')
+    expect(output.trim()).toBe('Transpiling')
+
+    output = ''
+    await runRunnableModule({ run: 'transpiler -q' }, 'runnable')
+    expect(output.trim()).toBe('Transpiling quietly')
   })
 })

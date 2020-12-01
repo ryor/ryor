@@ -58,7 +58,7 @@ ${bold('Tools:')}
 
   ${bold('bundler')}       ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'bundler')}
   ${bold('tester')}        Tests code. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'tester')}
-  ${bold('transpiler')}    Transpiles code. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'transpiler')}
+  ${bold('transpiler')}    Transpiles code
 
 ${FOOTER}`,
 

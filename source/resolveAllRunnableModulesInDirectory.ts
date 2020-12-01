@@ -1,10 +1,10 @@
-import { Dirent, promises as fsPromises, existsSync } from 'fs'
+import { Dirent, promises as fs, existsSync } from 'fs'
 import { parse, resolve } from 'path'
 import { requireRunnableModule } from './requireRunnableModule'
 import type { RunnableModule } from './types'
 
 export async function resolveAllRunnableModulesInDirectory (directoryPath:string):Promise<Map<string, RunnableModule>> {
-  const dirents:Dirent[] = await fsPromises.readdir(directoryPath, { withFileTypes: true })
+  const dirents:Dirent[] = await fs.readdir(directoryPath, { withFileTypes: true })
   const modules:Map<string, RunnableModule> = new Map()
 
   for (const dirent of dirents) {

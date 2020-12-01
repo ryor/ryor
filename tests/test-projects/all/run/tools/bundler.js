@@ -1,6 +1,9 @@
-export const usage = () => ({
-  args: '[options]',
-  body: '-q  --quit  Stays quiet.'
-})
+export const args = {
+  quiet: {
+    alias: 'q',
+    boolean: true,
+    description: 'Stays quiet'
+  }
+}
 
 export const run = 'echo bundling'

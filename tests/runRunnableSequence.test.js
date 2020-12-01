@@ -50,7 +50,7 @@ describe('Runs runnable sequence', () => {
 
     output = ''
     await runRunnableSequence('transpiler')
-    expect(output).toBe('transpiling')
+    expect(output).toBe('Transpiling')
   })
 
   test('with multiple runnables (including nested sequences)', async () => {

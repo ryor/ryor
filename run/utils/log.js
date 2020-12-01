@@ -1,26 +1,32 @@
-const { bold, cyan } = require('chalk')
+import chalk from 'chalk'
+
+const { bold, cyan } = chalk
 
 export const description = 'Logs messages with a bit of formatting'
 
-export const usage = () => require('./usage').composeUsageInformation([
-  ['-w  --wait', 'Adds hourglass character to message'],
-  ['-s  --success', 'Adds checkmark character to message']
-])
+export const args = {
+  success: {
+    alias: 's',
+    description: 'Adds checkmark character to message',
+    type: 'boolean'
+  },
+  wait: {
+    alias: 'w',
+    description: 'Adds hourglass character to message',
+    type: 'boolean'
+  }
+}
 
 export const success = message => console.log(`${cyan('✓')} ${bold(message)}`)
 
 export const wait = message => console.log(`${cyan('⏳')} ${bold(message)}`)
 
-export const run = args => {
-  const parsedArgs = require('minimist')(args, {
-    alias: { s: 'success', w: 'wait' },
-    boolean: ['s', 'success', 'w', 'wait']
-  })
-  const message = parsedArgs._.join(' ')
+export const run = ({ _, ...args }) => {
+  const message = _.join(' ')
 
-  if (parsedArgs.success) success(message)
+  if (args.success) success(message)
 
-  else if (parsedArgs.wait) wait(message)
+  else if (args.wait) wait(message)
 
   else console.log(`${cyan('•')} ${bold(message)}`)
 }

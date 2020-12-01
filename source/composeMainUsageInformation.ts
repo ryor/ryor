@@ -7,7 +7,7 @@ import type { RunnableModule, UsageConfiguration } from './types'
 
 export const HEADER:string = `${bold('Usage:')} node run [option] <runnable> [args...] [+ <runnable> [args...]] ...`
 
-export const FOOTER:string = `Use ${bold('node run help <runnable>')} for detailed usage information about any runnables above that provide it`
+export const FOOTER:string = `Use ${bold('node run help <runnable>')} for detailed usage information about any runnables above that provide it.`
 
 export const NO_RUNNABLES_RESOLVED_MESSAGE:string = 'No runnables found.'
 

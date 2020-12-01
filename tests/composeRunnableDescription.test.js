@@ -24,28 +24,28 @@ describe('Compose runnable description', () => {
   })
 
   test('with no description and usage defined', () => {
+    const args = { arg: { boolean: true } }
     const name = 'runnable'
-    const usage = 'Just use it.'
 
-    expect(composeRunnableDescription(name, { usage })).toBe('')
-    expect(composeRunnableDescription(name, { usage }, true)).toBe(USAGE_TIP_TEMPLATE.replace('[NAME]', name))
+    expect(composeRunnableDescription(name, { args })).toBe('')
+    expect(composeRunnableDescription(name, { args }, true)).toBe(USAGE_TIP_TEMPLATE.replace('[NAME]', name))
   })
 
   test('with description string (that doesn\'t end with a period) and usage defined', () => {
-    const name = 'runnable'
+    const args = { arg: { boolean: true } }
     const description = 'Does a thing'
-    const usage = () => 'Just use it.'
+    const name = 'runnable'
 
-    expect(composeRunnableDescription(name, { description, usage })).toBe(description)
-    expect(composeRunnableDescription(name, { description, usage }, true)).toBe(`${description}. ${USAGE_TIP_TEMPLATE.replace('[NAME]', name)}`)
+    expect(composeRunnableDescription(name, { args, description })).toBe(description)
+    expect(composeRunnableDescription(name, { args, description }, true)).toBe(`${description}. ${USAGE_TIP_TEMPLATE.replace('[NAME]', name)}`)
   })
 
   test('with description string (that ends with a period) and usage defined', () => {
-    const name = 'runnable'
+    const args = { arg: { boolean: true } }
     const description = 'Does a thing.'
-    const usage = () => 'Just use it.'
+    const name = 'runnable'
 
-    expect(composeRunnableDescription(name, { description, usage })).toBe(description)
-    expect(composeRunnableDescription(name, { description, usage }, true)).toBe(`${description} ${USAGE_TIP_TEMPLATE.replace('[NAME]', name)}`)
+    expect(composeRunnableDescription(name, { args, description })).toBe(description)
+    expect(composeRunnableDescription(name, { args, description }, true)).toBe(`${description} ${USAGE_TIP_TEMPLATE.replace('[NAME]', name)}`)
   })
 })

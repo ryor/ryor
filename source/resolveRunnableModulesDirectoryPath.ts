@@ -1,8 +1,10 @@
-import { existsSync, statSync } from 'fs'
 import { resolve } from 'path'
+import { isValidDirectoryPath } from './isValidDirectoryPath'
 
-export function resolveRunnableModulesDirectoryPath ():string|undefined {
-  const path:string = resolve(process.cwd(), 'run') // TODO: Handle runnables directory possibly not named "run"
+const DEFAULT_RUNNABLES_DIRECTORY_NAME:string = 'run'
 
-  return existsSync(path) && statSync(path).isDirectory() ? path : undefined
+export async function resolveRunnableModulesDirectoryPath ():Promise<string|void> {
+  const path:string = resolve(process.cwd(), DEFAULT_RUNNABLES_DIRECTORY_NAME) // TODO: Handle other directory names
+
+  if (await isValidDirectoryPath(path)) return path
 }

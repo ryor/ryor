@@ -1,5 +1,11 @@
+export const args = {
+  coverage: {
+    alias: 'c',
+    boolean: true,
+    description: 'Includes coverage results'
+  }
+}
+
 export const description = 'Tests code'
 
-export const usage = { args: '(with Jest!)' }
-
-export const run = args => console.log(`Testing with${args.length > 0 && args[0] === 'coverage' ? '' : 'out'} coverage results`)
+export const run = ({ coverage }) => console.log(`Testing with${coverage ? '' : 'out'} coverage results`)

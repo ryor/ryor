@@ -1,7 +1,11 @@
+export const args = {
+  quiet: {
+    alias: 'q',
+    boolean: true,
+    description: 'Stays quiet'
+  }
+}
+
 export const description = () => 'Transpiles code'
 
-export const usage = () => ({
-  body: '-q  --quit  Stays quiet.'
-})
-
-export const run = () => () => console.log('transpiling')
+export const run = ({ quiet }) => () => console.log(`Transpiling${quiet ? ' quietly' : ''}`)

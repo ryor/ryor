@@ -6,7 +6,7 @@ import { FOOTER, HEADER, NO_RUNNABLES_RESOLVED_MESSAGE, composeMainUsageInformat
 import expectedMainUsageInformation from './test-projects/expectedMainUsageInformation'
 
 describe('Confirm constant values:', () => {
-  test('FOOTER', () => expect(FOOTER).toBe(`Use ${bold('node run help <runnable>')} for detailed usage information about any runnables above that provide it`))
+  test('FOOTER', () => expect(FOOTER).toBe(`Use ${bold('node run help <runnable>')} for detailed usage information about any runnables above that provide it.`))
   test('HEADER', () => expect(HEADER).toBe(`${bold('Usage:')} node run [option] <runnable> [args...] [+ <runnable> [args...]] ...`))
   test('NO_RUNNABLES_RESOLVED_MESSAGE', () => expect(NO_RUNNABLES_RESOLVED_MESSAGE).toBe('No runnables found.'))
 })

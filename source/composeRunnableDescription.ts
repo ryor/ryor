@@ -12,7 +12,7 @@ export function composeRunnableDescription (name:string, runnableModule:Runnable
 
   if (typeof description !== 'string') description = ''
 
-  if (runnableModule.usage && includeUsageTip) {
+  if (runnableModule.args && includeUsageTip) {
     if (description) description += `${description.endsWith('.') ? '' : '.'} `
 
     description += USAGE_TIP_TEMPLATE.replace('[NAME]', name)
