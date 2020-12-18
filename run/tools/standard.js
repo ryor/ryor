@@ -1,9 +1,9 @@
-export const description = 'Checks source TypeScript and runnables and tests JavaScript for errors and ensures consistent formatting with Standard'
+export const description = 'Lints and ensures consistent formatting in source TypeScript and runnables/tests JavaScript with Standard'
 
 export const args = {
   concurrent: {
     alias: 'c',
-    description: 'Run tests concurrently'
+    description: 'Run checks concurrently'
   },
   fix: {
     alias: 'f',
@@ -29,36 +29,27 @@ export const args = {
 
 export const run = ({ concurrent, fix, quiet, runnables, source, tests }) => {
   const all = !runnables && !source && !tests
+  const checks = []
   let sequence = []
 
   if (all || source) {
-    if (!concurrent && !quiet) sequence.push('log -w Checking for errors and consistent formatting in source TypeScript with Standard...')
-
+    checks.push('source')
     sequence.push(`standardx --parser @typescript-eslint/parser --plugin @typescript-eslint/eslint-plugin source/*.ts${fix ? ' --fix' : ''}`)
   }
 
   if (all || runnables) {
-    if (!concurrent && !quiet) sequence.push('log -w Checking for errors and consistent formatting in runnables JavaScript with Standard...')
-
+    checks.push('runnables')
     sequence.push(`standardx run/**/*.js${fix ? ' --fix' : ''}`)
   }
 
   if (all || tests) {
-    if (!concurrent && !quiet) sequence.push('log -w Checking for errors and consistent formatting in tests JavaScript with Standard...')
-
+    checks.push('tests')
     sequence.push(`standardx tests/*.js${fix ? ' --fix' : ''}`)
   }
 
-  if (concurrent) {
-    sequence.unshift('-c')
+  if (concurrent) sequence = [['-c', ...sequence]]
 
-    if (!quiet) {
-      sequence = [
-        'log -w Checking for errors and consistent formatting with Standard...',
-        sequence
-      ]
-    }
-  }
+  if (!quiet) sequence.unshift(`log -w Linting and ${fix ? 'fixing' : 'checking for consistent'} formatting in ${checks.reduce((result, check, index, array) => `${result}${array.length === 1 || index === 0 ? '' : index === array.length - 1 ? ' and ' : ', '}${check}`, '')}${concurrent ? ' concurrently' : ''} with Standard...`)
 
   return sequence
 }

@@ -6,7 +6,7 @@ import type { ChildProcess } from 'child_process'
 export function runShellCommand (command:string, args:string[] = []):Promise<void> {
   if (command === 'cd') {
     // TODO: Make sure paths with directory names with spaces are handled properly
-    if (args.length > 0) process.chdir(resolve(process.cwd(), args[0]))
+    if (args.length > 0) process.chdir(resolve(process.cwd(), args.join(' ')))
 
     return Promise.resolve()
   }

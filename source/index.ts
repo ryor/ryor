@@ -1,4 +1,4 @@
-import { runCommandLineInput } from './runCommandLineInput'
-import type { Configuration } from './types'
+import { run } from './run'
+import type { UsageConfiguration } from './types'
 
-module.exports = async (configuration:Configuration):Promise<void> => await runCommandLineInput(process.argv.slice(2), configuration)
+module.exports = async (usage: UsageConfiguration): Promise<void> => await run(process.argv, usage)

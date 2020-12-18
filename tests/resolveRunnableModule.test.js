@@ -12,7 +12,7 @@ describe('Resolve runnable module(s)', () => {
   })
 
   test('undefined when module cannot be resolved', async () => {
-    process.chdir(resolve(__dirname, 'test-projects/empty-run'))
+    process.chdir(resolve(__dirname, 'test-projects/empty-runnables-directory'))
 
     expect(await resolveRunnableModule('runnable')).toBeUndefined()
   })

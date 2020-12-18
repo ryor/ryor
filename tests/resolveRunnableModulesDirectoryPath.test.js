@@ -10,7 +10,7 @@ describe('Resolve runnable modules directory path', () => {
   })
 
   test('returns path when directory is resolved', async () => {
-    const parentDirectoryPath = resolve(__dirname, 'test-projects/empty-run')
+    const parentDirectoryPath = resolve(__dirname, 'test-projects/empty-runnables-directory')
     const expectedRunnableModulesDirectoryPath = resolve(parentDirectoryPath, 'run')
 
     process.chdir(parentDirectoryPath)

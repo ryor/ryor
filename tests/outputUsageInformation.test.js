@@ -23,7 +23,7 @@ describe('Output usage information', () => {
     expect(output).toBe(EOL + NO_RUNNABLES_RESOLVED_MESSAGE + EOL)
 
     output = ''
-    process.chdir(resolve(__dirname, 'test-projects/empty-run'))
+    process.chdir(resolve(__dirname, 'test-projects/empty-runnables-directory'))
     await outputUsageInformation()
     expect(output).toBe(EOL + NO_RUNNABLES_RESOLVED_MESSAGE + EOL)
 
