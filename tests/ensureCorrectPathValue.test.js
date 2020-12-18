@@ -17,7 +17,7 @@ describe('Ensures PATH environment variable has correct value', () => {
   afterEach(() => { env.PATH = PATH })
 
   test('does not include node_modules/.bin directory when none exists', () => {
-    projectDirectoryPath = resolve(__dirname, 'test-projects/empty')
+    projectDirectoryPath = resolve(__dirname, 'test-projects/empty-runnables-directory')
     binDirectoryPath = resolve(projectDirectoryPath, 'node_modules/.bin')
     process.chdir(projectDirectoryPath)
     ensureCorrectPathValue()

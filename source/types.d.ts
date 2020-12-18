@@ -1,7 +1,18 @@
 /* eslint no-use-before-define: off */
-import { ParsedArgs } from 'minimist'
+import type { ParsedArgs } from 'minimist'
+
+export type CommandLineInput = {
+  args: string[]
+  configuration: Configuration
+}
 
 export type Configuration = {
+  entry: {
+    directoryName: string,
+    directoryPath: string
+    sequence: string[]
+  }
+  outputRunDuration?: boolean
   usage?: UsageConfiguration
 }
 
@@ -14,10 +25,10 @@ export type RunnableArgumentDefinition = {
 }
 
 export type RunnableArgumentDefinitions = {
-  [ name:string ]: RunnableArgumentDefinition
+  [name: string]: RunnableArgumentDefinition
 }
 
-export type RunnableFunction = (args?:ParsedArgs) => Runnable | RunnableSequence | undefined
+export type RunnableFunction = (args?: ParsedArgs) => Runnable | RunnableSequence | undefined
 
 export type RunnableModule = {
   args?: RunnableArgumentDefinitions
@@ -28,12 +39,15 @@ export type RunnableModule = {
 
 export type RunnableSequence = (Runnable | RunnableSequence)[]
 
+export type RunnablesDirectory = {
+  name: string,
+  path: string
+}
+
 export type Usage = string | UsageInformation
 
 export type UsageConfiguration = {
-  types?: {
-    order?: string[]
-  }
+  types?: string[]
 }
 
 export type UsageInformation = {
