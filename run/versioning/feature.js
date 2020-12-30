@@ -23,39 +23,36 @@ export const run = async ({ _, finalize }) => {
         console.error(`Branch for feature ${bold(featureName)} does not exist`)
         process.exit(1)
       }
-    }
-
-    else {
+    } else {
       const currentBranchName = await getCurrentBranchName()
 
       if (currentBranchName.startsWith('feature/')) {
         featureBranchName = currentBranchName
         featureName = featureBranchName.split('feature/')[1]
-      }
-      else {
+      } else {
         console.error(`Current branch ${bold(currentBranchName)} is not a feature branch`)
         process.exit(1)
       }
     }
 
-    if (!(await isCodeCommitted())) sequence.push(
-      'git add --all',
+    if (!(await isCodeCommitted())) {
+      sequence.push(
+        'git add --all',
       `git commit -am "Final commit to ${featureBranchName} before merge with develop"`
-    )
+      )
+    }
 
     sequence.push(
       'git checkout develop',
       'git pull',
       `git merge --squash ${featureBranchName}`,
       'git commit',
-      `git push`,
+      'git push',
       `git branch -D ${featureBranchName}`,
       `git push origin --delete ${featureBranchName}`,
       `log -s Feature ${featureName} merged into develop branch`
     )
-  }
-
-  else {
+  } else {
     const featureNameIsValid = !!featureName && await isValidFeatureName(featureName)
 
     if (!featureNameIsValid) {
