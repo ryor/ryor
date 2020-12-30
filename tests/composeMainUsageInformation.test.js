@@ -13,44 +13,49 @@ describe('Confirm constant values:', () => {
 
 describe('Compose main usage information', () => {
   test('returns NO_RUNNABLES_RESOLVED_MESSAGE when no valid runnables are resolved', async () => {
-    let configuration
+    let configuration, projectDirectoryPath
 
-    process.chdir(resolve(__dirname, 'test-projects/empty-runnables-directory'))
-    configuration = { entry: { directoryName: 'run', directoryPath: resolve(__dirname, 'test-projects/empty-runnables-directory/run') } }
+    projectDirectoryPath = resolve(__dirname, 'test-projects/empty-runnables-directory')
+    configuration = { entry: { directoryName: 'run', directoryPath: resolve(projectDirectoryPath, 'run') } }
+    process.chdir(projectDirectoryPath)
     expect(await composeMainUsageInformation(configuration)).toBe(NO_RUNNABLES_RESOLVED_MESSAGE)
 
-    process.chdir(resolve(__dirname, 'test-projects/invalid-definitions'))
-    configuration = { entry: { directoryName: 'run', directoryPath: resolve(__dirname, 'test-projects/invalid-definitions/run') } }
+    projectDirectoryPath = resolve(__dirname, 'test-projects/invalid-definitions')
+    configuration = { entry: { directoryName: 'run', directoryPath: resolve(projectDirectoryPath, 'run') } }
+    process.chdir(projectDirectoryPath)
     expect(await composeMainUsageInformation(configuration)).toBe(NO_RUNNABLES_RESOLVED_MESSAGE)
 
-    process.chdir(resolve(__dirname, 'test-projects/syntax-error'))
-    configuration = { entry: { directoryName: 'run', directoryPath: resolve(__dirname, 'test-projects/syntax-error/run') } }
+    projectDirectoryPath = resolve(__dirname, 'test-projects/syntax-error')
+    configuration = { entry: { directoryName: 'run', directoryPath: resolve(projectDirectoryPath, 'run') } }
+    process.chdir(projectDirectoryPath)
     expect(await composeMainUsageInformation(configuration)).toBe(NO_RUNNABLES_RESOLVED_MESSAGE)
   })
 
   test('for "only-untyped" test project', async () => {
-    const configuration = { entry: { directoryName: 'run', directoryPath: resolve(__dirname, 'test-projects/only-untyped/run') } }
+    const projectDirectoryPath = resolve(__dirname, 'test-projects/only-untyped')
+    const configuration = { entry: { directoryName: 'run', directoryPath: resolve(projectDirectoryPath, 'run') } }
 
-    process.chdir(resolve(__dirname, 'test-projects/only-untyped'))
+    process.chdir(projectDirectoryPath)
     expect(await composeMainUsageInformation(configuration)).toBe(expectedMainUsageInformation['only-untyped'])
   })
 
   test('for "only-tools" test project', async () => {
-    const configuration = { entry: { directoryName: 'run', directoryPath: resolve(__dirname, 'test-projects/only-tools/run') } }
+    const projectDirectoryPath = resolve(__dirname, 'test-projects/only-tools')
+    const configuration = { entry: { directoryName: 'run', directoryPath: resolve(projectDirectoryPath, 'run') } }
 
-    process.chdir(resolve(__dirname, 'test-projects/only-tools'))
+    process.chdir(projectDirectoryPath)
     expect(await composeMainUsageInformation(configuration)).toBe(expectedMainUsageInformation['only-tools'])
   })
 
   test('for "all" test project', async () => {
-    const configuration = { entry: { directoryName: 'run', directoryPath: resolve(__dirname, 'test-projects/all/run') } }
+    const projectDirectoryPath = resolve(__dirname, 'test-projects/all')
+    const configuration = { entry: { directoryName: 'run', directoryPath: resolve(projectDirectoryPath, 'run') } }
 
-    process.chdir(resolve(__dirname, 'test-projects/all'))
-
+    process.chdir(projectDirectoryPath)
     expect(await composeMainUsageInformation(configuration)).toBe(expectedMainUsageInformation.all)
-    expect(await composeMainUsageInformation({ ...configuration, usage: { types: { order: ['tools'] } } })).toBe(expectedMainUsageInformation['all-sorted'])
-    expect(await composeMainUsageInformation({ ...configuration, usage: { types: { order: ['tools', 'tasks'] } } })).toBe(expectedMainUsageInformation['all-sorted'])
-    expect(await composeMainUsageInformation({ ...configuration, usage: { types: { order: ['foo', 'tools'] } } })).toBe(expectedMainUsageInformation['all-sorted'])
-    expect(await composeMainUsageInformation({ ...configuration, usage: { types: { order: ['foo', 'tools', 'foo2', 'tasks'] } } })).toBe(expectedMainUsageInformation['all-sorted'])
+    expect(await composeMainUsageInformation({ ...configuration, usage: { categories: ['tools'] } })).toBe(expectedMainUsageInformation['all-sorted'])
+    expect(await composeMainUsageInformation({ ...configuration, usage: { categories: ['tools', 'tasks'] } })).toBe(expectedMainUsageInformation['all-sorted'])
+    expect(await composeMainUsageInformation({ ...configuration, usage: { categories: ['foo', 'tools'] } })).toBe(expectedMainUsageInformation['all-sorted'])
+    expect(await composeMainUsageInformation({ ...configuration, usage: { categories: ['foo', 'tools', 'foo2', 'tasks'] } })).toBe(expectedMainUsageInformation['all-sorted'])
   })
 })

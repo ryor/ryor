@@ -5,9 +5,7 @@ import { resolveAllRunnableModules } from '../source/resolveAllRunnableModules'
 
 describe('Resolve all runnable modules', () => {
   test('in "only-untyped" test project', async () => {
-    process.chdir(resolve(__dirname, 'test-projects/only-untyped'))
-
-    const modules = await resolveAllRunnableModules()
+    const modules = await resolveAllRunnableModules(resolve(__dirname, 'test-projects/only-untyped/run'))
     const untypedModules = modules.get('untyped')
 
     expect(modules).toBeInstanceOf(Map)
@@ -20,9 +18,7 @@ describe('Resolve all runnable modules', () => {
   })
 
   test('in "only-tools" test project', async () => {
-    process.chdir(resolve(__dirname, 'test-projects/only-tools'))
-
-    const modules = await resolveAllRunnableModules()
+    const modules = await resolveAllRunnableModules(resolve(__dirname, 'test-projects/only-tools/run'))
     const toolsModules = modules.get('tools')
 
     expect(modules).toBeInstanceOf(Map)
@@ -35,9 +31,7 @@ describe('Resolve all runnable modules', () => {
   })
 
   test('in "all" test project', async () => {
-    process.chdir(resolve(__dirname, 'test-projects/all'))
-
-    const modules = await resolveAllRunnableModules()
+    const modules = await resolveAllRunnableModules(resolve(__dirname, 'test-projects/all/run'))
     const tasksModules = modules.get('tasks')
     const toolsModules = modules.get('tools')
     const untypedModules = modules.get('untyped')

@@ -1,13 +1,9 @@
 export const description = 'Lints and ensures consistent formatting in source TypeScript and runnables/tests JavaScript with Standard'
 
 export const args = {
-  concurrent: {
-    alias: 'c',
-    description: 'Run checks concurrently'
-  },
   fix: {
     alias: 'f',
-    description: 'Fix formatting that can be handled automatically by Standard'
+    description: 'Fix issues that can be handled automatically by Standard'
   },
   quiet: {
     alias: 'q',
@@ -27,29 +23,32 @@ export const args = {
   }
 }
 
-export const run = ({ concurrent, fix, quiet, runnables, source, tests }) => {
+export const run = ({ fix, quiet, runnables, source, tests }) => {
   const all = !runnables && !source && !tests
   const checks = []
-  let sequence = []
+  let sequence = ['-c']
 
   if (all || source) {
     checks.push('source')
-    sequence.push(`standardx --parser @typescript-eslint/parser --plugin @typescript-eslint/eslint-plugin source/*.ts${fix ? ' --fix' : ''}`)
+    sequence.push(`ts-standard${fix ? ' --fix' : ''} --project run/tools/tsc/config.json source/*.ts`)
   }
 
   if (all || runnables) {
     checks.push('runnables')
-    sequence.push(`standardx run/**/*.js${fix ? ' --fix' : ''}`)
+    sequence.push(`standard${fix ? ' --fix' : ''} run/**/*.js`)
   }
 
   if (all || tests) {
     checks.push('tests')
-    sequence.push(`standardx tests/*.js${fix ? ' --fix' : ''}`)
+    sequence.push(`standard${fix ? ' --fix' : ''} tests/*.js`)
   }
 
-  if (concurrent) sequence = [['-c', ...sequence]]
-
-  if (!quiet) sequence.unshift(`log -w Linting and ${fix ? 'fixing' : 'checking for consistent'} formatting in ${checks.reduce((result, check, index, array) => `${result}${array.length === 1 || index === 0 ? '' : index === array.length - 1 ? ' and ' : ', '}${check}`, '')}${concurrent ? ' concurrently' : ''} with Standard...`)
+  if (!quiet) {
+    sequence = [
+    `log -w Linting ${fix ? 'and fixing issues in' : ''} ${checks.reduce((result, check, index, array) => `${result}${array.length === 1 || index === 0 ? '' : index === array.length - 1 ? ' and ' : ', '}${check}`, '')} code with Standard...`,
+    sequence
+    ]
+  }
 
   return sequence
 }

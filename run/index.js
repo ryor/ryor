@@ -1,2 +1,2 @@
-// require('ryor')()
-require('../build')({ types: ['tasks', 'tools', 'versioning', 'utils'] })
+require('ryor')({ categories: ['tasks', 'tools', 'branching', 'utils'] })
+// require('../build')({ categories: ['tasks', 'tools', 'branching', 'utils'] })

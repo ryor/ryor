@@ -1,17 +1,13 @@
-export const description = 'Checks source and runnables code for errors with Standard and Jest'
+export const description = 'Lints runnables, source and tests code with Standard and unit tests source code with Jest'
 
 export const args = {
-  concurrent: {
-    alias: 'p',
-    description: 'Runs tools concurrently'
-  },
   coverage: {
     alias: 'c',
     description: 'Generates Jest coverage results'
   },
   fix: {
     alias: 'f',
-    description: 'Fix errors that can be handled automatically by Standard'
+    description: 'Fix linting issues that can be handled automatically by Standard'
   },
   quiet: {
     alias: 'q',
@@ -19,13 +15,7 @@ export const args = {
   }
 }
 
-export const run = ({ coverage, fix, concurrent, quiet }) => {
-  const sequence = [
-    `standard${fix ? ' -f' : ''}${quiet ? ' -q' : ''}`,
-    `jest${coverage ? ' -c' : ''}${quiet ? ' -q' : ''}`
-  ]
-
-  if (concurrent) sequence.unshift('-c')
-
-  return sequence
-}
+export const run = ({ coverage, fix, quiet }) => [
+  `standard${fix ? ' -f' : ''}${quiet ? ' -q' : ''}`,
+  `jest${coverage ? ' -c' : ''}${quiet ? ' -q' : ''}`
+]

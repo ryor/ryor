@@ -3,7 +3,7 @@ export const description = 'Transpiles TypeScript and bundles ES modules into si
 export const args = {
   development: {
     alias: 'd',
-    description: 'Development build (skips minification)'
+    description: 'Development build (skips linting, testing and minification)'
   },
   quiet: {
     alias: 'q',

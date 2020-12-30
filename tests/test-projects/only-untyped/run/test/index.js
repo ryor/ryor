@@ -1,4 +1,4 @@
-export const description = () => 'Tests project'
+export const description = 'Tests project'
 
 export const run = [
   'echo running tests',

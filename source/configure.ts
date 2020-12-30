@@ -24,13 +24,13 @@ export async function configure (argv: string[], usage?: UsageConfiguration): Pr
   if (args.length === 0 || args[0] === 'help') {
     sequence = ['help']
 
-    if (args.length > 1) { sequence.push(args[1]) }
+    if (args.length > 1) sequence.push(args[1])
   } else {
     sequence = args
       .reduce((definitions: string[][], value: string): string[][] => {
         if (value === '+') definitions.push([])
 
-        else definitions[definitions.length - 1].push(value)
+        else definitions[definitions.length - 1]?.push(value)
 
         return definitions
       }, [[]])
@@ -48,7 +48,7 @@ export async function configure (argv: string[], usage?: UsageConfiguration): Pr
 
   if (outputRunDuration) configuration.outputRunDuration = true
 
-  if (usage) configuration.usage = usage
+  if (usage !== undefined) configuration.usage = usage
 
   return configuration
 }

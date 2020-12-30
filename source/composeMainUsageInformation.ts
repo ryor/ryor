@@ -24,12 +24,12 @@ export async function composeMainUsageInformation (configuration: Configuration)
   let minNameLength: number = 0
   let body: string = ''
 
-  if (untypedModules) allModules.delete('untyped')
+  if (untypedModules !== undefined) allModules.delete('untyped')
 
-  if (configuration.usage && configuration.usage.types) {
-    configuration.usage.types.forEach((type: string): void => {
+  if (configuration?.usage?.categories !== undefined) {
+    configuration.usage.categories.forEach((type: string): void => {
       if (allModules.has(type)) {
-        sortedModules.set(type, allModules.get(type)!)
+        sortedModules.set(type, allModules.get(type) as Map<string, RunnableModule>)
         allModules.delete(type)
       }
     })
@@ -37,7 +37,7 @@ export async function composeMainUsageInformation (configuration: Configuration)
 
   allModules.forEach((map: Map<string, RunnableModule>, type: string): Map<string, Map<string, RunnableModule>> => sortedModules.set(type, map))
 
-  if (untypedModules) sortedModules.set(sortedModules.size > 0 ? 'other' : 'untyped', untypedModules)
+  if (untypedModules !== undefined) sortedModules.set(sortedModules.size > 0 ? 'other' : 'untyped', untypedModules)
 
   sortedModules.forEach((typeModules: Map<string, RunnableModule>): void =>
     typeModules.forEach((_, name: string): void => { minNameLength = name.length > minNameLength ? name.length : minNameLength })

@@ -26,18 +26,20 @@ describe('Starts runner with inputs', () => {
   afterAll(() => jest.restoreAllMocks())
 
   test('outputs error message when "unresolvable" cannot be resolved', async () => {
-    await run([...process.argv.slice(0, 2), 'unresolvable'])
+    await run([process.argv[0], resolve(process.cwd(), 'run'), 'unresolvable'])
     expect(output.trim()).toBe(`Could not resolve ${bold('unresolvable')}`)
     expect(exitCode).toBe(1)
   })
 
-  test('outputs error message when "bundler" runnable is resolved and contains syntax error', async () => {
+  test('throws error when "bundler" runnable is resolved and contains syntax error', async () => {
     process.chdir(resolve(__dirname, 'test-projects/syntax-error'))
 
-    await run([process.argv[0], resolve(__dirname, 'test-projects/syntax-error/run'), 'bundler'])
-    expect(output.includes('SyntaxError')).toBe(true)
-    expect(exitCode).toBe(1)
-    expect(1).toBe(1)
+    try {
+      await run([process.argv[0], resolve(process.cwd(), 'run'), 'bundler'])
+    } catch (error) {
+      expect(output.includes('SyntaxError')).toBe(true)
+      expect(exitCode).toBe(1)
+    }
   })
 
   test('resolves and runs "transpiler" runnable in "only-tools" test project', async () => {

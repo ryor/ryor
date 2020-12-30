@@ -12,8 +12,8 @@ export function composeRunnableDescription (name: string, runnableModule: Runnab
 
   if (typeof description !== 'string') description = ''
 
-  if (runnableModule.args && includeUsageTip) {
-    if (description) description += `${description.endsWith('.') ? '' : '.'} `
+  if (runnableModule.args !== undefined && includeUsageTip) {
+    if (description !== '') description += `${description.endsWith('.') ? '' : '.'} `
 
     description += USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', configuration.entry.directoryName).replace('[NAME]', name)
   }
