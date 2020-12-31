@@ -19,8 +19,8 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        os: [MacOS]
-        node-version: [14]
+        os: [Ubuntu]
+        node-version: [14, 12, 10]
         run-all:
           - ${{ contains(github.ref, 'main') || contains(github.ref, 'release') }}
         exclude:
