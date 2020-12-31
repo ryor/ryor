@@ -1,5 +1,6 @@
 /* eslint-env jest */
 
+import { resolve } from 'path'
 import { runRunnable } from '../source/runRunnable'
 
 describe('Runs runnable', () => {
@@ -49,7 +50,7 @@ describe('Runs runnable', () => {
   test('with string runnables', async () => {
     const runnable = 'echo some message'
 
-    expect(await runRunnable(runnable)).toBe(undefined)
+    expect(await runRunnable(runnable, resolve(process.cwd(), 'run'))).toBe(undefined)
     expect(output.trim()).toBe('some message')
   })
 })

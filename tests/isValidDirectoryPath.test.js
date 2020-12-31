@@ -9,6 +9,6 @@ describe('Checks for a valid directory path', () => {
   })
 
   test('returns true when directory is valid', async () => {
-    expect(await isValidDirectoryPath(resolve(__dirname, 'test-projects/empty-run/run'))).toBe(true)
+    expect(await isValidDirectoryPath(resolve(__dirname, 'test-projects/empty-runnables-directory/run'))).toBe(true)
   })
 })

@@ -6,49 +6,56 @@ import { FOOTER, HEADER, NO_RUNNABLES_RESOLVED_MESSAGE, composeMainUsageInformat
 import expectedMainUsageInformation from './test-projects/expectedMainUsageInformation'
 
 describe('Confirm constant values:', () => {
-  test('FOOTER', () => expect(FOOTER).toBe(`Use ${bold('node run help <runnable>')} for detailed usage information about any runnables above that provide it.`))
-  test('HEADER', () => expect(HEADER).toBe(`${bold('Usage:')} node run [option] <runnable> [args...] [+ <runnable> [args...]] ...`))
+  test('FOOTER', () => expect(FOOTER).toBe(`Use ${bold('node [ENTRY_DIRECTORY_NAME] help <runnable>')} for detailed usage information about any runnables above that provide it.`))
+  test('HEADER', () => expect(HEADER).toBe(`${bold('Usage:')} node [ENTRY_DIRECTORY_NAME] [option] <runnable> [args...] [+ <runnable> [args...]] ...`))
   test('NO_RUNNABLES_RESOLVED_MESSAGE', () => expect(NO_RUNNABLES_RESOLVED_MESSAGE).toBe('No runnables found.'))
 })
 
 describe('Compose main usage information', () => {
   test('returns NO_RUNNABLES_RESOLVED_MESSAGE when no valid runnables are resolved', async () => {
-    process.chdir(resolve(__dirname, 'test-projects/empty'))
+    let configuration, projectDirectoryPath
 
-    expect(await composeMainUsageInformation()).toBe(NO_RUNNABLES_RESOLVED_MESSAGE)
+    projectDirectoryPath = resolve(__dirname, 'test-projects/empty-runnables-directory')
+    configuration = { entry: { directoryName: 'run', directoryPath: resolve(projectDirectoryPath, 'run') } }
+    process.chdir(projectDirectoryPath)
+    expect(await composeMainUsageInformation(configuration)).toBe(NO_RUNNABLES_RESOLVED_MESSAGE)
 
-    process.chdir(resolve(__dirname, 'test-projects/empty-run'))
+    projectDirectoryPath = resolve(__dirname, 'test-projects/invalid-definitions')
+    configuration = { entry: { directoryName: 'run', directoryPath: resolve(projectDirectoryPath, 'run') } }
+    process.chdir(projectDirectoryPath)
+    expect(await composeMainUsageInformation(configuration)).toBe(NO_RUNNABLES_RESOLVED_MESSAGE)
 
-    expect(await composeMainUsageInformation()).toBe(NO_RUNNABLES_RESOLVED_MESSAGE)
-
-    process.chdir(resolve(__dirname, 'test-projects/invalid-definitions'))
-
-    expect(await composeMainUsageInformation()).toBe(NO_RUNNABLES_RESOLVED_MESSAGE)
-
-    process.chdir(resolve(__dirname, 'test-projects/syntax-error'))
-
-    expect(await composeMainUsageInformation()).toBe(NO_RUNNABLES_RESOLVED_MESSAGE)
+    projectDirectoryPath = resolve(__dirname, 'test-projects/syntax-error')
+    configuration = { entry: { directoryName: 'run', directoryPath: resolve(projectDirectoryPath, 'run') } }
+    process.chdir(projectDirectoryPath)
+    expect(await composeMainUsageInformation(configuration)).toBe(NO_RUNNABLES_RESOLVED_MESSAGE)
   })
 
   test('for "only-untyped" test project', async () => {
-    process.chdir(resolve(__dirname, 'test-projects/only-untyped'))
+    const projectDirectoryPath = resolve(__dirname, 'test-projects/only-untyped')
+    const configuration = { entry: { directoryName: 'run', directoryPath: resolve(projectDirectoryPath, 'run') } }
 
-    expect(await composeMainUsageInformation()).toBe(expectedMainUsageInformation['only-untyped'])
+    process.chdir(projectDirectoryPath)
+    expect(await composeMainUsageInformation(configuration)).toBe(expectedMainUsageInformation['only-untyped'])
   })
 
   test('for "only-tools" test project', async () => {
-    process.chdir(resolve(__dirname, 'test-projects/only-tools'))
+    const projectDirectoryPath = resolve(__dirname, 'test-projects/only-tools')
+    const configuration = { entry: { directoryName: 'run', directoryPath: resolve(projectDirectoryPath, 'run') } }
 
-    expect(await composeMainUsageInformation()).toBe(expectedMainUsageInformation['only-tools'])
+    process.chdir(projectDirectoryPath)
+    expect(await composeMainUsageInformation(configuration)).toBe(expectedMainUsageInformation['only-tools'])
   })
 
   test('for "all" test project', async () => {
-    process.chdir(resolve(__dirname, 'test-projects/all'))
+    const projectDirectoryPath = resolve(__dirname, 'test-projects/all')
+    const configuration = { entry: { directoryName: 'run', directoryPath: resolve(projectDirectoryPath, 'run') } }
 
-    expect(await composeMainUsageInformation()).toBe(expectedMainUsageInformation.all)
-    expect(await composeMainUsageInformation({ types: { order: ['tools'] } })).toBe(expectedMainUsageInformation['all-sorted'])
-    expect(await composeMainUsageInformation({ types: { order: ['tools', 'tasks'] } })).toBe(expectedMainUsageInformation['all-sorted'])
-    expect(await composeMainUsageInformation({ types: { order: ['foo', 'tools'] } })).toBe(expectedMainUsageInformation['all-sorted'])
-    expect(await composeMainUsageInformation({ types: { order: ['foo', 'tools', 'foo2', 'tasks'] } })).toBe(expectedMainUsageInformation['all-sorted'])
+    process.chdir(projectDirectoryPath)
+    expect(await composeMainUsageInformation(configuration)).toBe(expectedMainUsageInformation.all)
+    expect(await composeMainUsageInformation({ ...configuration, usage: { categories: ['tools'] } })).toBe(expectedMainUsageInformation['all-sorted'])
+    expect(await composeMainUsageInformation({ ...configuration, usage: { categories: ['tools', 'tasks'] } })).toBe(expectedMainUsageInformation['all-sorted'])
+    expect(await composeMainUsageInformation({ ...configuration, usage: { categories: ['foo', 'tools'] } })).toBe(expectedMainUsageInformation['all-sorted'])
+    expect(await composeMainUsageInformation({ ...configuration, usage: { categories: ['foo', 'tools', 'foo2', 'tasks'] } })).toBe(expectedMainUsageInformation['all-sorted'])
   })
 })

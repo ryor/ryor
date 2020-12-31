@@ -1,13 +1,9 @@
-export const description = 'Checks source TypeScript and runnables and tests JavaScript for errors and ensures consistent formatting with Standard'
+export const description = 'Lints and ensures consistent formatting in source TypeScript and runnables/tests JavaScript with Standard'
 
 export const args = {
-  concurrent: {
-    alias: 'c',
-    description: 'Run tests concurrently'
-  },
   fix: {
     alias: 'f',
-    description: 'Fix formatting that can be handled automatically by Standard'
+    description: 'Fix issues that can be handled automatically by Standard'
   },
   quiet: {
     alias: 'q',
@@ -27,37 +23,31 @@ export const args = {
   }
 }
 
-export const run = ({ concurrent, fix, quiet, runnables, source, tests }) => {
+export const run = ({ fix, quiet, runnables, source, tests }) => {
   const all = !runnables && !source && !tests
-  let sequence = []
+  const checks = []
+  let sequence = ['-c']
 
   if (all || source) {
-    if (!concurrent && !quiet) sequence.push('log -w Checking for errors and consistent formatting in source TypeScript with Standard...')
-
-    sequence.push(`standardx --parser @typescript-eslint/parser --plugin @typescript-eslint/eslint-plugin source/*.ts${fix ? ' --fix' : ''}`)
+    checks.push('source')
+    sequence.push(`ts-standard${fix ? ' --fix' : ''} --project run/tools/tsc/config.json source/*.ts`)
   }
 
   if (all || runnables) {
-    if (!concurrent && !quiet) sequence.push('log -w Checking for errors and consistent formatting in runnables JavaScript with Standard...')
-
-    sequence.push(`standardx run/**/*.js${fix ? ' --fix' : ''}`)
+    checks.push('runnables')
+    sequence.push(`standard${fix ? ' --fix' : ''} run/**/*.js`)
   }
 
   if (all || tests) {
-    if (!concurrent && !quiet) sequence.push('log -w Checking for errors and consistent formatting in tests JavaScript with Standard...')
-
-    sequence.push(`standardx tests/*.js${fix ? ' --fix' : ''}`)
+    checks.push('tests')
+    sequence.push(`standard${fix ? ' --fix' : ''} tests/*.js`)
   }
 
-  if (concurrent) {
-    sequence.unshift('-c')
-
-    if (!quiet) {
-      sequence = [
-        'log -w Checking for errors and consistent formatting with Standard...',
-        sequence
-      ]
-    }
+  if (!quiet) {
+    sequence = [
+    `log -w Linting ${fix ? 'and fixing issues in' : ''} ${checks.reduce((result, check, index, array) => `${result}${array.length === 1 || index === 0 ? '' : index === array.length - 1 ? ' and ' : ', '}${check}`, '')} code with Standard...`,
+    sequence
+    ]
   }
 
   return sequence

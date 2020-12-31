@@ -5,8 +5,7 @@ import { USAGE_TIP_TEMPLATE } from '../../source/composeRunnableDescription'
 module.exports = {
 
   all:
-
-`${HEADER}
+    `${HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}
 
 ${bold('Tasks:')}
 
@@ -16,26 +15,26 @@ ${bold('Tasks:')}
 
 ${bold('Tools:')}
 
-  ${bold('bundler')}       ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'bundler')}
-  ${bold('tester')}        Tests code. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'tester')}
-  ${bold('transpiler')}    Transpiles code. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'transpiler')}
+  ${bold('bundler')}       ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'bundler')}
+  ${bold('tester')}        Tests code. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'tester')}
+  ${bold('transpiler')}    Transpiles code. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'transpiler')}
 
 ${bold('Other:')}
 
-  ${bold('git')}           Runs preconfigured Git commands. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'git')}
-  ${bold('npm')}           Runs preconfigured NPM commands. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'npm')}
+  ${bold('git')}           Runs preconfigured Git commands. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'git')}
+  ${bold('npm')}           Runs preconfigured NPM commands. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'npm')}
 
-${FOOTER}`,
+${FOOTER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}`,
 
   'all-sorted':
 
-`${HEADER}
+    `${HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}
 
 ${bold('Tools:')}
 
-  ${bold('bundler')}       ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'bundler')}
-  ${bold('tester')}        Tests code. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'tester')}
-  ${bold('transpiler')}    Transpiles code. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'transpiler')}
+  ${bold('bundler')}       ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'bundler')}
+  ${bold('tester')}        Tests code. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'tester')}
+  ${bold('transpiler')}    Transpiles code. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'transpiler')}
 
 ${bold('Tasks:')}
 
@@ -45,31 +44,31 @@ ${bold('Tasks:')}
 
 ${bold('Other:')}
 
-  ${bold('git')}           Runs preconfigured Git commands. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'git')}
-  ${bold('npm')}           Runs preconfigured NPM commands. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'npm')}
+  ${bold('git')}           Runs preconfigured Git commands. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'git')}
+  ${bold('npm')}           Runs preconfigured NPM commands. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'npm')}
 
-${FOOTER}`,
+${FOOTER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}`,
 
   'only-tools':
 
-`${HEADER}
+    `${HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}
 
 ${bold('Tools:')}
 
-  ${bold('bundler')}       ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'bundler')}
-  ${bold('tester')}        Tests code. ${USAGE_TIP_TEMPLATE.replace('[NAME]', 'tester')}
+  ${bold('bundler')}       ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'bundler')}
+  ${bold('tester')}        Tests code. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'tester')}
   ${bold('transpiler')}    Transpiles code
 
-${FOOTER}`,
+${FOOTER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}`,
 
   'only-untyped':
 
-`${HEADER}
+    `${HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}
 
 ${bold('build')}     No description provided
 ${bold('deploy')}    Deploys project
 ${bold('test')}      Tests project
 
-${FOOTER}`
+${FOOTER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}`
 
 }

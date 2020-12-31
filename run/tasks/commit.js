@@ -1,3 +1,6 @@
+import { bold } from 'chalk'
+import { getCurrentBranchName } from '../utils/git'
+
 export const description = 'Commits all current changes to Git repository'
 
 export const args = {
@@ -6,14 +9,14 @@ export const args = {
     description: 'Commit changes only if build completes successfully',
     type: 'boolean'
   },
-  push: {
-    alias: 'p',
-    description: 'Pushes commit after verifying tests pass and build completes succesfully',
+  merge: {
+    alias: 'm',
+    description: 'Merges feature branch into develop branch or release branch into main (will automatically include testing and building before commit)',
     type: 'boolean'
   },
-  release: {
-    alias: 'r',
-    description: 'Updates package.json semver patch number and creates version tag for commit',
+  push: {
+    alias: 'p',
+    description: 'Push changes to origin server',
     type: 'boolean'
   },
   test: {
@@ -23,37 +26,60 @@ export const args = {
   }
 }
 
-export const run = ({ _, build, push, release, test }) => {
+export const run = async ({ _, build, merge, push, test }) => {
   const message = _.join(' ').trim()
   const sequence = []
-  const doPush = push || release
-  const doBuild = build || doPush
-  const doTest = test || doPush
-  const preCommit = ['-c']
+  const doBuild = build || merge
+  const doTest = test || merge
+  const preCommitSequence = ['-c']
   let preCommitMessage = ''
 
   if (doTest) {
-    preCommit.push('test -fps')
+    preCommitSequence.push('test -fps')
     preCommitMessage = 'Verifying that all tests pass'
   }
 
   if (doBuild) {
-    preCommit.push('build -s')
+    preCommitSequence.push('build -s')
     preCommitMessage += `${preCommitMessage ? ' and' : 'Verifying that'} build completes successfully`
   }
 
-  if (doBuild || doTest) sequence.push(`log -w ${preCommitMessage}`, preCommit)
+  if (doBuild || doTest) sequence.push(`log -w ${preCommitMessage}`, preCommitSequence)
 
   if (doBuild) sequence.push('shx rm -rf build')
 
   sequence.push(
     'git add -A',
-    release
-      ? `npm version patch -f ${message ? ` -m "${message}"` : ''}`
-      : `git commit -q${message ? `m "${message}"` : ''}`
+    `git commit${message ? ` -m "${message}"` : ''}`
   )
 
-  if (doPush) sequence.push('git push --quiet --follow-tags')
+  if (merge) {
+    const currentBranchName = await getCurrentBranchName()
+    const isFeature = currentBranchName.startsWith('feature/')
+    const isRelease = currentBranchName.startsWith('release/')
+
+    if (isFeature || isRelease) {
+      sequence.push(
+        `git checkout ${isFeature ? 'develop' : 'main'}`,
+        'git pull',
+        `git merge -X theirs --squash ${currentBranchName}`,
+        'git commit',
+        'git push',
+        `git branch -D ${currentBranchName}`,
+        `git push origin --delete ${currentBranchName}`,
+        `log -s ${
+          isFeature ? 'Feature' : 'Release'
+        } ${
+          currentBranchName.split(`${isFeature ? 'feature' : 'release'}/`)[1]
+        } merged into ${
+          isFeature ? 'develop' : 'main'
+        } branch`
+      )
+    } else {
+      console.error(`Merge only possible on feature or release branch; current branch is ${bold(currentBranchName)}.`)
+      process.exit(1)
+    }
+  } else if (push) sequence.push('git push')
 
   return sequence
 }

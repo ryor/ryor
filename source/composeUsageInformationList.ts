@@ -1,14 +1,17 @@
 import { bold } from 'chalk'
 import { EOL } from 'os'
-import { composeUsageInformationListItem } from './composeUsageInformationListItem'
 
-export function composeUsageInformationList (items:Map<string, string|undefined> = new Map(), type?:string, minNameLength:number = 0):string {
-  const lines:string[] = type ? [`${bold(`${type.charAt(0).toUpperCase() + type.slice(1)}:`)}${EOL}`] : []
-  const indent:string = type ? '  ' : ''
+const DEFAULT_DESCRIPTION: string = 'No description provided'
 
-  items.forEach((_, name:string):void => { minNameLength = name.length > minNameLength ? name.length : minNameLength })
+export function composeUsageInformationList (items: Map<string, string> = new Map(), type?: string, minNameLength: number = 0): string {
+  const lines: string[] = type !== undefined ? [`${bold(`${type.charAt(0).toUpperCase() + type.slice(1)}:`)}${EOL}`] : []
+  const indent: string = type !== undefined ? '  ' : ''
 
-  items.forEach((description:string|undefined, name:string):number => lines.push(composeUsageInformationListItem(name, description, indent, minNameLength)))
+  items.forEach((_, name: string): void => { minNameLength = name.length > minNameLength ? name.length : minNameLength })
+
+  items.forEach((description: string, name: string): void => {
+    lines.push(`${indent}${bold(name)}${name.length < minNameLength ? ' '.repeat(minNameLength - name.length) : ''}    ${description !== '' ? description : DEFAULT_DESCRIPTION}`)
+  })
 
   return lines.join(EOL)
 }
