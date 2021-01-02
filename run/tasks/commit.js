@@ -1,5 +1,5 @@
 import { bold } from 'chalk'
-import { getCurrentBranchName } from '../utils/git'
+import { getCurrentBranchName, isCommitRequired } from '../utils/git'
 
 export const description = 'Commits all current changes to Git repository'
 
@@ -48,10 +48,12 @@ export const run = async ({ _, build, merge, push, test }) => {
 
   if (doBuild) sequence.push('shx rm -rf build')
 
-  sequence.push(
-    'git add -A',
+  if (await isCommitRequired()) {
+    sequence.push(
+      'git add -A',
     `git commit${message ? ` -m "${message}"` : ''}`
-  )
+    )
+  }
 
   if (merge) {
     const currentBranchName = await getCurrentBranchName()
