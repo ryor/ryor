@@ -41,12 +41,12 @@ describe('Ensures PATH environment variable has correct value', () => {
 
     Object.defineProperty(process, 'platform', { value: WINDOWS_IDENTIFIER })
     ensureCorrectPathValue()
-    expect(env.PATH.includes(WINDOWS_DIVIDER + binDirectoryPath)).toBe(true)
+    expect(env.PATH.includes(binDirectoryPath + WINDOWS_DIVIDER)).toBe(true)
 
     env.PATH = PATH
     Object.defineProperty(process, 'platform', { value: 'linux' })
     ensureCorrectPathValue()
-    expect(env.PATH.includes(DEFAULT_DIVIDER + binDirectoryPath)).toBe(true)
+    expect(env.PATH.includes(binDirectoryPath + DEFAULT_DIVIDER)).toBe(true)
 
     Object.defineProperty(process, 'platform', { value: platform })
   })

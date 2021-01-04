@@ -1,8 +1,11 @@
 /* eslint-env jest */
 
-import { EOL } from 'os'
 import { resolve } from 'path'
 import { runRunnableModule } from '../source/runRunnableModule'
+
+// TEMP / TODO: Figure out correct EOL string for Windows
+// import { EOL } from 'os'
+const EOL = '\n'
 
 describe('Runs runnable module', () => {
   let output

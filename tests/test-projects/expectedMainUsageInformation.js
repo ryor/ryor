@@ -2,10 +2,11 @@ import { bold } from 'chalk'
 import { FOOTER, HEADER } from '../../source/composeMainUsageInformation'
 import { USAGE_TIP_TEMPLATE } from '../../source/composeRunnableDescription'
 
-module.exports = {
+let expectedMainUsageInformation = {
 
   all:
-    `${HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}
+
+`${HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}
 
 ${bold('Tasks:')}
 
@@ -28,7 +29,7 @@ ${FOOTER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}`,
 
   'all-sorted':
 
-    `${HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}
+`${HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}
 
 ${bold('Tools:')}
 
@@ -51,7 +52,7 @@ ${FOOTER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}`,
 
   'only-tools':
 
-    `${HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}
+`${HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}
 
 ${bold('Tools:')}
 
@@ -63,7 +64,7 @@ ${FOOTER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}`,
 
   'only-untyped':
 
-    `${HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}
+`${HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}
 
 ${bold('build')}     No description provided
 ${bold('deploy')}    Deploys project
@@ -72,3 +73,9 @@ ${bold('test')}      Tests project
 ${FOOTER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}`
 
 }
+
+if (process.platform === 'win32') expectedMainUsageInformation = Object
+  .entries(expectedMainUsageInformation)
+  .reduce((result, [key, value]) => ({ ...result, [key]: value.replace(/\n/g, '\r\n') }), {})
+
+module.exports = expectedMainUsageInformation

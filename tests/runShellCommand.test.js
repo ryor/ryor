@@ -9,11 +9,11 @@ describe('Run shell command', () => {
   let args, output
 
   beforeAll(() => {
+    process.chdir(resolve(__dirname, 'test-projects/all'))
+    ensureCorrectPathValue()
     jest.spyOn(process.stderr, 'write').mockImplementation(data => { output += data })
     jest.spyOn(process.stdout, 'write').mockImplementation(data => { output += data })
     jest.spyOn(console, 'log').mockImplementation(data => { output += data })
-    process.chdir(resolve(__dirname, 'test-projects/all'))
-    ensureCorrectPathValue()
   })
 
   beforeEach(() => { output = '' })
