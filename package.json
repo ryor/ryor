@@ -1,11 +1,11 @@
 {
   "name": "ryor",
-  "version": "0.7.0",
+  "version": "0.7.2",
   "description": "(R)oll (Y)our (O)wn task (R)unner for your project",
   "author": "Scott Steven Rodriguez <scott@movecodemove.com> (https://movecodemove.com)",
   "license": "MIT",
-  "repository": "gitlab:ryor-repos/ryor",
-  "bugs": "https://gitlab.com/ryor-repos/ryor/issues",
+  "repository": "github:ryor/ryor",
+  "bugs": "https://github.com/ryor/ryor/issues",
   "engines": {
     "node": ">= 7.6.0"
   },
