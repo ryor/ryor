@@ -1,5 +1,6 @@
+import { Stats } from 'fs'
 import { basename, dirname } from 'path'
-import { isValidDirectoryPath } from './isValidDirectoryPath'
+import { getPathStats } from './getPathStats'
 import type { Configuration, UsageConfiguration } from './types'
 
 const SHORT_RUN_DURATION_FLAG: string = '-d'
@@ -8,7 +9,8 @@ const LONG_RUN_DURATION_FLAG: string = '--duration'
 
 export async function configure (argv: string[], usage?: UsageConfiguration): Promise<Configuration> {
   const entryPath: string = argv[1]
-  const directoryPath: string = (await isValidDirectoryPath(entryPath)) ? entryPath : dirname(entryPath)
+  const entryPathStats: Stats | undefined = await getPathStats(entryPath)
+  const directoryPath: string = entryPathStats?.isDirectory() === true ? entryPath : dirname(entryPath)
   const directoryName = basename(directoryPath)
   const args: string[] = argv.slice(2)
   let outputRunDuration: boolean = false

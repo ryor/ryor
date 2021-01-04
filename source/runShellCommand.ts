@@ -1,8 +1,11 @@
 import { bold } from 'chalk'
 import { spawn } from 'cross-spawn'
 import { resolve } from 'path'
+import { getPathStats } from './getPathStats'
 import { RunnableError } from './RunnableError'
 import type { ChildProcess } from 'child_process'
+
+const WINDOWS_IDENTIFIER: string = 'win32'
 
 export async function runShellCommand (command: string, args: string[] = []): Promise<void> {
   if (command === 'cd') {
@@ -11,6 +14,8 @@ export async function runShellCommand (command: string, args: string[] = []): Pr
 
     return await Promise.resolve()
   }
+
+  if (process.platform === WINDOWS_IDENTIFIER && await getPathStats(resolve(process.cwd(), 'node_modules/.bin', `${command}.cmd`)) !== undefined) command = `${command}.cmd`
 
   return await new Promise<void>((resolve: () => void, reject: (error: Error) => void): void => {
     const childProcess: ChildProcess = spawn(command, args, { env: process.env, stdio: 'inherit' })

@@ -4,6 +4,8 @@ import { bold } from 'chalk'
 import { EOL } from 'os'
 import { composeUsageInformationList } from '../source/composeUsageInformationList'
 
+const EOL2 = EOL + EOL
+
 describe('Compose usage information list', () => {
   test('with no arguments defined', () => expect(composeUsageInformationList()).toBe(''))
 
@@ -34,7 +36,7 @@ describe('Compose usage information list', () => {
     const indent = '  '
     const result = composeUsageInformationList(new Map([[name, description]]), type)
 
-    expect(result).toBe(`${bold('Runnables:')}${EOL + EOL}${indent}${bold(name)}    ${description}`)
+    expect(result).toBe(`${bold('Runnables:')}${EOL2}${indent}${bold(name)}    ${description}`)
   })
 
   test('with one item and minNameLength defined', () => {
@@ -54,7 +56,7 @@ describe('Compose usage information list', () => {
     const indent = '  '
     const result = composeUsageInformationList(new Map([[name, description]]), type, minNameLength)
 
-    expect(result).toBe(`${bold('Runnables:')}${EOL + EOL}${indent}${bold(name)}      ${description}`)
+    expect(result).toBe(`${bold('Runnables:')}${EOL2}${indent}${bold(name)}      ${description}`)
   })
 
   test('with two items, type and minNameLength defined', () => {
@@ -67,6 +69,6 @@ describe('Compose usage information list', () => {
     const indent = '  '
     const result = composeUsageInformationList(new Map([[name1, description1], [name2, description2]]), type, minNameLength)
 
-    expect(result).toBe(`${bold('Runnables:')}${EOL + EOL}${indent}${bold(name1)}          ${description1}${EOL}${indent}${bold(name2)}         ${description2}`)
+    expect(result).toBe(`${bold('Runnables:')}${EOL2}${indent}${bold(name1)}          ${description1}${EOL}${indent}${bold(name2)}         ${description2}`)
   })
 })

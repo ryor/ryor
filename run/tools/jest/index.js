@@ -23,7 +23,7 @@ export const run = ({ _, coverage, quiet, verbose }) => {
   }
 
   return [
-    'log -w Unit testing source TypeScript with Jest\n',
+    'log -w Unit testing source code with Jest\n',
     `jest -c run/tools/jest/config.json --no-cache ${coverage ? ' --coverage' : ''}${verbose ? ' --verbose' : ''} ${_.join(' ')}`,
     'echo',
     'log -s All tests passed'

@@ -46,7 +46,7 @@ export async function composeRunnableUsageInformation (name: string, configurati
 
           return `${options}${' '.repeat(maxOptionsLength - options.length)}${description !== '' ? `${SPACER + description}` : ''}`
         })
-        .join('\n')
+        .join(EOL)
     }
   }
 

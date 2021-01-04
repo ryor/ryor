@@ -1,9 +1,6 @@
 name: Test
 
 on:
-  pull_request:
-    branches:
-      - main
   push:
     branches:
       - develop
@@ -23,7 +20,7 @@ jobs:
         os: [Ubuntu, MacOS, Windows]
         node-version: [14, 12, 10]
         run-all:
-          - ${{ contains(github.ref, 'main') || contains(github.ref, 'release') }}
+          - ${{ contains(github.ref, 'release') }}
         exclude:
           - run-all: false
             os: Ubuntu
@@ -56,12 +53,12 @@ jobs:
         uses: actions/cache@v2
         id: cache
         with:
-          key: cache-${{ matrix.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
+          key: cache-${{ matrix.os }}-${{ matrix.node-version }}-${{ hashFiles('package-lock.json') }}
           path: ./node_modules
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm install
+        run: npm ci
 
       - name: Run tests
-        run: node run test
+        run: node run jest
