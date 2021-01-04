@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - develop
-      - 'feature/*'
-      - 'release/*'
+      - main
+      - release/*
 
 defaults:
   run:
@@ -19,27 +19,6 @@ jobs:
       matrix:
         os: [Ubuntu, MacOS, Windows]
         node-version: [14, 12, 10]
-        run-all:
-          - ${{ contains(github.ref, 'release') }}
-        exclude:
-          - run-all: false
-            os: Ubuntu
-            node-version: 12
-          - run-all: false
-            os: Ubuntu
-            node-version: 10
-          - run-all: false
-            os: MacOS
-            node-version: 12
-          - run-all: false
-            os: MacOS
-            node-version: 10
-          - run-all: false
-            os: Windows
-            node-version: 12
-          - run-all: false
-            os: Windows
-            node-version: 10
     steps:
       - name: Check out repository
         uses: actions/checkout@v2

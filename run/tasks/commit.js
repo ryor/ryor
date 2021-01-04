@@ -35,12 +35,12 @@ export const run = async ({ _, build, merge, push, test }) => {
   let preCommitMessage = ''
 
   if (doTest) {
-    preCommitSequence.push('test -fps')
+    preCommitSequence.push('test -fq')
     preCommitMessage = 'Verifying that all tests pass'
   }
 
   if (doBuild) {
-    preCommitSequence.push('build -s')
+    preCommitSequence.push('build -q')
     preCommitMessage += `${preCommitMessage ? ' and' : 'Verifying that'} build completes successfully`
   }
 
@@ -48,12 +48,14 @@ export const run = async ({ _, build, merge, push, test }) => {
 
   if (doBuild) sequence.push('shx rm -rf build')
 
-  if (await isCommitRequired()) {
-    sequence.push(
-      'git add -A',
-    `git commit${message ? ` -m "${message}"` : ''}`
-    )
-  }
+  sequence.push(async () => {
+    if (await isCommitRequired()) {
+      return [
+        'git add -A',
+      `git commit${message ? ` -m "${message}"` : ''}`
+      ]
+    }
+  })
 
   if (merge) {
     const currentBranchName = await getCurrentBranchName()
@@ -77,6 +79,17 @@ export const run = async ({ _, build, merge, push, test }) => {
           isFeature ? 'develop' : 'main'
         } branch`
       )
+
+      if (isRelease) {
+        sequence.push(() => {
+          const { version } = require('../../package.json')
+
+          return [
+          `git tag -a v${version} -m "Version ${version}"`,
+          `git push origin v${version}`
+          ]
+        })
+      }
     } else {
       console.error(`Merge only possible on feature or release branch; current branch is ${bold(currentBranchName)}.`)
       process.exit(1)

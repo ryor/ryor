@@ -1,11 +1,9 @@
 name: Publish
 
 on:
-  pull_request:
-    branches:
-      - main
-    types:
-      - closed
+  push:
+    tags:
+      - v*
 
 defaults:
   run:
@@ -13,9 +11,8 @@ defaults:
 
 jobs:
   publish:
-    name: Publish Release
+    name: Publish release to npm
     runs-on: ubuntu-latest
-    if: ${{ github.event.pull_request.merged == true }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -30,20 +27,13 @@ jobs:
         id: cache
         with:
           key: cache-Ubuntu-14-${{ hashFiles('package-lock.json') }}
-          path: |
-            ~/npm_cache
-            ./node_modules
+          path: ./node_modules
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          npm config set cache ~/.npm-cache
-          npm ci --no-audit --prefer-offline
+        run: npm ci
 
-      - name: Tag commit and push it to Github, build release and publish it to npm
+      - name: Ensure tests pass and then publish build to npm
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          git config --global user.name "Github Action Bot"
-          git config --global user.email "<>"
-          node run publish
+        run: node run test + build + publish

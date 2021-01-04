@@ -1,7 +1,7 @@
 import { bold } from 'chalk'
 import { writeFile } from 'fs/promises'
 import { resolve } from 'path'
-import { getCurrentBranchName, isCommitRequired, isExistingBranch, isValidBranchName } from '../utils/git'
+import { getCurrentBranchName, isExistingBranch, isValidBranchName } from '../utils/git'
 
 export const description = 'Creates feature and release branches in Git repository'
 
@@ -59,10 +59,6 @@ export const run = async ({ _, feature, release }) => {
     if (await isExistingBranch(branchName)) sequence.push(`git checkout ${branchName}`)
 
     else {
-      if (release && !(await isCommitRequired())) sequence.push('commit -t')
-
-      sequence.push(`git checkout -b ${branchName}`)
-
       if (release) {
         sequence.push(
           async () => {
@@ -73,15 +69,19 @@ export const run = async ({ _, feature, release }) => {
 
             await writeFile(packageJSONPath, JSON.stringify(packageJSON, null, 2))
           },
-        `commit Version ${releaseVersion}`
+        `commit -p Release ${releaseVersion}`,
+        'git push'
         )
       }
 
-      sequence.push(`git push -u origin ${branchName}`)
+      sequence.push(
+        `git checkout -b ${branchName}`,
+        `git push -u origin ${branchName}`
+      )
     }
   }
 
-  sequence.push('git branch --all')
+  sequence.push('git branch')
 
   return sequence
 }

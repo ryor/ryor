@@ -30,7 +30,7 @@ export const run = ({ development, quiet }) => {
     ]
   ]
 
-  if (!development) sequence.push(`terser${quiet ? ' -s' : ''}`)
+  if (!development) sequence.push(`terser${quiet ? ' -q' : ''}`)
 
   if (!quiet) sequence.push('log -s Build complete')
 
