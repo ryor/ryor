@@ -44,9 +44,9 @@ export async function composeMainUsageInformation (configuration: Configuration)
   )
 
   sortedModules.forEach((typeModules: Map<string, RunnableModule>, type: string): void => {
-    const items: Map<string, string> = new Map()
+    const items: Map<string, string | undefined> = new Map()
 
-    typeModules.forEach((module: RunnableModule, name: string): Map<string, string> => items.set(name, composeRunnableDescription(name, module, configuration, true)))
+    typeModules.forEach((module: RunnableModule, name: string): Map<string, string | undefined> => items.set(name, composeRunnableDescription(module)))
 
     lists.push(composeUsageInformationList(items, type === 'untyped' ? undefined : type, minNameLength))
   })
