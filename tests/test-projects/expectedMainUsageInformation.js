@@ -1,6 +1,6 @@
 import { bold } from 'chalk'
 import { FOOTER, HEADER } from '../../source/composeMainUsageInformation'
-import { USAGE_TIP_TEMPLATE } from '../../source/composeRunnableDescription'
+import { DEFAULT_DESCRIPTION } from '../../source/composeUsageInformationList'
 
 let expectedMainUsageInformation = {
 
@@ -10,20 +10,20 @@ let expectedMainUsageInformation = {
 
 ${bold('Tasks:')}
 
-  ${bold('build')}         No description provided
+  ${bold('build')}         ${DEFAULT_DESCRIPTION}
   ${bold('deploy')}        Deploys project
   ${bold('test')}          Tests project
 
 ${bold('Tools:')}
 
-  ${bold('bundler')}       ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'bundler')}
-  ${bold('tester')}        Tests code. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'tester')}
-  ${bold('transpiler')}    Transpiles code. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'transpiler')}
+  ${bold('bundler')}       ${DEFAULT_DESCRIPTION}
+  ${bold('tester')}        Tests code
+  ${bold('transpiler')}    Transpiles code
 
 ${bold('Other:')}
 
-  ${bold('git')}           Runs preconfigured Git commands. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'git')}
-  ${bold('npm')}           Runs preconfigured NPM commands. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'npm')}
+  ${bold('git')}           Runs preconfigured Git commands
+  ${bold('npm')}           Runs preconfigured NPM commands
 
 ${FOOTER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}`,
 
@@ -33,20 +33,20 @@ ${FOOTER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}`,
 
 ${bold('Tools:')}
 
-  ${bold('bundler')}       ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'bundler')}
-  ${bold('tester')}        Tests code. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'tester')}
-  ${bold('transpiler')}    Transpiles code. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'transpiler')}
+  ${bold('bundler')}       ${DEFAULT_DESCRIPTION}
+  ${bold('tester')}        Tests code
+  ${bold('transpiler')}    Transpiles code
 
 ${bold('Tasks:')}
 
-  ${bold('build')}         No description provided
+  ${bold('build')}         ${DEFAULT_DESCRIPTION}
   ${bold('deploy')}        Deploys project
   ${bold('test')}          Tests project
 
 ${bold('Other:')}
 
-  ${bold('git')}           Runs preconfigured Git commands. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'git')}
-  ${bold('npm')}           Runs preconfigured NPM commands. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'npm')}
+  ${bold('git')}           Runs preconfigured Git commands
+  ${bold('npm')}           Runs preconfigured NPM commands
 
 ${FOOTER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}`,
 
@@ -56,8 +56,8 @@ ${FOOTER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}`,
 
 ${bold('Tools:')}
 
-  ${bold('bundler')}       ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'bundler')}
-  ${bold('tester')}        Tests code. ${USAGE_TIP_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'tester')}
+  ${bold('bundler')}       ${DEFAULT_DESCRIPTION}
+  ${bold('tester')}        Tests code
   ${bold('transpiler')}    Transpiles code
 
 ${FOOTER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}`,
@@ -66,7 +66,7 @@ ${FOOTER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}`,
 
 `${HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run')}
 
-${bold('build')}     No description provided
+${bold('build')}     ${DEFAULT_DESCRIPTION}
 ${bold('deploy')}    Deploys project
 ${bold('test')}      Tests project
 

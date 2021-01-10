@@ -17,7 +17,7 @@ export async function composeRunnableUsageInformation (name: string, configurati
 
   if (runnableModule === undefined) throw new RunnableError(ERROR_TEMPLATE.replace('[NAME]', name))
 
-  const description: string = composeRunnableDescription(name, runnableModule, configuration)
+  const description: string | undefined = composeRunnableDescription(runnableModule)
   let header: string = HEADER_TEMPLATE.replace('[ENTRY_DIRECTORY_NAME]', entry.directoryName).replace('[NAME]', name)
   let body: string | undefined
 
@@ -51,7 +51,7 @@ export async function composeRunnableUsageInformation (name: string, configurati
   }
 
   return [header]
-    .concat(description !== '' ? description : [])
+    .concat(description ?? [])
     .concat(body ?? [])
     .join(EOL + EOL)
 }
