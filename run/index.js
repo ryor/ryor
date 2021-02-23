@@ -1,1 +1,1 @@
-require('ryor')({ categories: ['tasks', 'tools', 'utils'] })
+require('ryor')()

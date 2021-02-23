@@ -30,7 +30,7 @@ export const run = ({ fix, quiet, runnables, source, tests }) => {
 
   if (all || source) {
     checks.push('source')
-    sequence.push(`ts-standard${fix ? ' --fix' : ''} --project run/tools/tsc/config.json source/*.ts`)
+    sequence.push(`ts-standard${fix ? ' --fix' : ''} --project run/tools/tsc/config.json source/**/*.ts`)
   }
 
   if (all || runnables) {
