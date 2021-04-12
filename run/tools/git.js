@@ -156,7 +156,7 @@ export const composeBranchSequence = async ({ feature, release, version }) => {
         await writeFile(packageJSONPath, JSON.stringify(packageJSON, null, 2))
       },
       'git add -A',
-      `git commit -p Release ${releaseVersion}`,
+      `git commit -m "Release ${releaseVersion}"`,
       'git push'
     )
   }
