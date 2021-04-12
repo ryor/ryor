@@ -7,7 +7,7 @@ export const args = {
   }
 }
 
-export const run = ({ quiet }) => {
+export const run = async ({ quiet }) => {
   const sequence = ['tsc -p run/tools/tsc/config.json']
 
   if (!quiet) sequence.unshift('log -w Transpiling TypeScript')

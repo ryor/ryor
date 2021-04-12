@@ -1,0 +1,8 @@
+alias run='node run'
+alias b='run build'
+alias g='run git'
+alias h='run help'
+alias j='run jest'
+alias r='run rollup'
+alias s='run standard'
+alias t='run tsc'
