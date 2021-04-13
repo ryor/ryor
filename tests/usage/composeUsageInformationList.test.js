@@ -6,8 +6,6 @@ import { composeUsageInformationList } from '../../source/usage/composeUsageInfo
 
 const DOUBLE_LINE_BREAK = LINE_BREAK + LINE_BREAK
 
-const EOL2 = EOL + EOL
-
 describe('Compose usage information list', () => {
   test('with no arguments defined', () => expect(composeUsageInformationList()).toBe(''))
 

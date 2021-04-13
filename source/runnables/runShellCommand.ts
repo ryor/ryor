@@ -5,8 +5,6 @@ import { resolve } from 'path'
 import { RunnableError } from '../runnables'
 import { WINDOWS_IDENTIFIER, getPathStats } from '../shared'
 
-const WINDOWS_IDENTIFIER: string = 'win32'
-
 export async function runShellCommand (command: string, args: string[] = []): Promise<void> {
   if (command === 'cd') {
     // TODO: Make sure paths with directory names with spaces are handled properly
