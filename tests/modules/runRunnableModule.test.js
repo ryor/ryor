@@ -4,6 +4,10 @@ import { resolve } from 'path'
 import { runRunnableModule } from '../../source/modules/runRunnableModule'
 import { LINE_BREAK } from '../../source/shared/constants'
 
+// TEMP / TODO: Figure out correct EOL string for Windows
+// import { EOL } from 'os'
+const EOL = '\n'
+
 describe('Runs runnable module', () => {
   const projectsDirectoryPath = resolve(__dirname, '../.test-projects/projects')
   let output

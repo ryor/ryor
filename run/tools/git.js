@@ -151,7 +151,6 @@ export const composeBranchSequence = async ({ feature, release, version }) => {
         const packageJSON = require(packageJSONPath)
 
         packageJSON.version = releaseVersion
-        packageJSON.devDependencies.ryor = `^${releaseVersion}`
 
         await writeFile(packageJSONPath, JSON.stringify(packageJSON, null, 2))
       },
@@ -171,7 +170,9 @@ export const composeBranchSequence = async ({ feature, release, version }) => {
 }
 
 export const composeCommitSequence = async ({ build, merge, message, push, test }) => {
-  if (!(await isCommitRequired())) return 'log No changes to commit'
+  const doPush = push || merge
+
+  if (!doPush && !(await isCommitRequired())) return 'log No changes to commit'
 
   const sequence = []
   const doBuild = build || merge
@@ -197,7 +198,7 @@ export const composeCommitSequence = async ({ build, merge, message, push, test 
     if (await isCommitRequired()) {
       return [
         'git add -A',
-        `git commit${message ? ` -m "${message}"` : ''}`
+      `git commit${message ? ` -m "${message}"` : ''}`
       ]
     }
   })
@@ -237,8 +238,8 @@ export const composeCommitSequence = async ({ build, merge, message, push, test 
       }
     } else {
       return [
-        `log -e Merge only possible on feature or release branch; current branch is ${bold(currentBranchName)}.`,
-        'exit 1'
+      `log -e Merge only possible on feature or release branch; current branch is ${bold(currentBranchName)}.`,
+      'exit 1'
       ]
     }
   } else if (push) sequence.push('git push')
