@@ -10,29 +10,30 @@
     "node": ">= 7.6.0"
   },
   "dependencies": {
-    "chalk": "^4.1.0",
-    "cli-truncate": "^2.1.0",
+    "chalk": "^4.1.2",
+    "cli-truncate": "^3.0.0",
     "cross-spawn": "^7.0.3",
     "esm": "^3.2.25",
     "minimist": "^1.2.5",
     "shell-quote": "^1.7.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.15",
-    "@babel/plugin-transform-modules-commonjs": "^7.13.8",
-    "@rollup/plugin-node-resolve": "^11.2.1",
+    "@babel/core": "^7.15.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.15.4",
+    "@rollup/plugin-node-resolve": "^13.0.4",
     "@types/cross-spawn": "^6.0.2",
     "@types/esm": "^3.2.0",
-    "@types/minimist": "^1.2.1",
-    "@types/node": "^14.14.37",
-    "@types/shell-quote": "^1.7.0",
-    "jest": "^26.6.3",
-    "rollup": "^2.45.1",
-    "ryor": "^0.8.0",
+    "@types/minimist": "^1.2.2",
+    "@types/node": "^16.9.1",
+    "@types/shell-quote": "^1.7.1",
+    "jest": "^27.2.0",
+    "npm-check-updates": "^11.8.5",
+    "rollup": "^2.56.3",
+    "ryor": "^0.8.1",
     "shx": "^0.3.3",
     "standard": "^16.0.3",
-    "terser": "^5.6.1",
+    "terser": "^5.8.0",
     "ts-standard": "^10.0.0",
-    "typescript": "^4.2.4"
+    "typescript": "^4.4.3"
   }
 }
