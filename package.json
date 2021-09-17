@@ -24,7 +24,7 @@
     "@types/cross-spawn": "^6.0.2",
     "@types/esm": "^3.2.0",
     "@types/minimist": "^1.2.2",
-    "@types/node": "^16.9.1",
+    "@types/node": "^16.9.2",
     "@types/shell-quote": "^1.7.1",
     "jest": "^27.2.0",
     "npm-check-updates": "^11.8.5",
