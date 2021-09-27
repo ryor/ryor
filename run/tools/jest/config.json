@@ -6,5 +6,6 @@
   "setupFiles": ["<rootDir>/tests/setup.js"],
   "testEnvironment": "node",
   "testMatch": ["<rootDir>/tests/**/*.test.js"],
-  "transform": { "^.+\\.[j|t]s": "<rootDir>/run/tools/jest/preprocessor.js" }
+  "transform": { "^.+\\.[j|t]s": "<rootDir>/run/tools/jest/preprocessor.js" },
+  "transformIgnorePatterns": []
 }
