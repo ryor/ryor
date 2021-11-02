@@ -12,7 +12,7 @@ export async function run (argv: string[], usage?: UsageConfiguration): Promise<
     const directory: string = await resolveDirectoryPath(argv[0])
     const { options, sequence }: { options: RunnerOptions, sequence: RunnableSequence } = parseConsoleInput(argv.slice(1))
 
-    ensureCorrectPATHValue()
+    await ensureCorrectPATHValue()
 
     await runRunnableSequence(sequence, { directory, options, usage })
 

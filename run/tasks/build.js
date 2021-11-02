@@ -11,8 +11,8 @@ export const args = {
   }
 }
 
-export const run = ({ development, quiet }) => {
-  const { readFileSync, writeFileSync } = require('fs')
+export const run = async ({ development, quiet }) => {
+  const { readFileSync, writeFileSync } = await import('fs')
   const sequence = [
     'shx rm -rf build',
     `tsc${quiet ? ' -q' : ''}`,
@@ -21,12 +21,14 @@ export const run = ({ development, quiet }) => {
       () => {
         const packageJSON = JSON.parse(readFileSync('package.json').toString())
 
+        packageJSON.exports = './index.js'
+
         delete packageJSON.devDependencies
 
         writeFileSync('build/package.json', JSON.stringify(packageJSON, null, '  '))
       },
       'shx cp README.md build',
-      'shx rm -rf build/esm build/node_modules'
+      'shx rm -rf build/.esm build/node_modules'
     ]
   ]
 

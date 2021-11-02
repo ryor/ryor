@@ -1,7 +1,8 @@
 import { Dirent, promises as fs } from 'fs'
 import { parse, resolve } from 'path'
+import { importModule } from './importModule'
 import { isValidRunnableModule } from './isValidRunnableModule'
-import { requireModule } from './requireModule'
+import { resolveModulePath } from './resolveModulePath'
 import type { RunnerConfiguration } from '../runner'
 import type { RunnableModule } from './types'
 
@@ -11,9 +12,13 @@ export async function resolveRunnableModule (name: string, configuration: Runner
 
   for (const dirent of dirents) {
     if (parse(dirent.name).name === name) {
-      const module: RunnableModule | NodeModule | undefined = requireModule(resolve(moduleDirectoryPath, name), configuration.options?.debug)
+      const modulePath: string | undefined = await resolveModulePath(moduleDirectoryPath, dirent)
 
-      if (isValidRunnableModule(module)) return module as RunnableModule
+      if (modulePath !== undefined) {
+        const module: RunnableModule | NodeModule | undefined = await importModule(modulePath, configuration.options?.debug)
+
+        if (isValidRunnableModule(module)) return module as RunnableModule
+      }
     }
   }
 

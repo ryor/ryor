@@ -1,7 +1,9 @@
-import { bold } from 'chalk'
+import chalk from 'chalk'
 import spawn from 'cross-spawn'
 import { writeFile } from 'fs/promises'
 import { resolve } from 'path'
+
+const { bold } = chalk
 
 export const description = 'Runs preconfigured Git commands'
 
@@ -115,7 +117,8 @@ export const composeBranchSequence = async ({ feature, release, version }) => {
       ]
     }
 
-    const currentVersionParts = require('../../package.json').version.split('.').map(value => Number(value))
+    const { version } = await import('../../package.json')
+    const currentVersionParts = version.split('.').map(value => Number(value))
     let releaseVersion
 
     if (version) {
@@ -134,7 +137,9 @@ export const composeBranchSequence = async ({ feature, release, version }) => {
         'exit 1'
         ]
       }
-    } else releaseVersion = require('../../package.json').version.split('.').map((value, index) => index === 2 ? Number(value) + 1 : value).join('.')
+    } else {
+      releaseVersion = await import('../../package.json').version.split('.').map((value, index) => index === 2 ? Number(value) + 1 : value).join('.')
+    }
 
     branchName = `release/${releaseVersion}`
 
@@ -148,7 +153,7 @@ export const composeBranchSequence = async ({ feature, release, version }) => {
     sequence.push(
       async () => {
         const packageJSONPath = resolve('package.json')
-        const packageJSON = require(packageJSONPath)
+        const packageJSON = await import(packageJSONPath)
 
         packageJSON.version = releaseVersion
 
@@ -227,8 +232,8 @@ export const composeCommitSequence = async ({ build, merge, message, push, test 
       )
 
       if (isRelease) {
-        sequence.push(() => {
-          const { version } = require('../../package.json')
+        sequence.push(async () => {
+          const { version } = await import('../../package.json')
 
           return [
             `git tag -a v${version} -m "Version ${version}"`,

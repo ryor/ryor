@@ -1,6 +1,7 @@
-import { Dirent, promises as fs, existsSync } from 'fs'
+import { Dirent, promises as fs } from 'fs'
 import { resolve } from 'path'
 import { resolveAllRunnableModulesInDirectory } from './resolveAllRunnableModulesInDirectory'
+import { getPathStats } from '../shared'
 import type { RunnableModule } from './types'
 
 export async function resolveAllRunnableModules (directoryPath: string, debug: boolean = false): Promise<Map<string, Map<string, RunnableModule>>> {
@@ -15,7 +16,7 @@ export async function resolveAllRunnableModules (directoryPath: string, debug: b
       const { name }: Dirent = dirent
       const subdirectoryPath: string = resolve(directoryPath, name)
 
-      if (!existsSync(resolve(subdirectoryPath, 'index.js'))) {
+      if ((await getPathStats(resolve(subdirectoryPath, 'index.js'))) === undefined) {
         const typedModules: Map<string, RunnableModule> = await resolveAllRunnableModulesInDirectory(subdirectoryPath, debug)
 
         if (typedModules.size > 0) modules.set(name, typedModules)

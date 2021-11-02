@@ -1,5 +1,3 @@
-import { bold } from 'chalk'
-
 export const description = 'Logs messages with a bit of formatting'
 
 export const args = {
@@ -25,28 +23,50 @@ export const args = {
   }
 }
 
-export const alert = message => console.warn(`${bold.yellow('⚠')} ${bold(message)}`)
+const importChalk = async () => (await import('chalk')).default
 
-export const error = message => console.error(`${bold.red('X')} ${bold(message)}`)
+export const alert = async message => {
+  const { bold } = await importChalk()
 
-export const info = message => console.log(`${bold.cyan('•')} ${bold(message)}`)
+  console.warn(`${bold.yellow('⚠')} ${bold(message)}`)
+}
 
-export const success = message => console.log(`${bold.green('✓')} ${bold(message)}`)
+export const error = async message => {
+  const { bold } = await importChalk()
 
-export const wait = message => console.log(`${bold.cyan('⏳')} ${bold(message)}`)
+  console.error(`${bold.red('X')} ${bold(message)}`)
+}
+
+export const info = async message => {
+  const { bold } = await importChalk()
+
+  console.log(`${bold.cyan('•')} ${bold(message)}`)
+}
+
+export const success = async message => {
+  const { bold } = await importChalk()
+
+  console.log(`${bold.green('✓')} ${bold(message)}`)
+}
+
+export const wait = async message => {
+  const { bold } = await importChalk()
+
+  console.log(`${bold.cyan('⏳')} ${bold(message)}`)
+}
 
 export default { alert, error, info, success, wait }
 
-export const run = ({ _, ...args }) => {
+export const run = async ({ _, ...args }) => {
   const message = _.join(' ')
 
-  if (args.alert) alert(message)
+  if (args.alert) await alert(message)
 
-  else if (args.error) error(message)
+  else if (args.error) await error(message)
 
-  else if (args.success) success(message)
+  else if (args.success) await success(message)
 
-  else if (args.wait) wait(message)
+  else if (args.wait) await wait(message)
 
-  else info(message)
+  else await info(message)
 }
