@@ -1,7 +1,6 @@
 import chalk from 'chalk'
 import spawn from 'cross-spawn'
-import { writeFile } from 'fs/promises'
-import { resolve } from 'path'
+import { readFile, writeFile } from 'fs/promises'
 
 const { bold } = chalk
 
@@ -112,52 +111,28 @@ export const composeBranchSequence = async ({ feature, release, version }) => {
 
     if (currentBranchName !== 'develop') {
       return [
-      `log -e Release branches must be created from the develop branch. Current branch is ${bold(currentBranchName)}.`,
-      'exit 1'
+        `log -e Release branches must be created from the develop branch. Current branch is ${bold(currentBranchName)}.`,
+        'exit 1'
       ]
     }
 
-    const { version } = await import('../../package.json')
-    const currentVersionParts = version.split('.').map(value => Number(value))
-    let releaseVersion
-
-    if (version) {
-      const versionParts = version.split('.').map(value => Number(value))
-
-      if (versionParts.length === 3 &&
-      versionParts.every(value => Number.isInteger(value)) &&
-      versionParts[0] >= currentVersionParts[0] &&
-      versionParts[1] >= currentVersionParts[1] &&
-      versionParts[2] >= currentVersionParts[2] &&
-      versionParts.reduce((total, value) => total + value, 0) > currentVersionParts.reduce((total, value) => total + value, 0)) releaseVersion = version
-
-      else {
-        return [
-        `log -e Invalid version ${bold(version)}`,
-        'exit 1'
-        ]
-      }
-    } else {
-      releaseVersion = await import('../../package.json').version.split('.').map((value, index) => index === 2 ? Number(value) + 1 : value).join('.')
-    }
+    const packageJSON = JSON.parse(await readFile('package.json'))
+    const releaseVersion = packageJSON.version.split('.').map((value, index) => index === 2 ? Number(value) + 1 : value).join('.')
 
     branchName = `release/${releaseVersion}`
 
     if (await isExistingBranch(branchName)) {
       return [
-      `log -e Release branch ${bold(branchName)} already exists.`,
-      'exit 1'
+        `log -e Release branch ${bold(branchName)} already exists.`,
+        'exit 1'
       ]
     }
 
     sequence.push(
       async () => {
-        const packageJSONPath = resolve('package.json')
-        const packageJSON = await import(packageJSONPath)
-
         packageJSON.version = releaseVersion
 
-        await writeFile(packageJSONPath, JSON.stringify(packageJSON, null, 2))
+        await writeFile('package.json', JSON.stringify(packageJSON, null, 2))
       },
       'git add -A',
       `git commit -m "Release ${releaseVersion}"`,
@@ -233,7 +208,7 @@ export const composeCommitSequence = async ({ build, merge, message, push, test 
 
       if (isRelease) {
         sequence.push(async () => {
-          const { version } = await import('../../package.json')
+          const { version } = JSON.parse(await readFile('package.json'))
 
           return [
             `git tag -a v${version} -m "Version ${version}"`,
