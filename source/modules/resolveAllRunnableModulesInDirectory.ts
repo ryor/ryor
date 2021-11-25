@@ -22,18 +22,3 @@ export async function resolveAllRunnableModulesInDirectory (directoryPath: strin
 
   return modules
 }
-
-/*
-async function resolveAllRunnableModulesInDirectory(directoryPath, debug = false) {
-    const dirents = await promises.readdir(directoryPath, { withFileTypes: true });
-    const modulePaths = (await Promise.all(dirents.map(dirent => resolveModulePath(directoryPath, dirent)))).filter(path => path !== undefined)
-    const modules = (await Promise.all(modulePaths.map(modulePath => importModule(modulePath, debug))))
-    const runnableModules = modules.reduce((map, module, index) => {
-        if (module !== undefined && isValidRunnableModule(module)) map.set(parse(modulePaths[index]).name, module)
-
-        return map
-    }, new Map())
-
-    return runnableModules
-}
-*/

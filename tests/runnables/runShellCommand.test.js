@@ -7,14 +7,14 @@ import { ensureCorrectPATHValue } from '../../source/runner/ensureCorrectPATHVal
 
 describe('Run shell command', () => {
   const projectsDirectoryPath = resolve(__dirname, '../.test-projects/projects')
-  let args, output
+  let output
 
-  beforeAll(() => {
-    process.chdir(resolve(projectsDirectoryPath, 'all'))
-    ensureCorrectPATHValue()
+  beforeAll(async () => {
+    jest.spyOn(console, 'log').mockImplementation(data => { output += data })
     jest.spyOn(process.stderr, 'write').mockImplementation(data => { output += data })
     jest.spyOn(process.stdout, 'write').mockImplementation(data => { output += data })
-    jest.spyOn(console, 'log').mockImplementation(data => { output += data })
+    process.chdir(resolve(projectsDirectoryPath, 'all'))
+    await ensureCorrectPATHValue()
   })
 
   beforeEach(() => { output = '' })
@@ -42,50 +42,6 @@ describe('Run shell command', () => {
       expect(error.message).toBe('')
       expect(output.includes('ERR_INVALID_ARG_TYPE')).toBe(true)
     }
-
-    jest.resetModules()
-    jest.mock('cross-spawn', () => ({
-      spawn: () => ({
-        on: (event, callback) => {
-          if (event === 'error') callback('Some error') // eslint-disable-line
-          if (event === 'close') callback(1) // eslint-disable-line
-        },
-        stderr: { on: () => {} },
-        stdout: { on: () => {} }
-      })
-    }))
-
-    try {
-      await require('../../source/runnables/runShellCommand').runShellCommand('command')
-    } catch (error) {
-      expect(error.message).toBe('Some error')
-    }
-
-    jest.unmock('cross-spawn')
-    jest.resetModules()
-  })
-
-  test('outputs any possible error output emitted from child process even when subprocess exits cleanly', async () => {
-    const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(data => { output += data })
-
-    jest.resetModules()
-    jest.mock('cross-spawn', () => ({
-      spawn: () => ({
-        on: (event, callback) => {
-          if (event === 'error') callback('Some error') // eslint-disable-line
-          if (event === 'close') callback(0) // eslint-disable-line
-        },
-        stderr: { on: () => {} },
-        stdout: { on: () => {} }
-      })
-    }))
-
-    await require('../../source/runnables/runShellCommand').runShellCommand('command')
-    expect(output).toBe('Some error')
-
-    consoleErrorMock.mockRestore()
-    jest.unmock('cross-spawn')
-    jest.resetModules()
   })
 
   test('cd', async () => {
@@ -98,13 +54,13 @@ describe('Run shell command', () => {
   })
 
   test('echo', async () => {
-    args = ['Did', 'something.']
+    const args = ['Did', 'something.']
     await runShellCommand('echo', args)
     expect(output.trim()).toBe(args.join(' '))
   })
 
   test('executable in node_modules/.bin directory', async () => {
-    args = ['Did', 'something.']
+    const args = ['Did', 'something.']
     await runShellCommand('log', args)
     expect(output.trim()).toBe(args.join(' '))
 

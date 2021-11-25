@@ -19,7 +19,7 @@ describe('Import module(s)', () => {
   test('in "nested-directories" test project', async () => {
     const directoryPath = resolve(projectsDirectoryPath, 'nested-directories/run')
 
-    expect(await importModule(resolve(directoryPath, 'tools/bundler'))).toBeDefined()
+    expect(await importModule(resolve(directoryPath, 'tools/bundler.js'))).toBeDefined()
     expect(await importModule(resolve(directoryPath, 'tools/tester'))).toBeDefined()
     expect(await importModule(resolve(directoryPath, 'tools/transpiler'))).toBeDefined()
   })

@@ -1,8 +1,9 @@
 import chalk from 'chalk'
 import spawn from 'cross-spawn'
-import { readFile, writeFile } from 'fs/promises'
+import { promises } from 'fs'
 
 const { bold } = chalk
+const { readFile, writeFile } = promises
 
 export const description = 'Runs preconfigured Git commands'
 
