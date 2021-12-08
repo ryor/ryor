@@ -8,10 +8,6 @@ on:
       - feature/*
       - release/*
 
-defaults:
-  run:
-    shell: bash
-
 jobs:
   test:
     name: Tests on ${{ matrix.os }} with node ${{ matrix.node-version }}

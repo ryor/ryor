@@ -193,7 +193,7 @@ export const composeCommitSequence = async ({ build, merge, message, push, test 
       sequence.push(
         `git checkout ${isFeature ? 'develop' : 'main'}`,
         'git pull',
-        `git merge -X theirs --squash ${currentBranchName}`,
+        `git merge -X theirs ${currentBranchName}`,
         'git commit',
         'git push',
         `git branch -D ${currentBranchName}`,
