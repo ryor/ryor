@@ -1,9 +1,9 @@
 import chalk from 'chalk'
 import spawn from 'cross-spawn'
-import { readFile, writeFile } from 'fs/promises'
-import { resolve } from 'path'
+import { promises } from 'fs'
 
 const { bold } = chalk
+const { readFile, writeFile } = promises
 
 export const description = 'Runs preconfigured Git commands'
 
@@ -118,7 +118,7 @@ export const composeBranchSequence = async ({ feature, release, version }) => {
     }
 
     const packageJSON = JSON.parse(await readFile('package.json'))
-    const releaseVersion  = packageJSON.version.split('.').map((value, index) => index === 2 ? Number(value) + 1 : value).join('.')
+    const releaseVersion = packageJSON.version.split('.').map((value, index) => index === 2 ? Number(value) + 1 : value).join('.')
 
     branchName = `release/${releaseVersion}`
 
@@ -193,7 +193,7 @@ export const composeCommitSequence = async ({ build, merge, message, push, test 
       sequence.push(
         `git checkout ${isFeature ? 'develop' : 'main'}`,
         'git pull',
-        `git merge -X theirs --squash ${currentBranchName}`,
+        `git merge -X theirs ${currentBranchName}`,
         'git commit',
         'git push',
         `git branch -D ${currentBranchName}`,

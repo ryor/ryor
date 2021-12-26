@@ -1,7 +1,7 @@
 export const description = 'Checks for available dependency updates and updates as neccesary'
 
 export const run = async () => {
-  const { stat } = await import('fs/promises')
+  const { promises: { stat } } = await import('fs')
   const fileName = 'package.json'
   let initialModifiedTime
 

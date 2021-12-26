@@ -1,6 +1,6 @@
 import { bold } from 'chalk'
-import { RUNNABLE_USAGE_HEADER } from '../../../source/usage/constants'
 import { LINE_BREAK } from '../../../source/shared/constants'
+import { RUNNABLE_USAGE_HEADER } from '../../../source/usage/constants'
 
 const DOUBLE_LINE_BREAK = LINE_BREAK + LINE_BREAK
 

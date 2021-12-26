@@ -4,8 +4,8 @@ import cliTruncate from 'cli-truncate'
 import { resolve } from 'path'
 import { getConsoleColumnCount } from '../../source/console/getConsoleColumnCount'
 import { LINE_BREAK } from '../../source/shared/constants'
-import { outputUsageInformation } from '../../source/usage/outputUsageInformation'
 import { NO_RUNNABLES_RESOLVED_MESSAGE } from '../../source/usage/constants'
+import { outputUsageInformation } from '../../source/usage/outputUsageInformation'
 
 describe('Output usage information', () => {
   const projectsDirectoryPath = resolve(__dirname, '../.test-projects/projects')

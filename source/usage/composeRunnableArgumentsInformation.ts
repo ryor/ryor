@@ -1,4 +1,4 @@
-import { bold } from 'chalk'
+import chalk from 'chalk'
 import { LINE_BREAK } from '../shared'
 import { INDENT } from './constants'
 import type { RunnableArgumentDefinitions } from '../runnables'
@@ -21,7 +21,7 @@ export function composeRunnableArgumentsInformation (args: RunnableArgumentDefin
     .map(([short, long, description]: string[]): string => {
       const optionsString: string = `${short}${INDENT}${long}`
 
-      return `${indent}${bold(optionsString)}${' '.repeat(maxOptionsLength - optionsString.length)}${description !== '' ? `${INDENT + description}` : ''}`
+      return `${indent}${chalk.bold(optionsString)}${' '.repeat(maxOptionsLength - optionsString.length)}${description !== '' ? `${INDENT + description}` : ''}`
     })
     .join(LINE_BREAK)
 }

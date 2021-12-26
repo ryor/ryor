@@ -8,10 +8,6 @@ on:
       - feature/*
       - release/*
 
-defaults:
-  run:
-    shell: bash
-
 jobs:
   test:
     name: Tests on ${{ matrix.os }} with node ${{ matrix.node-version }}
@@ -19,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: [Ubuntu, MacOS, Windows]
-        node-version: [14, 12, 10]
+        node-version: ['12.20.0', '14.13.1', '16.0.0']
     steps:
       - name: Check out repository
         uses: actions/checkout@v2

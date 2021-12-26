@@ -1,7 +1,10 @@
+const { transform } = require('@babel/core')
+const { posix, sep } = require('path')
+const { transpile } = require('typescript')
+
 const esOptions = {
   babelrc: false,
-  plugins: [require.resolve('@babel/plugin-transform-modules-commonjs')],
-  sourceMaps: 'inline'
+  plugins: ['@babel/plugin-transform-modules-commonjs']
 }
 
 const tsOptions = {
@@ -12,14 +15,24 @@ const tsOptions = {
 
 module.exports = {
   process: (source, path) => {
-    if (path.endsWith('.ts')) {
-      const { transpile } = require('typescript')
+    let code = path.endsWith('.ts')
+      ? transpile(source.replace(/^const/gm, 'export const').replace(/^function/gm, 'export function'), tsOptions, path)
+      : transform(source, {
+            ...esOptions,
+            sourceFileName: path,
+            sourceMaps: path.includes('node_modules') ? false : 'inline'
+          }
+        ).code
 
-      return transpile(source.replace(/^const/gm, 'export const').replace(/^function/gm, 'export function'), tsOptions, path)
+    // TEMP
+    if (path.includes('chalk')) {
+      const posixPath = path.split(sep).join(posix.sep)
+
+      if (posixPath.includes('chalk/source/index.js')) code = code.replace('exports.default = _default', 'module.exports = _default')
+
+      else if (posixPath.includes('chalk/source/vendor/supports-color/index.js')) code = code.split('node:').join('')
     }
 
-    const { transform } = require('@babel/core')
-
-    return transform(source, { ...esOptions, sourceFileName: path }).code
+    return code
   }
 }

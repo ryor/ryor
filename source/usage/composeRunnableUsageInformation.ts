@@ -1,4 +1,4 @@
-import { bold } from 'chalk'
+import chalk from 'chalk'
 import { basename } from 'path'
 import { resolveRunnableModule } from '../modules'
 import { RunnableError } from '../runnables'
@@ -35,7 +35,7 @@ export async function composeRunnableUsageInformation (name: string, configurati
         return [name, description, options]
       })
         .map(([name, description, options]: string[]): string => {
-          return `${INDENT}${bold(name)}${' '.repeat(maxNameLength - name.length)}${description !== '' ? `${INDENT + description}` : ''}${options !== '' ? `${LINE_BREAK + LINE_BREAK + options}` : ''}`
+          return `${INDENT}${chalk.bold(name)}${' '.repeat(maxNameLength - name.length)}${description !== '' ? `${INDENT + description}` : ''}${options !== '' ? `${LINE_BREAK + LINE_BREAK + options}` : ''}`
         })
         .join(LINE_BREAK + LINE_BREAK)
   } else if (module.args !== undefined && isPopulatedObject(module.args)) {
