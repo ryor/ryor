@@ -2,10 +2,14 @@
   "collectCoverageFrom": ["source/**/*.ts", "!source/**/*.d.ts"],
   "coverageDirectory": "<rootDir>/coverage",
   "moduleFileExtensions": ["js", "ts"],
+  "moduleNameMapper": {
+    "#ansi-styles": "<rootDir>/node_modules/chalk/source/vendor/ansi-styles/index.js",
+    "#supports-color": "<rootDir>/node_modules/chalk/source/vendor/supports-color/index.js"
+  },
   "rootDir": "../../..",
   "setupFiles": ["<rootDir>/tests/setup.js"],
   "testEnvironment": "node",
   "testMatch": ["<rootDir>/tests/**/*.test.js"],
-  "transform": { "^.+\\.[j|t]s": "<rootDir>/run/tools/jest/preprocessor.js" },
+  "transform": { "^.+\\.[j|t]s": "<rootDir>/run/tools/jest/preprocessor.cjs" },
   "transformIgnorePatterns": []
 }

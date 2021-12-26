@@ -13,23 +13,23 @@ describe('Ensures PATH environment variable has correct value', () => {
 
   afterEach(() => { env.PATH = PATH })
 
-  test('does not include node_modules/.bin directory when none exists', () => {
+  test('does not include node_modules/.bin directory when none exists', async () => {
     projectDirectoryPath = resolve(projectsDirectoryPath, 'empty-runnables-directory')
     binDirectoryPath = resolve(projectDirectoryPath, 'node_modules/.bin')
     process.chdir(projectDirectoryPath)
-    ensureCorrectPATHValue()
+    await ensureCorrectPATHValue()
     expect(env.PATH.includes(binDirectoryPath)).toBe(false)
   })
 
-  test('includes node_modules/.bin directory when it exists', () => {
+  test('includes node_modules/.bin directory when it exists', async () => {
     projectDirectoryPath = resolve(projectsDirectoryPath, 'all')
     binDirectoryPath = resolve(projectDirectoryPath, 'node_modules/.bin')
     process.chdir(projectDirectoryPath)
-    ensureCorrectPATHValue()
+    await ensureCorrectPATHValue()
     expect(env.PATH.includes(binDirectoryPath)).toBe(true)
   })
 
-  test('handles platform divider character properly', () => {
+  test('handles platform divider character properly', async () => {
     const platform = process.platform
 
     projectDirectoryPath = resolve(projectsDirectoryPath, 'all')
@@ -37,12 +37,12 @@ describe('Ensures PATH environment variable has correct value', () => {
     process.chdir(projectDirectoryPath)
 
     Object.defineProperty(process, 'platform', { value: WINDOWS_IDENTIFIER })
-    ensureCorrectPATHValue()
+    await ensureCorrectPATHValue()
     expect(env.PATH.includes(binDirectoryPath + WINDOWS_PATH_DIVIDER)).toBe(true)
 
     env.PATH = PATH
     Object.defineProperty(process, 'platform', { value: 'linux' })
-    ensureCorrectPATHValue()
+    await ensureCorrectPATHValue()
     expect(env.PATH.includes(binDirectoryPath + DEFAULT_PATH_DIVIDER)).toBe(true)
 
     Object.defineProperty(process, 'platform', { value: platform })

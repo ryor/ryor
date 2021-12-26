@@ -1,7 +1,6 @@
 /* eslint-env jest */
 
 import { resolve } from 'path'
-import { INVALID_RUNNABLE_ERROR_TEMPLATE, NO_RUNNABLE_ERROR_TEMPLATE } from '../../source/modules/requireModule'
 import { resolveRunnableModule } from '../../source/modules/resolveRunnableModule'
 
 describe('Resolve runnable module', () => {
@@ -24,40 +23,6 @@ describe('Resolve runnable module', () => {
       await resolveRunnableModule('bundler', { directory: resolve(projectDirectoryPath, 'run') })
     } catch (error) {
       expect(error.name).toBe('SyntaxError')
-    }
-  })
-
-  test('throws errors when modules are invalid', async () => {
-    const projectDirectoryPath = resolve(projectsDirectoryPath, 'invalid-definitions')
-    let name, path
-
-    process.chdir(projectDirectoryPath)
-
-    name = 'bundler'
-    path = require.resolve(resolve(projectDirectoryPath, 'run', name)).replace(projectDirectoryPath, '.')
-
-    try {
-      await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'run') })
-    } catch (error) {
-      expect(error.message).toBe(NO_RUNNABLE_ERROR_TEMPLATE.replace('[PATH]', path))
-    }
-
-    name = 'tester'
-    path = require.resolve(resolve(projectDirectoryPath, 'run', name)).replace(projectDirectoryPath, '.')
-
-    try {
-      await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'run') })
-    } catch (error) {
-      expect(error.message).toBe(INVALID_RUNNABLE_ERROR_TEMPLATE.replace('[PATH]', path))
-    }
-
-    name = 'transpiler'
-    path = require.resolve(resolve(projectDirectoryPath, 'run', name)).replace(projectDirectoryPath, '.')
-
-    try {
-      await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'run') })
-    } catch (error) {
-      expect(error.message).toBe(INVALID_RUNNABLE_ERROR_TEMPLATE.replace('[PATH]', path))
     }
   })
 

@@ -17,9 +17,13 @@ export const args = {
 
 export const run = ({ _, coverage, quiet, verbose }) => {
   if (quiet) {
-    return new Promise((resolve, reject) =>
-      require('cross-spawn')('jest', ['-c', 'run/tools/jest/config.json'].concat(coverage ? ['--coverage'] : []))
-        .on('close', code => (code === 0 ? resolve() : reject(new Error('One or more Jest tests failed.')))))
+    return async () => {
+      const { spawn } = await import('cross-spawn')
+
+      await new Promise((resolve, reject) =>
+        spawn('jest', ['-c', 'run/tools/jest/config.json'].concat(coverage ? ['--coverage'] : []))
+          .on('close', code => (code === 0 ? resolve() : reject(new Error('One or more Jest tests failed.')))))
+    }
   }
 
   return [

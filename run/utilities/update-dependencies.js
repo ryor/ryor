@@ -1,20 +1,18 @@
 export const description = 'Checks for available dependency updates and updates as neccesary'
 
-export const run = () => {
-  const { stat } = require('fs/promises')
+export const run = async () => {
+  const { promises: { stat } } = await import('fs')
   const fileName = 'package.json'
-  let firstModifiedTime, secondModifiedTime
+  let initialModifiedTime
 
   return [
     async () => {
-      firstModifiedTime = (await stat(fileName)).mtimeMs
+      initialModifiedTime = (await stat(fileName)).mtimeMs
 
       return 'ncu -u'
     },
     async () => {
-      secondModifiedTime = (await stat(fileName)).mtimeMs
-
-      if (secondModifiedTime !== firstModifiedTime) return 'npm install'
+      if ((await stat(fileName)).mtimeMs !== initialModifiedTime) return 'npm install'
     }
   ]
 }

@@ -1,1 +1,3 @@
-require('ryor')()
+import ryor from 'ryor'
+
+ryor()
