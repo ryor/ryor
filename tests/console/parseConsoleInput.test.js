@@ -4,7 +4,7 @@ import { parseConsoleInput } from '../../source/console/parseConsoleInput'
 
 describe('Parses console input', () => {
   test('with no arguments', () => {
-    expect(parseConsoleInput([])).toEqual({ options: {}, sequence: ['help'] })
+    expect(parseConsoleInput([])).toEqual({ options: {}, sequence: [] })
   })
 
   test('with usage information requested explicitly', () => {

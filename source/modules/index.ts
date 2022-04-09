@@ -1,4 +1,5 @@
 export { RunnableModuleError } from './RunnableModuleError'
+export { ensureRunnableModuleHelpArgumentDefinition } from './ensureRunnableModuleHelpArgumentDefinition'
 export { isRunnableModule } from './isRunnableModule'
 export { resolveAllRunnableModules } from './resolveAllRunnableModules'
 export { resolveRunnableModule } from './resolveRunnableModule'

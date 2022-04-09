@@ -1,5 +1,4 @@
 import { resolveRunnableModule, runRunnableModule } from '../modules'
-import { outputUsageInformation } from '../usage'
 import { parseStringRunnable } from './parseStringRunnable'
 import { runShellCommand } from './runShellCommand'
 import type { RunnableModule } from '../modules'
@@ -12,9 +11,7 @@ export async function runRunnable (runnable: Runnable, configuration: RunnerConf
     const args: string[] = parseStringRunnable(runnable)
 
     if (args.length > 0) {
-      if (args[0] === 'help') await outputUsageInformation(configuration, args.length > 1 ? args[1] : undefined)
-
-      else if (args[0] === 'exit') process.exit(args.length > 1 ? Number(args[1]) : undefined)
+      if (args[0] === 'exit') process.exit(args.length > 1 ? Number(args[1]) : undefined)
 
       else {
         const name: string = args.shift() as string

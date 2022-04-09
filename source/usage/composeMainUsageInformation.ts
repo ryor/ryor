@@ -49,9 +49,9 @@ export async function composeMainUsageInformation (configuration: RunnerConfigur
 
   body = lists.join(LINE_BREAK + LINE_BREAK)
 
-  return MAIN_USAGE_HEADER.replace('[ENTRY_DIRECTORY_NAME]', entryDirectoryName) +
-    LINE_BREAK + LINE_BREAK +
-    body +
-    LINE_BREAK + LINE_BREAK +
+  return [
+    MAIN_USAGE_HEADER.replace('[ENTRY_DIRECTORY_NAME]', entryDirectoryName),
+    body,
     MAIN_USAGE_FOOTER.replace('[ENTRY_DIRECTORY_NAME]', entryDirectoryName)
+  ].map((value: string): string => value.trim()).join(LINE_BREAK + LINE_BREAK)
 }

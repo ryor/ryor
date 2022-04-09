@@ -9,5 +9,6 @@ export interface RunnerConfiguration {
 
 export interface RunnerOptions {
   debug?: boolean
+  help?: boolean
   time?: boolean
 }

@@ -1,8 +1,7 @@
 /* eslint-env jest */
-
-import cliTruncate from 'cli-truncate'
 import { resolve } from 'path'
 import { getConsoleColumnCount } from '../../source/console/getConsoleColumnCount'
+import { truncateConsoleOutput } from '../../source/console/truncateConsoleOutput'
 import { LINE_BREAK } from '../../source/shared/constants'
 import { NO_RUNNABLES_RESOLVED_MESSAGE } from '../../source/usage/constants'
 import { outputUsageInformation } from '../../source/usage/outputUsageInformation'
@@ -42,7 +41,6 @@ describe('Output usage information', () => {
   })
 
   test('for "all" test project', async () => {
-    const outputColumnCount = getConsoleColumnCount()
     const projectDirectoryPath = resolve(projectsDirectoryPath, 'all')
     const configuration = { directory: resolve(projectDirectoryPath, 'run') }
     const { build, bundler, main, tester, transpiler, git } = require(resolve(usageInformationDirectoryPath, 'all'))
@@ -52,30 +50,30 @@ describe('Output usage information', () => {
 
     output = ''
     await outputUsageInformation(configuration)
-    expect(output).toBe(`${LINE_BREAK}${main.split(LINE_BREAK).map(line => cliTruncate(line, outputColumnCount)).join(LINE_BREAK)}${LINE_BREAK}`)
+    expect(output).toBe(`${LINE_BREAK}${truncateConsoleOutput(main, getConsoleColumnCount())}${LINE_BREAK}`)
 
     output = ''
     await outputUsageInformation(configuration, 'unresolvable')
-    expect(output).toBe(`${LINE_BREAK}${main.split(LINE_BREAK).map(line => cliTruncate(line, outputColumnCount)).join(LINE_BREAK)}${LINE_BREAK}`)
+    expect(output).toBe(`${LINE_BREAK}${truncateConsoleOutput(main, getConsoleColumnCount())}${LINE_BREAK}`)
 
     output = ''
     await outputUsageInformation(configuration, 'build')
-    expect(output).toBe(LINE_BREAK + cliTruncate(build, outputColumnCount) + LINE_BREAK)
+    expect(output).toBe(`${LINE_BREAK}${truncateConsoleOutput(build, getConsoleColumnCount())}${LINE_BREAK}`)
 
     output = ''
     await outputUsageInformation(configuration, 'bundler')
-    expect(output).toBe(LINE_BREAK + cliTruncate(bundler, outputColumnCount) + LINE_BREAK)
+    expect(output).toBe(`${LINE_BREAK}${truncateConsoleOutput(bundler, getConsoleColumnCount())}${LINE_BREAK}`)
 
     output = ''
     await outputUsageInformation(configuration, 'tester')
-    expect(output).toBe(LINE_BREAK + cliTruncate(tester, outputColumnCount) + LINE_BREAK)
+    expect(output).toBe(`${LINE_BREAK}${truncateConsoleOutput(tester, getConsoleColumnCount())}${LINE_BREAK}`)
 
     output = ''
     await outputUsageInformation(configuration, 'transpiler')
-    expect(output).toBe(LINE_BREAK + cliTruncate(transpiler, outputColumnCount) + LINE_BREAK)
+    expect(output).toBe(`${LINE_BREAK}${truncateConsoleOutput(transpiler, getConsoleColumnCount())}${LINE_BREAK}`)
 
     output = ''
     await outputUsageInformation(configuration, 'git')
-    expect(output).toBe(LINE_BREAK + cliTruncate(git, outputColumnCount) + LINE_BREAK)
+    expect(output).toBe(`${LINE_BREAK}${truncateConsoleOutput(git, getConsoleColumnCount())}${LINE_BREAK}`)
   })
 })

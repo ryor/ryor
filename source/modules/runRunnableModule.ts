@@ -1,5 +1,7 @@
 import { Runnable, RunnableSequence, isValidRunnable, isValidRunnableSequence, parseRunnableArguments, runRunnable, runRunnableSequence } from '../runnables'
 import { outputUsageInformation } from '../usage'
+import { ensureRunnableModuleHelpArgumentDefinition } from './ensureRunnableModuleHelpArgumentDefinition'
+import type { ParsedArgs } from 'minimist'
 import type { RunnerConfiguration } from '../runner'
 import type { RunnableModule } from './types'
 
@@ -10,8 +12,20 @@ export async function runRunnableModule (module: RunnableModule, name: string, a
   if (typeof initialRunnable === 'function') {
     if (module.commands !== undefined) {
       if (args.length === 0 || module.commands[args[0]] === undefined) await outputUsageInformation(configuration, name)
-      else nextRunnable = await initialRunnable({ command: args[0], ...parseRunnableArguments(module.commands[args[0]].args ?? {}, args.slice(1)) })
-    } else nextRunnable = await initialRunnable(parseRunnableArguments(module.args ?? {}, args))
+      else {
+        const runnableArgumentDefinitions = ensureRunnableModuleHelpArgumentDefinition(module.commands[args[0]].args)
+        const runnableArguments: ParsedArgs = parseRunnableArguments(runnableArgumentDefinitions, args.slice(1))
+
+        if (runnableArguments.help === true) await outputUsageInformation(configuration, name)
+        else nextRunnable = await initialRunnable({ command: args[0], ...runnableArguments })
+      }
+    } else {
+      const runnableArgumentDefinitions = ensureRunnableModuleHelpArgumentDefinition(module.args)
+      const runnableArguments: ParsedArgs = parseRunnableArguments(runnableArgumentDefinitions, args)
+
+      if (runnableArguments.help === true) await outputUsageInformation(configuration, name)
+      else nextRunnable = await initialRunnable(runnableArguments)
+    }
 
     while (typeof nextRunnable === 'function') nextRunnable = await nextRunnable()
   } else nextRunnable = initialRunnable

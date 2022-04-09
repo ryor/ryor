@@ -4,7 +4,7 @@ import { parseRunnerRunnableSequence } from '../../source/runner/parseRunnerRunn
 
 describe('Parses command line input', () => {
   test('with no runnable sequence defined', () => {
-    expect(parseRunnerRunnableSequence([])).toEqual(['help'])
+    expect(parseRunnerRunnableSequence([])).toEqual([])
   })
 
   test('with usage information requested explicitly', () => {

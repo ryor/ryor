@@ -3,9 +3,7 @@ import type { RunnableSequence } from '../runnables'
 export function parseRunnerRunnableSequence (argv: string[]): RunnableSequence {
   let sequence: RunnableSequence = []
 
-  if (argv.length === 0) sequence = ['help']
-
-  else {
+  if (argv.length > 0) {
     sequence = argv
       .reduce((definitions: string[][], value: string): string[][] => {
         if (value === '+') definitions.push([])
