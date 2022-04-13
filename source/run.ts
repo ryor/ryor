@@ -1,13 +1,15 @@
 import { parseConsoleInput } from './console'
 import { runRunnableSequence } from './runnables'
 import { RUN_TIME_TEMPLATE, ensureCorrectPATHValue } from './runner'
-import { resolveDirectoryPath } from './shared'
+import { killChildProcesses, resolveDirectoryPath } from './shared'
 import { outputUsageInformation } from './usage'
 import type { RunnableSequence } from './runnables'
 import type { RunnerConfiguration, RunnerOptions } from './runner'
 import type { UsageConfiguration } from './usage'
 
 export async function run (argv: string[], usage?: UsageConfiguration): Promise<void> {
+  let exitCode: number = 0
+
   try {
     const startTime: number = Date.now()
     const directory: string = await resolveDirectoryPath(argv[0])
@@ -17,6 +19,7 @@ export async function run (argv: string[], usage?: UsageConfiguration): Promise<
     await ensureCorrectPATHValue()
 
     if (options?.help === true || sequence.length === 0) await outputUsageInformation(configuration)
+
     else {
       await runRunnableSequence(sequence, { directory, options, usage })
 
@@ -24,7 +27,13 @@ export async function run (argv: string[], usage?: UsageConfiguration): Promise<
     }
   } catch (error) {
     console.error(error)
-
-    process.exit(1)
+    exitCode = 1
   }
+
+  await killChildProcesses(process.pid)
+  process.exit(exitCode)
 }
+
+process.on('SIGINT', (): void => {
+  void killChildProcesses(process.pid).then((): never => process.exit(1))
+})

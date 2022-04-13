@@ -1,18 +1,24 @@
-export const description = 'Checks for available dependency updates and updates as neccesary'
+export const description = 'Checks for dependency updates and optionally updates package.json and installs updates'
 
-export const run = async () => {
-  const { promises: { stat } } = await import('fs')
-  const fileName = 'package.json'
-  let initialModifiedTime
+export const args = {
+  install: {
+    alias: 'i',
+    description: 'Installs updates if any are available'
+  }
+}
+
+export async function run ({ install }) {
+  if (!install) return 'npm-check-updates'
+
+  const { stat } = await import('fs/promises')
+  const previousModifiedTime = (await stat('package.json')).mtimeMs
 
   return [
+    'npm-check-updates -u',
     async () => {
-      initialModifiedTime = (await stat(fileName)).mtimeMs
+      const currentModifiedTime = (await stat('package.json')).mtimeMs
 
-      return 'ncu -u'
-    },
-    async () => {
-      if ((await stat(fileName)).mtimeMs !== initialModifiedTime) return 'npm install'
+      if (currentModifiedTime > previousModifiedTime) return 'npm install'
     }
   ]
 }
