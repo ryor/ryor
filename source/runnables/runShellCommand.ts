@@ -23,7 +23,7 @@ export async function runShellCommand (command: string, args: string[] = []): Pr
   }
 
   return await new Promise<void>((resolve: () => void, reject: (error: Error) => void): void => {
-    const childProcess: ChildProcess = spawn(command, args, { env: process.env, stdio: ['ignore', 'inherit', 'inherit'] })
+    const childProcess: ChildProcess = spawn(command, args, { env: process.env, stdio: 'inherit' })
     let processErrorMessages: string = ''
 
     childProcess.on('error', (data: Buffer): void => { processErrorMessages += data.toString() })
