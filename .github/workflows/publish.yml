@@ -20,13 +20,13 @@ jobs:
       - name: Set up node
         uses: actions/setup-node@v2
         with:
-          node-version: '16.13.0'
+          node-version: '18.4.0'
 
       - name: Setup cache
         uses: actions/cache@v2
         id: cache
         with:
-          key: cache-Ubuntu-14-${{ hashFiles('package-lock.json') }}
+          key: cache-Ubuntu-18-${{ hashFiles('package-lock.json') }}
           path: ./node_modules
 
       - name: Install dependencies
