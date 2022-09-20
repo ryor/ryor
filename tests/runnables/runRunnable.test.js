@@ -52,24 +52,26 @@ describe('Runs runnable', () => {
   })
 
   test('with string runnables', async () => {
-    expect(await runRunnable('echo some message', configuration)).toBe(undefined)
+    const pwdCommand = process.platform === 'win32' ? 'cd' : 'pwd'
+
+    await runRunnable('echo some message', configuration)
     expect(output.trim()).toBe('some message')
 
-    expect(await runRunnable('cd', configuration)).toBe(undefined)
+    await runRunnable('cd', configuration)
     expect(process.cwd()).toBe(projectDirectoryPath)
 
-    expect(await runRunnable('cd ..', configuration)).toBe(undefined)
+    await runRunnable('cd ..', configuration)
     expect(process.cwd()).toBe(projectsDirectoryPath)
 
-    expect(await runRunnable('cd all', configuration)).toBe(undefined)
+    await runRunnable('cd all', configuration)
     expect(process.cwd()).toBe(projectDirectoryPath)
 
     output = ''
-    expect(await runRunnable('pwd', configuration)).toBe(undefined)
+    await runRunnable(pwdCommand, configuration)
     expect(output.trim()).toBe(projectDirectoryPath)
 
     output = ''
-    expect(await runRunnable('cwd=.. pwd', configuration)).toBe(undefined)
+    await runRunnable(`cwd=.. ${pwdCommand}`, configuration)
     expect(output.trim()).toBe(projectsDirectoryPath)
   })
 })

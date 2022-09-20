@@ -67,11 +67,13 @@ describe('Run shell command', () => {
   })
 
   test('cwd', async () => {
-    await runShellCommand('pwd')
+    const command = process.platform === 'win32' ? 'cd' : 'pwd'
+
+    await runShellCommand(command)
     expect(output.trim()).toBe(projectDirectoryPath)
 
     output = ''
-    await runShellCommand('pwd', [], { cwd: projectsDirectoryPath })
+    await runShellCommand(command, [], { cwd: projectsDirectoryPath })
     expect(output.trim()).toBe(projectsDirectoryPath)
   })
 })
