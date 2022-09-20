@@ -1,19 +1,20 @@
 /* eslint-env jest */
 
-import { bold } from 'chalk'
+import chalk from 'chalk'
 import { resolve } from 'path'
 import { runShellCommand } from '../../source/runnables/runShellCommand'
 import { ensureCorrectPATHValue } from '../../source/runner/ensureCorrectPATHValue'
 
 describe('Run shell command', () => {
   const projectsDirectoryPath = resolve(__dirname, '../.test-projects/projects')
+  const projectDirectoryPath = resolve(projectsDirectoryPath, 'all')
   let output
 
   beforeAll(async () => {
     jest.spyOn(console, 'log').mockImplementation(data => { output += data })
     jest.spyOn(process.stderr, 'write').mockImplementation(data => { output += data })
     jest.spyOn(process.stdout, 'write').mockImplementation(data => { output += data })
-    process.chdir(resolve(projectsDirectoryPath, 'all'))
+    process.chdir(projectDirectoryPath)
     await ensureCorrectPATHValue()
   })
 
@@ -25,7 +26,7 @@ describe('Run shell command', () => {
     try {
       await runShellCommand('unresolvable')
     } catch (error) {
-      expect(error.message).toBe(`Could not resolve ${bold('unresolvable')}`)
+      expect(error.message).toBe(`Could not resolve ${chalk.bold('unresolvable')}`)
     }
   })
 
@@ -44,21 +45,6 @@ describe('Run shell command', () => {
     }
   })
 
-  test('cd', async () => {
-    await runShellCommand('cd')
-    expect(process.cwd()).toBe(resolve(projectsDirectoryPath, 'all'))
-    await runShellCommand('cd', ['..'])
-    expect(process.cwd()).toBe(projectsDirectoryPath)
-    await runShellCommand('cd', ['all'])
-    expect(process.cwd()).toBe(resolve(projectsDirectoryPath, 'all'))
-  })
-
-  test('echo', async () => {
-    const args = ['Did', 'something.']
-    await runShellCommand('echo', args)
-    expect(output.trim()).toBe(args.join(' '))
-  })
-
   test('executable in node_modules/.bin directory', async () => {
     const args = ['Did', 'something.']
     await runShellCommand('log', args)
@@ -71,5 +57,21 @@ describe('Run shell command', () => {
     output = ''
     await runShellCommand('output-error')
     expect(output.trim()).toBe('Error')
+  })
+
+  test('echo', async () => {
+    const args = ['Did', 'something.']
+
+    await runShellCommand('echo', args)
+    expect(output.trim()).toBe(args.join(' '))
+  })
+
+  test('cwd', async () => {
+    await runShellCommand('pwd')
+    expect(output.trim()).toBe(projectDirectoryPath)
+
+    output = ''
+    await runShellCommand('pwd', [], { cwd: projectsDirectoryPath })
+    expect(output.trim()).toBe(projectsDirectoryPath)
   })
 })

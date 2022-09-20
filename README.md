@@ -24,7 +24,7 @@ Similar to shell, npm or [NPS](https://www.npmjs.com/package/nps) scripts, seque
 
 or
 
-```node run help [runnable]```
+```node run [runnable] -h```
 
 ### Simple to use
 

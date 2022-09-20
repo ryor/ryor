@@ -3,7 +3,11 @@
 import { parseStringRunnable } from '../../source/runnables/parseStringRunnable'
 
 describe('Parse string runnable', () => {
+  test('from empty string', () => expect(parseStringRunnable('')).toEqual([]))
+
   test('from string with no whitespace', () => expect(parseStringRunnable('command')).toEqual(['command']))
+
+  test('from string with leading and trailing whitespace', () => expect(parseStringRunnable(' command ')).toEqual(['command']))
 
   test('from string with whitespace', () => expect(parseStringRunnable('command -args value --arg value')).toEqual(['command', '-args', 'value', '--arg', 'value']))
 

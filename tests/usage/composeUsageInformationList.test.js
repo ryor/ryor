@@ -1,10 +1,11 @@
 /* eslint-env jest */
 
-import { bold } from 'chalk'
+import chalk from 'chalk'
 import { LINE_BREAK } from '../../source/shared/constants'
 import { composeUsageInformationList } from '../../source/usage/composeUsageInformationList'
 
 const DOUBLE_LINE_BREAK = LINE_BREAK + LINE_BREAK
+const { bold } = chalk
 
 describe('Compose usage information list', () => {
   test('with no arguments defined', () => expect(composeUsageInformationList()).toBe(''))

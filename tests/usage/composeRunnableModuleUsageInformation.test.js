@@ -4,7 +4,7 @@ import { resolve } from 'path'
 import { composeRunnableModuleUsageInformation } from '../../source/usage/composeRunnableModuleUsageInformation'
 import { UNRESOLVED_RUNNABLE_ERROR_MESSAGE } from '../../source/usage/constants'
 
-describe('Compose runnable usage information', () => {
+describe('Compose runnable module usage information', () => {
   const projectsDirectoryPath = resolve(__dirname, '../.test-projects/projects')
   const usageInformationDirectoryPath = resolve(__dirname, '../.test-projects/usage-information')
 
@@ -117,4 +117,4 @@ describe('Compose runnable usage information', () => {
     expect(await composeRunnableModuleUsageInformation('gitflow', configuration)).toBe(gitflow)
   })
   */
- })
+})

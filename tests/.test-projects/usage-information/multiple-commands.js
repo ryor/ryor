@@ -1,8 +1,9 @@
-import { bold } from 'chalk'
+import chalk from 'chalk'
 import { LINE_BREAK } from '../../../source/shared/constants'
 import { RUNNABLE_MODULE_USAGE_HEADER } from '../../../source/usage/constants'
 
 const DOUBLE_LINE_BREAK = LINE_BREAK + LINE_BREAK
+const { bold } = chalk
 
 export const gitflow = [
   `${RUNNABLE_MODULE_USAGE_HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'gitflow')} <command>`,

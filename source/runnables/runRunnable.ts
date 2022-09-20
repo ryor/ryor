@@ -1,3 +1,4 @@
+import { resolve } from 'path'
 import { resolveRunnableModule, runRunnableModule } from '../modules'
 import { parseStringRunnable } from './parseStringRunnable'
 import { runShellCommand } from './runShellCommand'
@@ -12,9 +13,16 @@ export async function runRunnable (runnable: Runnable, configuration: RunnerConf
 
     if (args.length > 0) {
       if (args[0] === 'exit') process.exit(args.length > 1 ? Number(args[1]) : undefined)
+      else if (args[0] === 'cd') {
+        // TODO: Make sure paths with directory names with spaces are handled properly
+        if (args.length > 1) process.chdir(resolve(process.cwd(), args.slice(1).join(' ')))
+      } else if (args[0].startsWith('cwd=')) {
+        const cwd = resolve(process.cwd(), (args.shift() as string).split('=')[1])
+        const command = args.shift() as string
 
-      else {
-        const name: string = args.shift() as string
+        await runShellCommand(command, args, { cwd })
+      } else {
+        const name = args.shift() as string
         let runnableModule: RunnableModule | undefined
 
         if (context === undefined || name !== context) runnableModule = await resolveRunnableModule(name, configuration)

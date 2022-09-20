@@ -28,10 +28,11 @@ export const run = ({ fix, quiet, runnables, source, tests }) => {
   const checks = []
   let sequence = ['-c']
 
-  if (all || source) {
-    checks.push('source')
-    sequence.push(`ts-standard${fix ? ' --fix' : ''} --project run/tools/tsc/config.json source/**/*.ts`)
-  }
+  // TEMP: ts-standard not working
+  // if (all || source) {
+  //  checks.push('source')
+  //  sequence.push(`ts-standard${fix ? ' --fix' : ''} --project run/tools/esbuild/tsconfig.json source/**/*.ts`)
+  // }
 
   if (all || runnables) {
     checks.push('runnables')
@@ -45,8 +46,8 @@ export const run = ({ fix, quiet, runnables, source, tests }) => {
 
   if (!quiet) {
     sequence = [
-    `log -w Linting ${fix ? 'and fixing issues in' : ''} ${checks.reduce((result, check, index, array) => `${result}${array.length === 1 || index === 0 ? '' : index === array.length - 1 ? ' and ' : ', '}${check}`, '')} code with Standard...`,
-    sequence
+      `log -w Linting ${fix ? 'and fixing issues in' : ''} ${checks.reduce((result, check, index, array) => `${result}${array.length === 1 || index === 0 ? '' : index === array.length - 1 ? ' and ' : ', '}${check}`, '')} code with Standard...`,
+      sequence
     ]
   }
 

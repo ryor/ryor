@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { bold } from 'chalk'
+import chalk from 'chalk'
 import {
   DEFAULT_ITEM_DESCRIPTION,
   INDENT,
@@ -10,6 +10,8 @@ import {
   RUNNABLE_MODULE_USAGE_HEADER,
   UNRESOLVED_RUNNABLE_ERROR_MESSAGE
 } from '../../source/usage/constants'
+
+const { bold } = chalk
 
 describe('Verify constant values', () => {
   test('DEFAULT_ITEM_DESCRIPTION', () => expect(DEFAULT_ITEM_DESCRIPTION).toBe('No description provided'))

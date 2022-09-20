@@ -1,10 +1,8 @@
-alias a="alias"
 alias b='run build'
 alias g='run git'
-alias h='run help'
 alias j='run jest'
+alias n='run ncu'
 alias r='run rollup'
 alias run='node run'
 alias s='run standard'
 alias t='run tsc'
-alias u='run update'

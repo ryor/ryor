@@ -15,8 +15,7 @@ export const run = async ({ development, quiet }) => {
   const { readFileSync, writeFileSync } = await import('fs')
   const sequence = [
     'shx rm -rf build',
-    `tsc${quiet ? ' -q' : ''}`,
-    `rollup${quiet ? ' -q' : ''}`,
+    `esbuild${quiet ? ' -q' : ''}`,
     ['-c',
       () => {
         const packageJSON = JSON.parse(readFileSync('package.json').toString())

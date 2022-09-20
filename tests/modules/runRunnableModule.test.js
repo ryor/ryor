@@ -5,7 +5,9 @@ import { runRunnableModule } from '../../source/modules/runRunnableModule'
 import { LINE_BREAK } from '../../source/shared/constants'
 
 describe('Runs runnable module', () => {
-  const projectsDirectoryPath = resolve(__dirname, '../.test-projects/projects')
+  const projectDirectoryPath = resolve(__dirname, '../.test-projects/projects/all')
+  const configuration = { directory: resolve(projectDirectoryPath, 'run') }
+
   let output
 
   beforeAll(() => {
@@ -20,12 +22,11 @@ describe('Runs runnable module', () => {
   test('with string runnable definition', async () => {
     const expectedOutput = 'Did something.'
 
-    await runRunnableModule({ run: `echo ${expectedOutput}` }, 'runnable', [], { directory: resolve(process.cwd(), 'run') })
+    await runRunnableModule({ run: `echo ${expectedOutput}` }, 'runnable', [], configuration)
     expect(output.trim()).toBe(expectedOutput)
   })
 
   test('with function that returns string runnable definition', async () => {
-    const configuration = { directory: resolve(process.cwd(), 'run') }
     const expectedOutput = 'Did something.'
 
     await runRunnableModule({ run: () => `echo ${expectedOutput}` }, 'runnable', [], configuration)
@@ -37,8 +38,6 @@ describe('Runs runnable module', () => {
   })
 
   test('with function that returns function(s)', async () => {
-    const configuration = { directory: resolve(process.cwd(), 'run') }
-
     await runRunnableModule({ run: () => console.log('1') }, 'runnable', [], configuration)
     expect(output.trim()).toBe('1')
 
@@ -64,7 +63,6 @@ describe('Runs runnable module', () => {
   })
 
   test('with function that does not return runnable definition', async () => {
-    const configuration = { directory: resolve(process.cwd(), 'run') }
     const expectedOutput = 'Did something.'
 
     await runRunnableModule({ run: () => console.log(expectedOutput) }, 'runnable', [], configuration)
@@ -76,7 +74,6 @@ describe('Runs runnable module', () => {
   })
 
   test('with sequence runnables definition', async () => {
-    const configuration = { directory: resolve(process.cwd(), 'run') }
     const firstLine = 'Did something.'
     const secondLine = 'Did something else.'
     const expectedOutput = firstLine + LINE_BREAK + secondLine
@@ -94,7 +91,6 @@ describe('Runs runnable module', () => {
   })
 
   test('with function that returns sequence runnables definition', async () => {
-    const configuration = { directory: resolve(process.cwd(), 'run') }
     const firstLine = 'Did something.'
     const secondLine = 'Did something else.'
     const expectedOutput = firstLine + LINE_BREAK + secondLine
@@ -112,9 +108,6 @@ describe('Runs runnable module', () => {
   })
 
   test('with string runnable definition that uses other module', async () => {
-    const projectDirectoryPath = resolve(projectsDirectoryPath, 'all')
-    const configuration = { directory: resolve(projectDirectoryPath, 'run') }
-
     process.chdir(projectDirectoryPath)
 
     await runRunnableModule({ run: 'npm' }, 'runnable', [], configuration)

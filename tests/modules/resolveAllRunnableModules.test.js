@@ -16,7 +16,7 @@ describe('Resolve all runnable modules', () => {
     try {
       await resolveAllRunnableModules(directoryPath, true)
     } catch (error) {
-      expect(error.name).toBe('SyntaxError')
+      expect(error.name).toBe('Error')
     }
   })
 

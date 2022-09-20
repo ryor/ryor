@@ -3,10 +3,9 @@
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "assumeChangesOnlyAffectDirectDependencies": true,
-    "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["ES2018", "ScriptHost"],
+    "lib": ["ES2021", "ScriptHost"],
     "module": "ES2020",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
@@ -14,9 +13,7 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "../../../build/.esm",
     "strict": true,
-    "target": "ES2018"
-  },
-  "include": ["../../../source"]
+    "target": "ES2021"
+  }
 }
