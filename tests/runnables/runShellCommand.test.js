@@ -62,12 +62,12 @@ describe('Run shell command', () => {
     expect(output.trim()).toBe('Error')
   })
 
-  test('cwd', async () => {
-    await runShellCommand('cwd')
+  test('wd', async () => {
+    await runShellCommand('wd')
     expect(output.trim()).toBe(projectDirectoryPath)
 
     output = ''
-    await runShellCommand('cwd', [], { cwd: projectsDirectoryPath })
+    await runShellCommand('wd', [], { cwd: projectsDirectoryPath })
     expect(output.trim()).toBe(projectsDirectoryPath)
   })
 })

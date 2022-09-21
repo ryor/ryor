@@ -73,12 +73,12 @@ describe('Runs runnable', () => {
     expect(process.cwd()).toBe(projectDirectoryPath)
   })
 
-  test('cwd', async () => {
-    await runRunnable('cwd', configuration)
+  test('wd', async () => {
+    await runRunnable('wd', configuration)
     expect(output.trim().endsWith(projectDirectoryPath)).toBe(true)
 
     output = ''
-    await runRunnable('cwd=.. cwd', configuration)
+    await runRunnable('cwd=.. wd', configuration)
     expect(output.trim().endsWith(projectsDirectoryPath)).toBe(true)
   })
 })

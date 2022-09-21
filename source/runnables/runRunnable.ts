@@ -1,11 +1,10 @@
 import { resolve } from 'path'
-import terminate from 'terminate'
-import { promisify } from 'util'
 import { resolveRunnableModule, runRunnableModule } from '../modules'
 import { parseStringRunnable } from './parseStringRunnable'
 import { runShellCommand } from './runShellCommand'
 import type { RunnableModule } from '../modules'
 import type { RunnerConfiguration } from '../runner'
+import { terminateChildProcesses } from '../shared'
 import type { Runnable, RunnableSequence } from './types'
 
 export async function runRunnable (runnable: Runnable, configuration: RunnerConfiguration, context?: string): Promise<Runnable | RunnableSequence | undefined> {
@@ -15,8 +14,8 @@ export async function runRunnable (runnable: Runnable, configuration: RunnerConf
 
     if (args.length > 0) {
       if (args[0] === 'exit') {
-        if (args.length > 1) process.exitCode = Number(args[1])
-        await promisify(terminate)(process.pid)
+        await terminateChildProcesses()
+        process.exit(args.length > 1 ? Number(args[1]) : 0)
       } else if (args[0] === 'cd') {
         // TODO: Make sure paths with directory names with spaces are handled properly
         if (args.length > 1) process.chdir(resolve(process.cwd(), args.slice(1).join(' ')))
