@@ -6,7 +6,9 @@ const POLLING_DELAY: number = 250
 export async function terminateChildProcess (pid: number): Promise<void> {
   let processTerminated = false
 
-  process.kill(pid, SIGTERM)
+  try {
+    process.kill(pid, SIGTERM)
+  } catch(error) {}
 
   while (!processTerminated) {
     try {
