@@ -2,6 +2,8 @@
 
 import { resolve } from 'path'
 import { runRunnable } from '../../source/runnables/runRunnable'
+import { runRunnableSequence } from '../../source/runnables/runRunnableSequence'
+import { ensureCorrectPATHValue } from '../../source/runner/ensureCorrectPATHValue'
 
 describe('Runs runnable', () => {
   const projectsDirectoryPath = resolve(__dirname, '../.test-projects/projects')
@@ -9,13 +11,17 @@ describe('Runs runnable', () => {
   const configuration = { directory: resolve(projectDirectoryPath, 'run') }
   let output
 
-  beforeAll(() => {
+  beforeAll(async () => {
     jest.spyOn(process.stdout, 'write').mockImplementation(data => { output += data })
     jest.spyOn(console, 'log').mockImplementation(data => { output += data })
     process.chdir(projectDirectoryPath)
+    await ensureCorrectPATHValue()
   })
 
-  beforeEach(() => { output = '' })
+  beforeEach(() => {
+    output = ''
+    process.chdir(projectDirectoryPath)
+  })
 
   afterAll(() => jest.restoreAllMocks())
 
@@ -51,12 +57,12 @@ describe('Runs runnable', () => {
     expect(runnable).toHaveBeenCalled()
   })
 
-  test('with string runnables', async () => {
-    const pwdCommand = process.platform === 'win32' ? 'cd' : 'pwd'
-
+  test('echo', async () => {
     await runRunnable('echo some message', configuration)
     expect(output.trim()).toBe('some message')
+  })
 
+  test('cd', async () => {
     await runRunnable('cd', configuration)
     expect(process.cwd()).toBe(projectDirectoryPath)
 
@@ -65,13 +71,14 @@ describe('Runs runnable', () => {
 
     await runRunnable('cd all', configuration)
     expect(process.cwd()).toBe(projectDirectoryPath)
+  })
+
+  test('cwd', async () => {
+    await runRunnable('cwd', configuration)
+    expect(output.trim().endsWith(projectDirectoryPath)).toBe(true)
 
     output = ''
-    await runRunnable(pwdCommand, configuration)
-    expect(output.trim()).toBe(projectDirectoryPath)
-
-    output = ''
-    await runRunnable(`cwd=.. ${pwdCommand}`, configuration)
-    expect(output.trim()).toBe(projectsDirectoryPath)
+    await runRunnable('cwd=.. cwd', configuration)
+    expect(output.trim().endsWith(projectsDirectoryPath)).toBe(true)
   })
 })

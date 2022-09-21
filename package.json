@@ -7,7 +7,7 @@
   "repository": "github:ryor/ryor",
   "bugs": "https://github.com/ryor/ryor/issues",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16.17.0"
   },
   "type": "module",
   "dependencies": {
@@ -15,8 +15,8 @@
     "cli-truncate": "^3.1.0",
     "cross-spawn": "^7.0.3",
     "minimist": "^1.2.6",
-    "ps-tree": "^1.2.0",
-    "shell-quote": "^1.7.3"
+    "shell-quote": "^1.7.3",
+    "terminate": "^2.5.0"
   },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.2",

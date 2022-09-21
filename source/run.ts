@@ -1,15 +1,16 @@
+import terminate from 'terminate'
+import { promisify } from 'util'
 import { parseConsoleInput } from './console'
 import { runRunnableSequence } from './runnables'
 import { RUN_TIME_TEMPLATE, ensureCorrectPATHValue } from './runner'
-import { killChildProcesses, resolveDirectoryPath } from './shared'
+import { resolveDirectoryPath } from './shared'
 import { outputUsageInformation } from './usage'
 import type { RunnableSequence } from './runnables'
 import type { RunnerConfiguration, RunnerOptions } from './runner'
 import type { UsageConfiguration } from './usage'
+import { SIGINT } from 'constants'
 
 export async function run (argv: string[], usage?: UsageConfiguration): Promise<void> {
-  let exitCode: number = 0
-
   try {
     const startTime: number = Date.now()
     const directory: string = await resolveDirectoryPath(argv[0])
@@ -27,13 +28,13 @@ export async function run (argv: string[], usage?: UsageConfiguration): Promise<
     }
   } catch (error) {
     console.error(error)
-    exitCode = 1
+    process.exitCode = 1
   }
 
-  await killChildProcesses(process.pid)
-  process.exit(exitCode)
+  await promisify(terminate)(process.pid)
 }
 
 process.on('SIGINT', (): void => {
-  void killChildProcesses(process.pid).then((): never => process.exit(1))
+  process.exitCode = 1
+  terminate(process.pid)
 })

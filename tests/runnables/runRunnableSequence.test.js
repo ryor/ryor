@@ -18,7 +18,10 @@ describe('Runs runnable sequence', () => {
     await ensureCorrectPATHValue()
   })
 
-  beforeEach(() => { output = '' })
+  beforeEach(() => {
+    output = ''
+    process.chdir(projectDirectoryPath)
+  })
 
   afterAll(() => jest.restoreAllMocks())
 
@@ -36,7 +39,6 @@ describe('Runs runnable sequence', () => {
   })
 
   test('shell command runnables, including cd commands', async () => {
-    process.chdir(projectDirectoryPath)
     await runRunnableSequence(['echo hello world', ['cd ..'], () => 'cd all', [async () => console.log('hello world')]], configuration)
     expect(output.trim()).toBe(`hello world${LINE_BREAK}hello world`)
     expect(process.cwd()).toBe(projectDirectoryPath)

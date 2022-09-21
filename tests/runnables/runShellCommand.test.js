@@ -18,7 +18,10 @@ describe('Run shell command', () => {
     await ensureCorrectPATHValue()
   })
 
-  beforeEach(() => { output = '' })
+  beforeEach(() => {
+    output = ''
+    process.chdir(projectDirectoryPath)
+  })
 
   afterAll(() => jest.restoreAllMocks())
 
@@ -59,21 +62,12 @@ describe('Run shell command', () => {
     expect(output.trim()).toBe('Error')
   })
 
-  test('echo', async () => {
-    const args = ['Did', 'something.']
-
-    await runShellCommand('echo', args)
-    expect(output.trim()).toBe(args.join(' '))
-  })
-
   test('cwd', async () => {
-    const command = process.platform === 'win32' ? 'cd' : 'pwd'
-
-    await runShellCommand(command)
+    await runShellCommand('cwd')
     expect(output.trim()).toBe(projectDirectoryPath)
 
     output = ''
-    await runShellCommand(command, [], { cwd: projectsDirectoryPath })
+    await runShellCommand('cwd', [], { cwd: projectsDirectoryPath })
     expect(output.trim()).toBe(projectsDirectoryPath)
   })
 })

@@ -1,6 +1,7 @@
 import chalk from 'chalk'
 import { ChildProcess, SpawnOptions } from 'child_process'
 import { spawn } from 'cross-spawn'
+import { resolve } from 'path'
 import { RunnableError } from '../runnables'
 
 const ENOENT_ERROR_TEMPLATE: string = 'Error: spawn [COMMAND] ENOENT'
@@ -18,6 +19,8 @@ export async function runShellCommand (command: string, args: string[] = [], spa
       processErrorMessages = processErrorMessages.trim()
 
       if (code !== 0) {
+        process.stderr.write({ command, code }.toString())
+
         reject(
           processErrorMessages === ENOENT_ERROR_TEMPLATE.replace('[COMMAND]', command)
             ? new RunnableError(UNRESOLVED_COMMAND_ERROR_TEMPLATE.replace('[COMMAND]', command))
