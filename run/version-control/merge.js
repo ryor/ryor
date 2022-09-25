@@ -12,7 +12,7 @@ export async function run({ delete: deleteBranch }) {
   const currentBranch = await getCurrentBranch()
 
   if (currentBranch.startsWith('feature/') || currentBranch.startsWith('fix/') || currentBranch.startsWith('release/')) {
-    const targetBranch = currentBranch.startsWith('release/') ? 'main' : 'development'
+    const targetBranch = currentBranch.startsWith('release/') ? 'main' : 'develop'
     const sequence = []
 
     if (await isCommitRequired()) sequence.push('commit -p')
