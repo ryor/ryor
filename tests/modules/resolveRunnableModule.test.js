@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { resolve } from 'path'
 import { resolveRunnableModule } from '../../source/modules/resolveRunnableModule'
 
@@ -22,7 +20,7 @@ describe('Resolve runnable module', () => {
     try {
       await resolveRunnableModule('bundler', { directory: resolve(projectDirectoryPath, 'run') })
     } catch (error) {
-      expect(error.name).toBe('SyntaxError')
+      expect(error.name).toBe('SyntaxError!')
     }
   })
 

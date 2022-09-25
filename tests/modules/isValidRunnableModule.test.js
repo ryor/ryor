@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { isValidRunnableModule } from '../../source/modules/isValidRunnableModule'
 
 describe('Checks for a valid runnable module', () => {

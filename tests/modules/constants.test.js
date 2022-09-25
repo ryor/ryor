@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { INVALID_RUNNABLE_MODULE_ERROR_MESSAGE } from '../../source/modules/constants'
 
 describe('Verify constant values', () => {

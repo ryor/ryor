@@ -2,7 +2,7 @@ import { parseRunnerOptions, parseRunnerRunnableSequence } from '../runner'
 import type { RunnableSequence } from '../runnables'
 import type { RunnerOptions } from '../runner'
 
-export function parseConsoleInput (argv: string[]): { options: RunnerOptions, sequence: RunnableSequence } {
+export function parseConsoleInput(argv: string[]): { options: RunnerOptions; sequence: RunnableSequence } {
   let options: RunnerOptions = {}
 
   if (argv.length > 0) {

@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RunnableModuleError } from '../modules'
 import { isValidRunnable, isValidRunnableSequence } from '../runnables'
 import { isPopulatedObject } from '../shared'
 
-export function isValidRunnableModule (module: any, debug: boolean = false): boolean {
+export function isValidRunnableModule(module: any, debug = false): boolean {
   if (!isPopulatedObject(module)) {
     if (debug) throw new RunnableModuleError('Invalid runnable module')
 

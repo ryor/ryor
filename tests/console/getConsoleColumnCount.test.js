@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { DEFAULT_CONSOLE_COLUMN_COUNT } from '../../source/console/constants'
 import { getConsoleColumnCount } from '../../source/console/getConsoleColumnCount'
 
@@ -11,7 +9,7 @@ describe('Get output column count:', () => {
   const stdoutColumnCount = process.stdout.columns
   const expectedColumnCount = stdoutColumnCount || DEFAULT_CONSOLE_COLUMN_COUNT
 
-  test(expectedColumnCount.toString(), () => {
+  test(`${expectedColumnCount.toString()}`, () => {
     expect(getConsoleColumnCount()).toBe(expectedColumnCount)
 
     process.stdout.columns = 50

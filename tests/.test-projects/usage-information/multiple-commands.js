@@ -10,7 +10,6 @@ export const gitflow = [
   'Runs Gitflow-esque Git commands',
   'Commands:',
   `  ${bold('branch')}  Creates feature or release branches`,
-  `    ${bold('-f  --feature')}  Creates feature branch${LINE_BREAK}` +
-  `    ${bold('-r  --release')}  Creates release branch`,
+  `    ${bold('-f  --feature')}  Creates feature branch${LINE_BREAK}` + `    ${bold('-r  --release')}  Creates release branch`,
   `  ${bold('merge')}   Merges current feature or release branch into develop or main branches respectively`
 ].join(DOUBLE_LINE_BREAK)

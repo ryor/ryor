@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { resolve } from 'path'
 import { runRunnableModule } from '../../source/modules/runRunnableModule'
 import { LINE_BREAK } from '../../source/shared/constants'
@@ -11,11 +9,17 @@ describe('Runs runnable module', () => {
   let output
 
   beforeAll(() => {
-    jest.spyOn(console, 'log').mockImplementation(data => { output += data + LINE_BREAK })
-    jest.spyOn(process.stdout, 'write').mockImplementation(data => { output += data })
+    jest.spyOn(console, 'log').mockImplementation((data) => {
+      output += data + LINE_BREAK
+    })
+    jest.spyOn(process.stdout, 'write').mockImplementation((data) => {
+      output += data
+    })
   })
 
-  beforeEach(() => { output = '' })
+  beforeEach(() => {
+    output = ''
+  })
 
   afterAll(() => jest.restoreAllMocks())
 
@@ -46,19 +50,65 @@ describe('Runs runnable module', () => {
     expect(output.trim()).toBe('1')
 
     output = ''
-    await runRunnableModule({ run: () => { console.log('1'); return () => console.log('2') } }, 'runnable', [], configuration)
+    await runRunnableModule(
+      {
+        run: () => {
+          console.log('1')
+          return () => console.log('2')
+        }
+      },
+      'runnable',
+      [],
+      configuration
+    )
     expect(output.trim()).toBe(`1${LINE_BREAK}2`)
 
     output = ''
-    await runRunnableModule({ run: async () => { console.log('1'); return async () => console.log('2') } }, 'runnable', [], configuration)
+    await runRunnableModule(
+      {
+        run: async () => {
+          console.log('1')
+          return async () => console.log('2')
+        }
+      },
+      'runnable',
+      [],
+      configuration
+    )
     expect(output.trim()).toBe(`1${LINE_BREAK}2`)
 
     output = ''
-    await runRunnableModule({ run: () => { console.log('1'); return () => { console.log('2'); return () => console.log('3') } } }, 'runnable', [], configuration)
+    await runRunnableModule(
+      {
+        run: () => {
+          console.log('1')
+          return () => {
+            console.log('2')
+            return () => console.log('3')
+          }
+        }
+      },
+      'runnable',
+      [],
+      configuration
+    )
     expect(output.trim()).toBe(`1${LINE_BREAK}2${LINE_BREAK}3`)
 
     output = ''
-    await runRunnableModule({ run: async () => { console.log('1'); return async () => { console.log('2'); return async () => console.log('3') } } }, 'runnable', [], configuration)
+    await runRunnableModule(
+      {
+        run: async () => {
+          console.log('1')
+          return async () => {
+            console.log('2')
+            return async () => console.log('3')
+          }
+        }
+      },
+      'runnable',
+      [],
+      configuration
+    )
     expect(output.trim()).toBe(`1${LINE_BREAK}2${LINE_BREAK}3`)
   })
 

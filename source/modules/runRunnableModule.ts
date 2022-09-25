@@ -5,7 +5,7 @@ import type { ParsedArgs } from 'minimist'
 import type { RunnerConfiguration } from '../runner'
 import type { RunnableModule } from './types'
 
-export async function runRunnableModule (module: RunnableModule, name: string, args: string[], configuration: RunnerConfiguration): Promise<void> {
+export async function runRunnableModule(module: RunnableModule, name: string, args: string[], configuration: RunnerConfiguration): Promise<void> {
   const initialRunnable: Runnable | RunnableSequence | undefined = module.run
   let nextRunnable: Runnable | RunnableSequence | undefined
 

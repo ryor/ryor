@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { resolve } from 'path'
 import { composeMainUsageInformation } from '../../source/usage/composeMainUsageInformation'
 import { NO_RUNNABLES_RESOLVED_MESSAGE } from '../../source/usage/constants'
@@ -58,6 +56,8 @@ describe('Compose main usage information', () => {
     expect(await composeMainUsageInformation({ ...configuration, usage: { categories: ['tools'] } })).toBe(expectedUsageInformation.mainSorted)
     expect(await composeMainUsageInformation({ ...configuration, usage: { categories: ['tools', 'tasks'] } })).toBe(expectedUsageInformation.mainSorted)
     expect(await composeMainUsageInformation({ ...configuration, usage: { categories: ['foo', 'tools'] } })).toBe(expectedUsageInformation.mainSorted)
-    expect(await composeMainUsageInformation({ ...configuration, usage: { categories: ['foo', 'tools', 'foo2', 'tasks'] } })).toBe(expectedUsageInformation.mainSorted)
+    expect(await composeMainUsageInformation({ ...configuration, usage: { categories: ['foo', 'tools', 'foo2', 'tasks'] } })).toBe(
+      expectedUsageInformation.mainSorted
+    )
   })
 })

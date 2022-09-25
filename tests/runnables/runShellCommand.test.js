@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import chalk from 'chalk'
 import { resolve } from 'path'
 import { runShellCommand } from '../../source/runnables/runShellCommand'
@@ -11,9 +9,15 @@ describe('Run shell command', () => {
   let output
 
   beforeAll(async () => {
-    jest.spyOn(console, 'log').mockImplementation(data => { output += data })
-    jest.spyOn(process.stderr, 'write').mockImplementation(data => { output += data })
-    jest.spyOn(process.stdout, 'write').mockImplementation(data => { output += data })
+    jest.spyOn(console, 'log').mockImplementation((data) => {
+      output += data
+    })
+    jest.spyOn(process.stderr, 'write').mockImplementation((data) => {
+      output += data
+    })
+    jest.spyOn(process.stdout, 'write').mockImplementation((data) => {
+      output += data
+    })
     process.chdir(projectDirectoryPath)
     await ensureCorrectPATHValue()
   })

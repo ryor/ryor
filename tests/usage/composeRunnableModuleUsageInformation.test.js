@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { resolve } from 'path'
 import { composeRunnableModuleUsageInformation } from '../../source/usage/composeRunnableModuleUsageInformation'
 import { UNRESOLVED_RUNNABLE_ERROR_MESSAGE } from '../../source/usage/constants'
@@ -18,7 +16,7 @@ describe('Compose runnable module usage information', () => {
     }
   })
 
-  test('throws Error when runnable module can\'t be resolved', async () => {
+  test("throws Error when runnable module can't be resolved", async () => {
     let configuration, projectDirectoryPath, runnableName
 
     projectDirectoryPath = resolve(projectsDirectoryPath, 'syntax-error')
@@ -80,41 +78,4 @@ describe('Compose runnable module usage information', () => {
     expect(await composeRunnableModuleUsageInformation('deploy', configuration)).toBe(deploy)
     expect(await composeRunnableModuleUsageInformation('test', configuration)).toBe(test)
   })
-
-  /*
-  test('for runnables in "nested-directories" test project', async () => {
-    const projectDirectoryPath = resolve(projectsDirectoryPath, 'nested-directories')
-    const configuration = await configure(['node', resolve(projectDirectoryPath, 'run')])
-    const { bundler, tester, transpiler } = require(resolve(usageInformationDirectoryPath, 'nested-directories'))
-
-    process.chdir(projectDirectoryPath)
-
-    expect(await composeRunnableModuleUsageInformation('bundler', configuration)).toBe(bundler)
-    expect(await composeRunnableModuleUsageInformation('tester', configuration)).toBe(tester)
-    expect(await composeRunnableModuleUsageInformation('transpiler', configuration)).toBe(transpiler)
-  })
-
-  test('for runnables in "all" test project', async () => {
-    const projectDirectoryPath = resolve(projectsDirectoryPath, 'all')
-    const configuration = await configure(['node', resolve(projectDirectoryPath, 'run')])
-    const { git, bundler, tester, transpiler } = require(resolve(usageInformationDirectoryPath, 'all'))
-
-    process.chdir(projectDirectoryPath)
-
-    expect(await composeRunnableModuleUsageInformation('git', configuration)).toBe(git)
-    expect(await composeRunnableModuleUsageInformation('bundler', configuration)).toBe(bundler)
-    expect(await composeRunnableModuleUsageInformation('tester', configuration)).toBe(tester)
-    expect(await composeRunnableModuleUsageInformation('transpiler', configuration)).toBe(transpiler)
-  })
-
-  test('for runnables in "multiple-commands" test project', async () => {
-    const projectDirectoryPath = resolve(projectsDirectoryPath, 'multiple-commands')
-    const configuration = await configure(['node', resolve(projectDirectoryPath, 'run')])
-    const { gitflow } = require(resolve(usageInformationDirectoryPath, 'multiple-commands'))
-
-    process.chdir(projectDirectoryPath)
-
-    expect(await composeRunnableModuleUsageInformation('gitflow', configuration)).toBe(gitflow)
-  })
-  */
 })

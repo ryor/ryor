@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import ryor from '../source'
 
 test('Module exports function', () => {

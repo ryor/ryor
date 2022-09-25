@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { resolve } from 'path'
 import { resolveAllRunnableModules } from '../../source/modules/resolveAllRunnableModules'
 
@@ -12,12 +10,7 @@ describe('Resolve all runnable modules', () => {
 
     expect(modules).toBeInstanceOf(Map)
     expect(modules.size).toBe(0)
-
-    try {
-      await resolveAllRunnableModules(directoryPath, true)
-    } catch (error) {
-      expect(error.name).toBe('Error')
-    }
+    await expect(resolveAllRunnableModules(directoryPath, true)).rejects.toThrow()
   })
 
   test('in "no-nested-directories" test project', async () => {
