@@ -1,5 +1,6 @@
 import { parseConsoleInput } from './console'
-import { RunnableError, runRunnableSequence } from './runnables'
+import { RunnableModuleError } from './modules'
+import { runRunnableSequence } from './runnables'
 import { RUN_TIME_TEMPLATE, ensureCorrectPATHValue } from './runner'
 import { LINE_BREAK, resolveDirectoryPath, killChildProcesses } from './shared'
 import { outputUsageInformation } from './usage'
@@ -27,7 +28,7 @@ export async function run(argv: string[], usage?: UsageConfiguration): Promise<v
       if (options?.time === true) console.log(RUN_TIME_TEMPLATE.replace('[RUN_TIME]', String(Date.now() - startTime)))
     }
   } catch (error) {
-    if (error.message) console.error(`${LINE_BREAK}${error.toString()}${error instanceof RunnableError ? error.stack : ''}${LINE_BREAK}`)
+    if (error.message) console.error(`${LINE_BREAK}${error instanceof RunnableModuleError ? error.stack : error.toString()}${LINE_BREAK}`)
     exitCode = 1
   }
 
