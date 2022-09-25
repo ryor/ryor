@@ -8,4 +8,7 @@ export const args = {
 
 export const description = () => 'Transpiles code'
 
-export const run = ({ quiet }) => () => console.log(`Transpiling${quiet ? ' quietly' : ''}`)
+export const run =
+  ({ quiet }) =>
+  () =>
+    console.log(`Transpiling${quiet ? ' quietly' : ''}`)

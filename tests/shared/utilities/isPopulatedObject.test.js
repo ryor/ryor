@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { isPopulatedObject } from '../../../source/shared/utilities/isPopulatedObject'
 
 describe('Determines if value is a populated object', () => {

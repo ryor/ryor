@@ -8,4 +8,4 @@ export const args = {
 
 export const description = 'Runs preconfigured Git commands'
 
-export const run = args => console.log('Running Git command')
+export const run = (args) => console.log('Running Git command')

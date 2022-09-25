@@ -12,17 +12,26 @@ export const args = {
   verbose: {
     alias: 'v',
     description: 'Verbose test results'
+  },
+  watch: {
+    alias: 'w',
+    description: 'Watches for file changes and runs related tests',
+    type: 'boolean'
   }
 }
 
-export const run = ({ _, coverage, quiet, verbose }) => {
+export const run = ({ _, coverage, quiet, verbose, watch }) => {
+  if (watch) return `onchange "tests/**/*.js" -e "tests/.test-projects/**" -- jest -c run/tools/jest/config.json {{changed}}`
+
   if (quiet) {
     return async () => {
       const { spawn } = await import('cross-spawn')
 
       await new Promise((resolve, reject) =>
-        spawn('jest', ['-c', 'run/tools/jest/config.json'].concat(coverage ? ['--coverage'] : []))
-          .on('close', code => (code === 0 ? resolve() : reject(new Error('One or more Jest tests failed.')))))
+        spawn('jest', ['-c', 'run/tools/jest/config.json'].concat(coverage ? ['--coverage'] : [])).on('close', (code) =>
+          code === 0 ? resolve() : reject(new Error('One or more Jest tests failed.'))
+        )
+      )
     }
   }
 

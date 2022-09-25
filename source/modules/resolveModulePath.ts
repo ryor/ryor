@@ -2,7 +2,7 @@ import { Dirent, Stats } from 'fs'
 import { resolve } from 'path'
 import { getPathStats } from '../shared'
 
-export async function resolveModulePath (directoryPath: string, dirent: Dirent): Promise<string | undefined> {
+export async function resolveModulePath(directoryPath: string, dirent: Dirent): Promise<string | undefined> {
   const { name }: Dirent = dirent
 
   if (dirent.isFile()) {

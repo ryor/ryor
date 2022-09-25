@@ -6,7 +6,7 @@ import { resolveModulePath } from './resolveModulePath'
 import type { RunnerConfiguration } from '../runner'
 import type { RunnableModule } from './types'
 
-export async function resolveRunnableModule (name: string, configuration: RunnerConfiguration, directoryPath?: string): Promise<RunnableModule | undefined> {
+export async function resolveRunnableModule(name: string, configuration: RunnerConfiguration, directoryPath?: string): Promise<RunnableModule | undefined> {
   const moduleDirectoryPath: string = directoryPath !== undefined ? directoryPath : configuration.directory
   const dirents: Dirent[] = await fs.readdir(moduleDirectoryPath, { withFileTypes: true })
 

@@ -16,7 +16,8 @@ export const run = async ({ development, quiet }) => {
   const sequence = [
     'shx rm -rf build',
     `esbuild${quiet ? ' -q' : ''}`,
-    ['-c',
+    [
+      '-c',
       () => {
         const packageJSON = JSON.parse(readFileSync('package.json').toString())
 

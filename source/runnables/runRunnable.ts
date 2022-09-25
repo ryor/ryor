@@ -4,17 +4,17 @@ import { parseStringRunnable } from './parseStringRunnable'
 import { runShellCommand } from './runShellCommand'
 import type { RunnableModule } from '../modules'
 import type { RunnerConfiguration } from '../runner'
-import { terminateChildProcesses } from '../shared'
+import { killChildProcesses } from '../shared'
 import type { Runnable, RunnableSequence } from './types'
 
-export async function runRunnable (runnable: Runnable, configuration: RunnerConfiguration, context?: string): Promise<Runnable | RunnableSequence | undefined> {
+export async function runRunnable(runnable: Runnable, configuration: RunnerConfiguration, context?: string): Promise<Runnable | RunnableSequence | undefined> {
   if (typeof runnable === 'function') return runnable()
   else if (typeof runnable === 'string') {
     const args: string[] = parseStringRunnable(runnable)
 
     if (args.length > 0) {
       if (args[0] === 'exit') {
-        await terminateChildProcesses()
+        await killChildProcesses()
         process.exit(args.length > 1 ? Number(args[1]) : 0)
       } else if (args[0] === 'cd') {
         // TODO: Make sure paths with directory names with spaces are handled properly

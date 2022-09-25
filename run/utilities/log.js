@@ -25,31 +25,31 @@ export const args = {
 
 const importChalk = async () => (await import('chalk')).default
 
-export const alert = async message => {
+export const alert = async (message) => {
   const { bold } = await importChalk()
 
   console.warn(`${bold.yellow('⚠')} ${bold(message)}`)
 }
 
-export const error = async message => {
+export const error = async (message) => {
   const { bold } = await importChalk()
 
   console.error(`${bold.red('X')} ${bold(message)}`)
 }
 
-export const info = async message => {
+export const info = async (message) => {
   const { bold } = await importChalk()
 
   console.log(`${bold.cyan('•')} ${bold(message)}`)
 }
 
-export const success = async message => {
+export const success = async (message) => {
   const { bold } = await importChalk()
 
   console.log(`${bold.green('✓')} ${bold(message)}`)
 }
 
-export const wait = async message => {
+export const wait = async (message) => {
   const { bold } = await importChalk()
 
   console.log(`${bold.cyan('⏳')} ${bold(message)}`)
@@ -61,12 +61,8 @@ export const run = async ({ _, ...args }) => {
   const message = _.join(' ')
 
   if (args.alert) await alert(message)
-
   else if (args.error) await error(message)
-
   else if (args.success) await success(message)
-
   else if (args.wait) await wait(message)
-
   else await info(message)
 }

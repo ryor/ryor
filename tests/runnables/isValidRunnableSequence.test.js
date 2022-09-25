@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { isValidRunnableSequence } from '../../source/runnables/isValidRunnableSequence'
 
 describe('Checks for a valid runnable sequence', () => {

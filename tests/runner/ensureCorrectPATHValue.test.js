@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { resolve } from 'path'
 import { DEFAULT_PATH_DIVIDER, WINDOWS_PATH_DIVIDER } from '../../source/runner/constants'
 import { ensureCorrectPATHValue } from '../../source/runner/ensureCorrectPATHValue'
@@ -11,7 +9,9 @@ describe('Ensures PATH environment variable has correct value', () => {
   const projectsDirectoryPath = resolve(__dirname, '../.test-projects/projects')
   let binDirectoryPath, projectDirectoryPath
 
-  afterEach(() => { env.PATH = PATH })
+  afterEach(() => {
+    env.PATH = PATH
+  })
 
   test('does not include node_modules/.bin directory when none exists', async () => {
     projectDirectoryPath = resolve(projectsDirectoryPath, 'empty-runnables-directory')

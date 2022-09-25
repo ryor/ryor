@@ -1,4 +1,3 @@
-/* eslint-env jest */
 import { resolve } from 'path'
 import { getConsoleColumnCount } from '../../source/console/getConsoleColumnCount'
 import { truncateConsoleOutput } from '../../source/console/truncateConsoleOutput'
@@ -11,7 +10,11 @@ describe('Output usage information', () => {
   const usageInformationDirectoryPath = resolve(__dirname, '../.test-projects/usage-information')
   let output
 
-  beforeAll(() => jest.spyOn(console, 'log').mockImplementation(message => { output += `${output === '' ? '' : '\n'}${message}` }))
+  beforeAll(() =>
+    jest.spyOn(console, 'log').mockImplementation((message) => {
+      output += `${output === '' ? '' : '\n'}${message}`
+    })
+  )
 
   afterAll(() => jest.restoreAllMocks())
 
@@ -44,7 +47,6 @@ describe('Output usage information', () => {
     const projectDirectoryPath = resolve(projectsDirectoryPath, 'all')
     const configuration = { directory: resolve(projectDirectoryPath, 'run') }
     const { build, bundler, main, tester, transpiler, git } = require(resolve(usageInformationDirectoryPath, 'all'))
-    let runnableName
 
     process.chdir(projectDirectoryPath)
 

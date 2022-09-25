@@ -7,7 +7,7 @@ export const args = {
   }
 }
 
-export async function run ({ update }) {
+export async function run({ update }) {
   if (!update) return 'npm-check-updates'
 
   const { stat } = await import('fs/promises')

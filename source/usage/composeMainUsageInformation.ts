@@ -7,7 +7,7 @@ import { MAIN_USAGE_FOOTER, MAIN_USAGE_HEADER, NO_RUNNABLES_RESOLVED_MESSAGE } f
 import type { RunnableModule } from '../modules'
 import type { RunnerConfiguration } from '../runner'
 
-export async function composeMainUsageInformation (configuration: RunnerConfiguration): Promise<string> {
+export async function composeMainUsageInformation(configuration: RunnerConfiguration): Promise<string> {
   const { directory, options }: RunnerConfiguration = configuration
   const allModules: Map<string, Map<string, RunnableModule>> = await resolveAllRunnableModules(directory, options?.debug === true)
 
@@ -17,8 +17,8 @@ export async function composeMainUsageInformation (configuration: RunnerConfigur
   const sortedModules: Map<string, Map<string, RunnableModule>> = new Map()
   const untypedModules = allModules.get('untyped')
   const lists: string[] = []
-  let minNameLength: number = 0
-  let body: string = ''
+  let minNameLength = 0
+  let body = ''
 
   if (untypedModules !== undefined) allModules.delete('untyped')
 
@@ -36,7 +36,9 @@ export async function composeMainUsageInformation (configuration: RunnerConfigur
   if (untypedModules !== undefined) sortedModules.set(sortedModules.size > 0 ? 'other' : 'untyped', untypedModules)
 
   sortedModules.forEach((typeModules: Map<string, RunnableModule>): void =>
-    typeModules.forEach((_, name: string): void => { minNameLength = name.length > minNameLength ? name.length : minNameLength })
+    typeModules.forEach((_, name: string): void => {
+      minNameLength = name.length > minNameLength ? name.length : minNameLength
+    })
   )
 
   sortedModules.forEach((typeModules: Map<string, RunnableModule>, type: string): void => {
@@ -53,5 +55,7 @@ export async function composeMainUsageInformation (configuration: RunnerConfigur
     MAIN_USAGE_HEADER.replace('[ENTRY_DIRECTORY_NAME]', entryDirectoryName),
     body,
     MAIN_USAGE_FOOTER.replace('[ENTRY_DIRECTORY_NAME]', entryDirectoryName)
-  ].map((value: string): string => value.trim()).join(LINE_BREAK + LINE_BREAK)
+  ]
+    .map((value: string): string => value.trim())
+    .join(LINE_BREAK + LINE_BREAK)
 }

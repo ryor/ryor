@@ -3,7 +3,7 @@ import { composeMainUsageInformation } from './composeMainUsageInformation'
 import { composeRunnableModuleUsageInformation } from './composeRunnableModuleUsageInformation'
 import type { RunnerConfiguration } from '../runner'
 
-export async function composeUsageInformation (configuration: RunnerConfiguration, runnableName?: string): Promise<string> {
+export async function composeUsageInformation(configuration: RunnerConfiguration, runnableName?: string): Promise<string> {
   let usageInformation: string | undefined
 
   if (runnableName !== undefined) {

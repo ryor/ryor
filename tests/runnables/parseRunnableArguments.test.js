@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { parseRunnableArguments } from '../../source/runnables/parseRunnableArguments'
 
 describe('Parses runnable arguments based on definitions', () => {

@@ -1,34 +1,29 @@
 import chalk from 'chalk'
 import { ChildProcess, SpawnOptions } from 'child_process'
 import { spawn } from 'cross-spawn'
-import { resolve } from 'path'
-import { RunnableError } from '../runnables'
 
-const ENOENT_ERROR_TEMPLATE: string = 'Error: spawn [COMMAND] ENOENT'
+const ENOENT_ERROR_TEMPLATE = 'Error: spawn [COMMAND] ENOENT'
 
-const UNRESOLVED_COMMAND_ERROR_TEMPLATE: string = `Could not resolve ${chalk.bold('[COMMAND]')}`
+const UNRESOLVED_COMMAND_ERROR_TEMPLATE = `Could not resolve ${chalk.bold('[COMMAND]')}`
 
-export async function runShellCommand (command: string, args: string[] = [], spawnOptions: SpawnOptions = {}): Promise<void> {
+export async function runShellCommand(command: string, args: string[] = [], spawnOptions: SpawnOptions = {}): Promise<void> {
   return await new Promise<void>((resolve: () => void, reject: (error: Error) => void): void => {
     const childProcess: ChildProcess = spawn(command, args, { env: { ...process.env, FORCE_COLOR: 'true' }, stdio: 'inherit', ...spawnOptions })
-    let processErrorMessages: string = ''
+    let error = ''
 
-    childProcess.on('error', (data: Buffer): void => { processErrorMessages += data.toString() })
+    childProcess.on('error', (data: Buffer): void => {
+      error += data.toString()
+    })
 
     childProcess.on('close', (code: number): void => {
-      processErrorMessages = processErrorMessages.trim()
+      error = error.trim()
 
       if (code !== 0) {
-        process.stderr.write({ command, code }.toString())
-
         reject(
-          processErrorMessages === ENOENT_ERROR_TEMPLATE.replace('[COMMAND]', command)
-            ? new RunnableError(UNRESOLVED_COMMAND_ERROR_TEMPLATE.replace('[COMMAND]', command))
-            : new Error(processErrorMessages)
+          new Error(error === ENOENT_ERROR_TEMPLATE.replace('[COMMAND]', command) ? UNRESOLVED_COMMAND_ERROR_TEMPLATE.replace('[COMMAND]', command) : error)
         )
       } else {
-        if (processErrorMessages !== '') console.error(processErrorMessages)
-
+        if (error !== '') console.error(error)
         resolve()
       }
     })

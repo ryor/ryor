@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { composeRunnableDescription } from '../../source/usage/composeRunnableDescription'
 
 describe('Compose runnable description', () => {
