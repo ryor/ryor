@@ -2,10 +2,12 @@ export const description = 'Displays Git branches or creates and/or switches to 
 
 export const args = {
   feature: {
+    alias: 'f',
     description: 'Creates and/or switches to feature branch',
     type: 'boolean'
   },
   fix: {
+    alias: 'x',
     description: 'Creates and/or switches to fix branch',
     type: 'boolean'
   }
