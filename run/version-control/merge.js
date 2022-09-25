@@ -18,7 +18,7 @@ export async function run({ delete: deleteBranch }) {
     if (await isCommitRequired()) sequence.push('commit -p')
     else if (await isPushRequired()) sequence.push('git push')
 
-    sequence.push(`git checkout ${targetBranch}`, 'git pull', `git merge --no-ff -X theirs ${currentBranch}`, 'git push')
+    sequence.push(`git checkout ${targetBranch}`, 'git pull', `git merge --no-edit --no-ff -X theirs ${currentBranch}`, 'git push')
 
     if (currentBranch === 'release') {
       sequence.push(async () => {
