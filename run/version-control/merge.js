@@ -12,8 +12,10 @@ export async function run({ delete: deleteBranch }) {
   const currentBranch = await getCurrentBranch()
 
   if (currentBranch.startsWith('feature/') || currentBranch.startsWith('fix/') || currentBranch.startsWith('release/')) {
-    console.log(await isCommitRequired())
+    const sequence = []
+
     // sequence.push(await isCommitRequired() ? 'commit -p' : 'git push')
+
     /*
     const targetBranch = currentBranch.startsWith('feature/') ? 'development' : currentBranch.startsWith('fix/') ? 'release' : 'main'
     const sequence = []
