@@ -68,7 +68,7 @@ export async function isExistingBranch(name) {
 }
 
 export async function isPushRequired() {
-  return (await getCommandOutput('git status -s')).includes('Your branch is ahead of')
+  return (await getCommandOutput('git status')).includes('Your branch is ahead of')
 }
 
 export async function isValidBranchName(name) {
