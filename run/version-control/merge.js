@@ -8,7 +8,7 @@ export const args = {
 }
 
 export async function run({ delete: deleteBranch }) {
-  const { getCurrentBranch, isCommitRequired } = await import('./shared.js')
+  const { getCurrentBranch, isCommitRequired, isPushRequired } = await import('./shared.js')
   const currentBranch = await getCurrentBranch()
 
   if (currentBranch.startsWith('feature/') || currentBranch.startsWith('fix/') || currentBranch.startsWith('release/')) {
