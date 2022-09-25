@@ -1,3 +1,19 @@
+async function getCommandOutput(commandString) {
+  const { spawn } = await import('child_process')
+
+  return new Promise((resolve) => {
+    const [command, ...args] = commandString.split(' ')
+    const childProcess = spawn(command, args)
+    let output = ''
+
+    childProcess.stdout.on('data', (data) => {
+      output += data.toString()
+    })
+
+    childProcess.on('close', () => resolve(output.trim()))
+  })
+}
+
 export async function getAllBranches() {
   const { spawn } = await import('child_process')
 
@@ -38,24 +54,11 @@ export async function getAllBranches() {
 }
 
 export async function getCurrentBranch() {
-  const { spawn } = await import('child_process')
-
-  return new Promise((resolve) => spawn('git', ['branch', '--show-current']).stdout.on('data', (data) => resolve(data.toString().trim())))
+  return getCommandOutput('git branch --show-current')
 }
 
 export async function isCommitRequired() {
-  const { spawn } = await import('child_process')
-
-  return new Promise((resolve) => {
-    const childProcess = spawn('git', ['status', '-s'])
-    let output = ''
-
-    childProcess.stdout.on('data', (data) => {
-      output += data.toString()
-    })
-
-    childProcess.on('close', () => resolve(output.trim() !== ''))
-  })
+  return (await getCommandOutput('git status -s')) !== ''
 }
 
 export async function isExistingBranch(name) {
@@ -65,18 +68,7 @@ export async function isExistingBranch(name) {
 }
 
 export async function isPushRequired() {
-  const { spawn } = await import('child_process')
-
-  return new Promise((resolve) => {
-    const childProcess = spawn('git', ['status', '-s'])
-    let output = ''
-
-    childProcess.stdout.on('data', (data) => {
-      output += data.toString()
-    })
-
-    childProcess.on('close', () => resolve(output.trim() !== ''))
-  })
+  return (await getCommandOutput('git status -s')).includes('Your branch is ahead of')
 }
 
 export async function isValidBranchName(name) {
