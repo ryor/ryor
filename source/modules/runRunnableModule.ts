@@ -37,7 +37,7 @@ export async function runRunnableModule(module: RunnableModule, name: string, ar
         if (isValidRunnableSequence(nextRunnable)) await runRunnableSequence(nextRunnable, configuration, name)
       } else if (isValidRunnable(nextRunnable)) await runRunnable(nextRunnable, configuration, name)
     }
-  } catch({ message, stack }) {
+  } catch ({ message, stack }) {
     const error = new RunnableModuleError(message)
 
     error.stack = stack

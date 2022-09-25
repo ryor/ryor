@@ -18,16 +18,7 @@ export async function run({ delete: deleteBranch }) {
     if (await isCommitRequired()) sequence.push('commit -p')
     else if (await isPushRequired()) sequence.push('git push')
 
-    /*
-    const sequence = []
-
-    sequence.push(
-      'git push',
-      `git checkout ${targetBranch}`,
-      'git pull',
-      `git merge --no-ff -X theirs ${currentBranch}`,
-      'git push'
-    )
+    sequence.push(`git checkout ${targetBranch}`, 'git pull', `git merge --no-ff -X theirs ${currentBranch}`, 'git push')
 
     if (currentBranch === 'release') {
       sequence.push(async () => {
@@ -39,15 +30,9 @@ export async function run({ delete: deleteBranch }) {
     }
 
     if (currentBranch === 'release' || deleteBranch) {
-      sequence.push(
-        `git branch -D ${currentBranch}`,
-        `git push origin --delete ${currentBranch}`
-      )
+      sequence.push(`git branch -D ${currentBranch}`, `git push origin --delete ${currentBranch}`)
     } else sequence.push(`git checkout ${currentBranch}`)
-    */
 
-    console.log(sequence)
-
-    return
+    return sequence
   } else return 'log -e Use merge for fix, feature or release branches'
 }

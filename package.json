@@ -21,7 +21,7 @@
   "devDependencies": {
     "@types/cross-spawn": "^6.0.2",
     "@types/minimist": "^1.2.2",
-    "@types/node": "^18.7.20",
+    "@types/node": "^18.7.21",
     "@types/ps-tree": "^1.1.2",
     "@types/shell-quote": "^1.7.1",
     "@typescript-eslint/eslint-plugin": "^5.38.0",

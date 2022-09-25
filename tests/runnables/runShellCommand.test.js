@@ -30,26 +30,13 @@ describe('Run shell command', () => {
   afterAll(() => jest.restoreAllMocks())
 
   test('throws error when executable cannot be resolved', async () => {
-    try {
-      await runShellCommand('unresolvable')
-    } catch (error) {
-      expect(error.message).toBe(`Could not resolve ${chalk.bold('unresolvable')}`)
-    }
+    await expect(runShellCommand('unresolvable')).rejects.toThrow(`Could not resolve ${chalk.bold('unresolvable')}`)
   })
 
   test('throws error when child process does not exit cleanly', async () => {
-    try {
-      await runShellCommand('fail')
-    } catch (error) {
-      expect(error.message).toBe('')
-    }
-
-    try {
-      await runShellCommand('node-error')
-    } catch (error) {
-      expect(error.message).toBe('')
-      expect(output.includes('ERR_INVALID_ARG_TYPE')).toBe(true)
-    }
+    await expect(runShellCommand('fail')).rejects.toThrow('')
+    await expect(runShellCommand('node-error')).rejects.toThrow('')
+    expect(output.includes('ERR_INVALID_ARG_TYPE')).toBe(true)
   })
 
   test('executable in node_modules/.bin directory', async () => {
