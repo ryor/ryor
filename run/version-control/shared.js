@@ -64,6 +64,21 @@ export async function isExistingBranch(name) {
   return new Promise((resolve) => spawn('git', ['rev-parse', '--verify', `"${name}"`]).on('close', (code) => resolve(code === 0)))
 }
 
+export async function isPushRequired() {
+  const { spawn } = await import('child_process')
+
+  return new Promise((resolve) => {
+    const childProcess = spawn('git', ['status', '-s'])
+    let output = ''
+
+    childProcess.stdout.on('data', (data) => {
+      output += data.toString()
+    })
+
+    childProcess.on('close', () => resolve(output.trim() !== ''))
+  })
+}
+
 export async function isValidBranchName(name) {
   const { spawn } = await import('child_process')
 
