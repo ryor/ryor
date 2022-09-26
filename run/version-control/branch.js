@@ -70,8 +70,8 @@ export async function run({ _, ...args }) {
 
     return [
       `commit -p "Release ${releaseVersion}"`,
-      `git checkout -b release/${releaseVersion}`,
-      `git push --set-upstream origin release/${releaseVersion}`,
+      `git checkout -b release/v${releaseVersion}`,
+      `git push --set-upstream origin release/v${releaseVersion}`,
       'git branch --all'
     ]
   }
@@ -81,7 +81,7 @@ export async function run({ _, ...args }) {
     const { local } = await getAllBranches()
     const requestedBranch = _[0]
 
-    if (local.includes(requestedBranch)) return `git checkout ${requestedBranch}`
+    if (local.includes(requestedBranch)) return [`git checkout ${requestedBranch}`, 'git branch --all']
   }
 
   return 'git branch --all'
