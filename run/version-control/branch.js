@@ -66,9 +66,14 @@ export async function run({ _, ...args }) {
 
     packageJSON.version = releaseVersion
 
-    await writeFile('package.json', packageJSON)
+    await writeFile('package.json', JSON.stringify(packageJSON, null, '  '))
 
-    return [`git checkout -b release/${releaseVersion}`, `git push --set-upstream origin release/${releaseVersion}`, 'git branch --all']
+    return [
+      `commit -p "Release ${releaseVersion}"`,
+      `git checkout -b release/${releaseVersion}`,
+      `git push --set-upstream origin release/${releaseVersion}`,
+      'git branch --all'
+    ]
   }
 
   if (_.length > 0) {
