@@ -1,14 +1,15 @@
+/* eslint no-empty: ["error", { "allowEmptyCatch": true }] */
 import { SIGTERM } from 'constants'
 import { wait } from './wait'
 
-const POLLING_DELAY: number = 250
+const POLLING_DELAY = 250
 
-export async function terminateChildProcess (pid: number): Promise<void> {
+export async function killChildProcess(pid: number): Promise<void> {
   let processTerminated = false
 
   try {
     process.kill(pid, SIGTERM)
-  } catch(error) {}
+  } catch (error) {}
 
   while (!processTerminated) {
     try {

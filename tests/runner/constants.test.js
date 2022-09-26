@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { DEFAULT_PATH_DIVIDER, DEBUG_OPTION_FLAG, RUN_TIME_OPTION_FLAG, RUN_TIME_TEMPLATE, WINDOWS_PATH_DIVIDER } from '../../source/runner/constants'
 
 describe('Verify constant values', () => {

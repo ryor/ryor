@@ -7,4 +7,4 @@ export const args = {
 
 export const description = () => 'Runs preconfigured NPM commands'
 
-export const run = args => console.log('Running NPM command')
+export const run = (args) => console.log('Running NPM command')

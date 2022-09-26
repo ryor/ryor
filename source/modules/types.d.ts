@@ -16,5 +16,5 @@ export interface RunnableModuleCommandDefinition {
 }
 
 export interface RunnableModuleCommandDefinitions {
-  [ name: string ]: RunnableModuleCommandDefinition
+  [name: string]: RunnableModuleCommandDefinition
 }

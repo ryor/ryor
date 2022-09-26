@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { isValidRunnable } from '../../source/runnables/isValidRunnable'
 
 describe('Checks for a valid runnable', () => {
@@ -26,6 +24,14 @@ describe('Checks for a valid runnable', () => {
   test('returns true for functions', () => {
     expect(isValidRunnable(() => {})).toEqual(true)
     expect(isValidRunnable(async () => {})).toEqual(true)
-    expect(isValidRunnable(() => new Promise(resolve => { console.log('hello world'); resolve() }))).toEqual(true)
+    expect(
+      isValidRunnable(
+        () =>
+          new Promise((resolve) => {
+            console.log('hello world')
+            resolve()
+          })
+      )
+    ).toEqual(true)
   })
 })

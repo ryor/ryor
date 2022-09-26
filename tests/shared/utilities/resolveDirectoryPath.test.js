@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { resolveDirectoryPath } from '../../../source/shared/utilities/resolveDirectoryPath'
 
 describe('Resolves directory path', () => {

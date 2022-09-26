@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { resolve } from 'path'
 import { resolveRunnableModule } from '../../source/modules/resolveRunnableModule'
 
@@ -14,16 +12,12 @@ describe('Resolve runnable module', () => {
     expect(await resolveRunnableModule('runnable', { directory: resolve(projectDirectoryPath, 'run') })).toBeUndefined()
   })
 
-  test('throws Error when module contains syntax error', async () => {
+  test('undefined when module contains syntax error', async () => {
     const projectDirectoryPath = resolve(projectsDirectoryPath, 'syntax-error')
 
     process.chdir(projectDirectoryPath)
 
-    try {
-      await resolveRunnableModule('bundler', { directory: resolve(projectDirectoryPath, 'run') })
-    } catch (error) {
-      expect(error.name).toBe('SyntaxError')
-    }
+    expect(await resolveRunnableModule('bundler', { directory: resolve(projectDirectoryPath, 'run') })).toBeUndefined()
   })
 
   test('in "nested-directories" test project', async () => {

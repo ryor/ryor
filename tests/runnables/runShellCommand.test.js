@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import chalk from 'chalk'
 import { resolve } from 'path'
 import { runShellCommand } from '../../source/runnables/runShellCommand'
@@ -11,9 +9,15 @@ describe('Run shell command', () => {
   let output
 
   beforeAll(async () => {
-    jest.spyOn(console, 'log').mockImplementation(data => { output += data })
-    jest.spyOn(process.stderr, 'write').mockImplementation(data => { output += data })
-    jest.spyOn(process.stdout, 'write').mockImplementation(data => { output += data })
+    jest.spyOn(console, 'log').mockImplementation((data) => {
+      output += data
+    })
+    jest.spyOn(process.stderr, 'write').mockImplementation((data) => {
+      output += data
+    })
+    jest.spyOn(process.stdout, 'write').mockImplementation((data) => {
+      output += data
+    })
     process.chdir(projectDirectoryPath)
     await ensureCorrectPATHValue()
   })
@@ -26,26 +30,13 @@ describe('Run shell command', () => {
   afterAll(() => jest.restoreAllMocks())
 
   test('throws error when executable cannot be resolved', async () => {
-    try {
-      await runShellCommand('unresolvable')
-    } catch (error) {
-      expect(error.message).toBe(`Could not resolve ${chalk.bold('unresolvable')}`)
-    }
+    await expect(runShellCommand('unresolvable')).rejects.toThrow(`Could not resolve ${chalk.bold('unresolvable')}`)
   })
 
   test('throws error when child process does not exit cleanly', async () => {
-    try {
-      await runShellCommand('fail')
-    } catch (error) {
-      expect(error.message).toBe('')
-    }
-
-    try {
-      await runShellCommand('node-error')
-    } catch (error) {
-      expect(error.message).toBe('')
-      expect(output.includes('ERR_INVALID_ARG_TYPE')).toBe(true)
-    }
+    await expect(runShellCommand('fail')).rejects.toThrow('')
+    await expect(runShellCommand('node-error')).rejects.toThrow('')
+    expect(output.includes('ERR_INVALID_ARG_TYPE')).toBe(true)
   })
 
   test('executable in node_modules/.bin directory', async () => {

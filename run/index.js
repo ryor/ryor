@@ -1,3 +1,3 @@
 import ryor from 'ryor'
 
-ryor()
+ryor({ categories: ['main', 'tools', 'version-control', 'utilities'] })

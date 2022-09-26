@@ -1,8 +1,5 @@
-/* eslint-env jest */
-
 import { resolve } from 'path'
 import { runRunnable } from '../../source/runnables/runRunnable'
-import { runRunnableSequence } from '../../source/runnables/runRunnableSequence'
 import { ensureCorrectPATHValue } from '../../source/runner/ensureCorrectPATHValue'
 
 describe('Runs runnable', () => {
@@ -12,8 +9,12 @@ describe('Runs runnable', () => {
   let output
 
   beforeAll(async () => {
-    jest.spyOn(process.stdout, 'write').mockImplementation(data => { output += data })
-    jest.spyOn(console, 'log').mockImplementation(data => { output += data })
+    jest.spyOn(process.stdout, 'write').mockImplementation((data) => {
+      output += data
+    })
+    jest.spyOn(console, 'log').mockImplementation((data) => {
+      output += data
+    })
     process.chdir(projectDirectoryPath)
     await ensureCorrectPATHValue()
   })
@@ -37,7 +38,9 @@ describe('Runs runnable', () => {
   test('with function runnables', async () => {
     let runnable
 
-    runnable = jest.fn(() => { output = 'called' })
+    runnable = jest.fn(() => {
+      output = 'called'
+    })
     expect(await runRunnable(runnable)).toBe(undefined)
     expect(runnable).toHaveBeenCalled()
     expect(output).toBe('called')
@@ -46,7 +49,9 @@ describe('Runs runnable', () => {
     expect(await runRunnable(runnable)).toBe('result')
     expect(runnable).toHaveBeenCalled()
 
-    runnable = jest.fn(async () => { output = 'called' })
+    runnable = jest.fn(async () => {
+      output = 'called'
+    })
     output = ''
     expect(await runRunnable(runnable)).toBe(undefined)
     expect(runnable).toHaveBeenCalled()

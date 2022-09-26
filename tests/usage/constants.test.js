@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import chalk from 'chalk'
 import {
   DEFAULT_ITEM_DESCRIPTION,
@@ -16,9 +14,14 @@ const { bold } = chalk
 describe('Verify constant values', () => {
   test('DEFAULT_ITEM_DESCRIPTION', () => expect(DEFAULT_ITEM_DESCRIPTION).toBe('No description provided'))
   test('INDENT', () => expect(INDENT).toBe('  '))
-  test('MAIN_USAGE_FOOTER', () => expect(MAIN_USAGE_FOOTER).toBe(`Use ${bold('node [ENTRY_DIRECTORY_NAME] <runnable> -h/--help')} for detailed usage information about any runnables above that provide it.`))
-  test('MAIN_USAGE_HEADER', () => expect(MAIN_USAGE_HEADER).toBe(`${bold('Usage:')} node [ENTRY_DIRECTORY_NAME] [option] <runnable> [args...] [+ <runnable> [args...]] ...`))
+  test('MAIN_USAGE_FOOTER', () =>
+    expect(MAIN_USAGE_FOOTER).toBe(
+      `Use ${bold('node [ENTRY_DIRECTORY_NAME] <runnable> -h/--help')} for detailed usage information about any runnables above that provide it.`
+    ))
+  test('MAIN_USAGE_HEADER', () =>
+    expect(MAIN_USAGE_HEADER).toBe(`${bold('Usage:')} node [ENTRY_DIRECTORY_NAME] [option] <runnable> [args...] [+ <runnable> [args...]] ...`))
   test('NO_RUNNABLES_RESOLVED_MESSAGE', () => expect(NO_RUNNABLES_RESOLVED_MESSAGE).toBe('No runnables found.'))
-  test('RUNNABLE_MODULE_USAGE_HEADER', () => expect(RUNNABLE_MODULE_USAGE_HEADER).toBe(`${bold('Usage:')} node [ENTRY_DIRECTORY_NAME] ${bold('[NAME]')} [options]`))
+  test('RUNNABLE_MODULE_USAGE_HEADER', () =>
+    expect(RUNNABLE_MODULE_USAGE_HEADER).toBe(`${bold('Usage:')} node [ENTRY_DIRECTORY_NAME] ${bold('[NAME]')} [options]`))
   test('UNRESOLVED_RUNNABLE_ERROR_MESSAGE', () => expect(UNRESOLVED_RUNNABLE_ERROR_MESSAGE).toBe(`Runnable ${bold('[NAME]')} could not be resolved.`))
 })

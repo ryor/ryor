@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { parseRunnerOptions } from '../../source/runner/parseRunnerOptions'
 
 describe('Parses runner options', () => {

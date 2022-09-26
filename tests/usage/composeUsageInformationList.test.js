@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import chalk from 'chalk'
 import { LINE_BREAK } from '../../source/shared/constants'
 import { composeUsageInformationList } from '../../source/usage/composeUsageInformationList'
@@ -25,7 +23,12 @@ describe('Compose usage information list', () => {
     const name2 = 'build'
     const description1 = 'Does a thing.'
     const description2 = 'Does a thing, too.'
-    const result = composeUsageInformationList(new Map([[name1, description1], [name2, description2]]))
+    const result = composeUsageInformationList(
+      new Map([
+        [name1, description1],
+        [name2, description2]
+      ])
+    )
 
     expect(result).toBe(`${bold(name1)}     ${description1}${LINE_BREAK}${bold(name2)}    ${description2}`)
   })
@@ -68,8 +71,17 @@ describe('Compose usage information list', () => {
     const type = 'runnables'
     const minNameLength = 10
     const indent = '  '
-    const result = composeUsageInformationList(new Map([[name1, description1], [name2, description2]]), type, minNameLength)
+    const result = composeUsageInformationList(
+      new Map([
+        [name1, description1],
+        [name2, description2]
+      ]),
+      type,
+      minNameLength
+    )
 
-    expect(result).toBe(`${bold('Runnables:')}${DOUBLE_LINE_BREAK}${indent}${bold(name1)}          ${description1}${LINE_BREAK}${indent}${bold(name2)}         ${description2}`)
+    expect(result).toBe(
+      `${bold('Runnables:')}${DOUBLE_LINE_BREAK}${indent}${bold(name1)}          ${description1}${LINE_BREAK}${indent}${bold(name2)}         ${description2}`
+    )
   })
 })

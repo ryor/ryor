@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { parseRunnerRunnableSequence } from '../../source/runner/parseRunnerRunnableSequence'
 
 describe('Parses command line input', () => {

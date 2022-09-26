@@ -1,6 +1,6 @@
 export { getPathStats } from './getPathStats'
 export { isObject } from './isObject'
 export { isPopulatedObject } from './isPopulatedObject'
+export { killChildProcesses } from './killChildProcesses'
 export { resolveDirectoryPath } from './resolveDirectoryPath'
-export { terminateChildProcesses } from './terminateChildProcesses'
 export { wait } from './wait'

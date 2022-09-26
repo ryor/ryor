@@ -4,7 +4,7 @@ import { resolveAllRunnableModulesInDirectory } from './resolveAllRunnableModule
 import { getPathStats } from '../shared'
 import type { RunnableModule } from './types'
 
-export async function resolveAllRunnableModules (directoryPath: string, debug: boolean = false): Promise<Map<string, Map<string, RunnableModule>>> {
+export async function resolveAllRunnableModules(directoryPath: string, debug = false): Promise<Map<string, Map<string, RunnableModule>>> {
   const dirents: Dirent[] = await fs.readdir(directoryPath, { withFileTypes: true })
   const modules: Map<string, Map<string, RunnableModule>> = new Map<string, Map<string, RunnableModule>>()
   const untypedModules: Map<string, RunnableModule> = await resolveAllRunnableModulesInDirectory(directoryPath, debug)

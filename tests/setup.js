@@ -1,13 +1,15 @@
-/* eslint-env jest */
-
 import { spawn } from 'cross-spawn'
 
 jest.mock('cross-spawn', () => ({
   spawn: (command, args, options) => {
     const childProcess = spawn(command, args, { ...options, stdio: ['ignore', 'pipe', 'pipe'] })
 
-    childProcess.stderr.on('data', data => { process.stderr.write(data.toString()) })
-    childProcess.stdout.on('data', data => { process.stdout.write(data.toString()) })
+    childProcess.stderr.on('data', (data) => {
+      process.stderr.write(data.toString())
+    })
+    childProcess.stdout.on('data', (data) => {
+      process.stdout.write(data.toString())
+    })
 
     return childProcess
   }

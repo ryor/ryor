@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { resolve } from 'path'
 import { importModule } from '../../source/modules/importModule'
 

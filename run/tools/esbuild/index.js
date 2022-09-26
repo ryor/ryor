@@ -7,21 +7,23 @@ export const args = {
   }
 }
 
-export async function run ({ quiet }) {
+export async function run({ quiet }) {
   const sequence = []
 
   if (!quiet) sequence.push('log -w Bundling module with esbuild...')
 
-  sequence.push([
-    'esbuild source/index.ts',
-    '--bundle',
-    ...['chalk', 'cli-truncate', 'cross-spawn', 'minimist', 'ps-tree', 'shell-quote'].map(value => `--external:${value}`),
-    '--format=esm',
-    '--log-level=error',
-    '--outfile=build/index.js',
-    '--platform=node',
-    '--tsconfig=./run/tools/esbuild/tsconfig.json'
-  ].join(' '))
+  sequence.push(
+    [
+      'esbuild source/index.ts',
+      '--bundle',
+      ...['chalk', 'cli-truncate', 'cross-spawn', 'minimist', 'ps-tree', 'shell-quote'].map((value) => `--external:${value}`),
+      '--format=esm',
+      '--log-level=error',
+      '--outfile=build/index.js',
+      '--platform=node',
+      '--tsconfig=./run/tools/esbuild/tsconfig.json'
+    ].join(' ')
+  )
 
   return sequence
 }

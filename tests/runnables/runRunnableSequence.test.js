@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { resolve } from 'path'
 import { runRunnableSequence } from '../../source/runnables/runRunnableSequence'
 import { ensureCorrectPATHValue } from '../../source/runner/ensureCorrectPATHValue'
@@ -12,8 +10,12 @@ describe('Runs runnable sequence', () => {
   let output = ''
 
   beforeAll(async () => {
-    jest.spyOn(process.stdout, 'write').mockImplementation(data => { output += data })
-    jest.spyOn(console, 'log').mockImplementation(data => { output += data + LINE_BREAK})
+    jest.spyOn(process.stdout, 'write').mockImplementation((data) => {
+      output += data
+    })
+    jest.spyOn(console, 'log').mockImplementation((data) => {
+      output += data + LINE_BREAK
+    })
     process.chdir(projectDirectoryPath)
     await ensureCorrectPATHValue()
   })
