@@ -21,7 +21,7 @@ export async function run({ quiet }) {
       '--log-level=error',
       '--outfile=build/index.js',
       '--platform=node',
-      '--tsconfig=./run/tools/esbuild/tsconfig.json'
+      '--tsconfig=./tasks/tools/esbuild/tsconfig.json'
     ].join(' ')
   )
 

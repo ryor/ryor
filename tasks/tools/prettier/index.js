@@ -31,11 +31,11 @@ export const args = {
 export const run = ({ quiet, runnables, source, tests, watch }) => {
   if (!runnables && !source && !tests) runnables = source = tests = true
 
-  const command = `prettier --config run/tools/prettier/.prettierrc --ignore-path run/tools/prettier/.prettierignore --loglevel=${
+  const command = `prettier --config tasks/tools/prettier/.prettierrc --ignore-path tasks/tools/prettier/.prettierignore --loglevel=${
     watch || quiet ? 'silent' : 'warn'
   } --write`
   const targets = [runnables && 'runnables', source && 'source', tests && 'tests'].filter((target) => !!target)
-  const paths = targets.map((target) => `"${target === 'runnables' ? 'run/**/*.js' : target === 'source' ? 'source/**/*.ts' : 'tests/**/*.js'}"`).join(' ')
+  const paths = targets.map((target) => `"${target === 'runnables' ? 'tasks/**/*.js' : target === 'source' ? 'source/**/*.ts' : 'tests/**/*.js'}"`).join(' ')
 
   if (watch) return `onchange ${paths} -- ${command} {{changed}}`
 

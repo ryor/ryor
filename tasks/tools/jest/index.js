@@ -21,14 +21,14 @@ export const args = {
 }
 
 export const run = ({ _, coverage, quiet, verbose, watch }) => {
-  if (watch) return `onchange "tests/**/*.js" -e "tests/.test-projects/**" -- jest -c run/tools/jest/config.json {{changed}}`
+  if (watch) return `onchange "tests/**/*.js" -e "tests/.test-projects/**" -- jest -c tasks/tools/jest/config.json {{changed}}`
 
   if (quiet) {
     return async () => {
       const { spawn } = await import('cross-spawn')
 
       await new Promise((resolve, reject) =>
-        spawn('jest', ['-c', 'run/tools/jest/config.json'].concat(coverage ? ['--coverage'] : [])).on('close', (code) =>
+        spawn('jest', ['-c', 'tasks/tools/jest/config.json'].concat(coverage ? ['--coverage'] : [])).on('close', (code) =>
           code === 0 ? resolve() : reject(new Error('One or more Jest tests failed.'))
         )
       )
@@ -37,7 +37,7 @@ export const run = ({ _, coverage, quiet, verbose, watch }) => {
 
   return [
     'log -w Unit testing source code with Jest\n',
-    `jest -c run/tools/jest/config.json --no-cache ${coverage ? ' --coverage' : ''}${verbose ? ' --verbose' : ''} ${_.join(' ')}`,
+    `jest -c tasks/tools/jest/config.json --no-cache ${coverage ? ' --coverage' : ''}${verbose ? ' --verbose' : ''} ${_.join(' ')}`,
     'echo',
     'log -s All tests passed'
   ]

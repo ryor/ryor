@@ -36,4 +36,4 @@ jobs:
       - name: Ensure tests pass and then publish build to npm
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: node run test + build + publish
+        run: node tasks test + build + publish

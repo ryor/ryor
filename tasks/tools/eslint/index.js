@@ -36,9 +36,9 @@ export const args = {
 export const run = ({ fix, quiet, runnables, source, tests, watch }) => {
   if (!runnables && !source && !tests) runnables = source = tests = true
 
-  const command = `eslint -c run/tools/eslint/.eslintrc ${fix && !watch ? ' --fix ' : ''}`
+  const command = `eslint -c tasks/tools/eslint/.eslintrc ${fix && !watch ? ' --fix ' : ''}`
   const targets = [runnables && 'runnables', source && 'source', tests && 'tests'].filter((target) => !!target)
-  const paths = targets.map((target) => `"${target === 'runnables' ? 'run/**/*.js' : target === 'source' ? 'source/**/*.ts' : 'tests/**/*.js'}"`).join(' ')
+  const paths = targets.map((target) => `"${target === 'runnables' ? 'tasks/**/*.js' : target === 'source' ? 'source/**/*.ts' : 'tests/**/*.js'}"`).join(' ')
 
   if (watch) return `onchange ${paths} -- ${command} {{changed}}`
 
