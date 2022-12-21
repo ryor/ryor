@@ -94,15 +94,15 @@ export const args = {
   }
 }
 
-export async function test({ coverage ) {
+export async function run({ coverage }) {
   const tester = await import('tester')
   const result = await tester.test(coverage)
-  
+
   console.log(`Tests complete${coverage ? ' and coverage data collected' : ''}`)
 }
 ```
 
-Like in the above module, a **description** export should be provided for usage information.  The above module can be run with the following shell commands:
+Like in the above module, a **description** export should be provided for usage information. The above module can be run with the following shell commands:
 
 ```node tasks test```
 
@@ -113,3 +113,24 @@ or
 or
 
 ```node tasks test --coverage```
+
+
+To output usage information for the above module, use one of the following commands:
+
+```node tasks test -h```
+
+or
+
+```node tasks test --help```
+
+
+Which should output the following:
+
+```
+Usage: node tasks **test** [options]
+
+Runs tester and optionally collects coverage information
+
+**-c  --coverage**  Collect coverage data
+**-h  --help**      Displays this usage information
+```
