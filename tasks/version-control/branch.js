@@ -1,6 +1,11 @@
-export const description = 'Displays Git branches or creates and/or switches to feature or fix branches'
+export const description = 'Displays Git branches or creates and/or switches to chore, feature or fix branches'
 
 export const args = {
+  chore: {
+    alias: 'c',
+    description: 'Creates and/or switches to chore branch',
+    type: 'boolean'
+  },
   feature: {
     alias: 'f',
     description: 'Creates and/or switches to feature branch',
@@ -19,21 +24,23 @@ export const args = {
 }
 
 export async function run({ _, ...args }) {
-  if (['feature', 'fix', 'release'].filter((type) => args[type]).length > 1) return 'log -e Only one branch type may be specified at a time'
+  if (['chore', 'feature', 'fix', 'release'].filter((type) => args[type]).length > 1) return 'log -e Only one branch type may be specified at a time'
 
-  const { feature, fix, release } = args
+  const { chore, feature, fix, release } = args
 
-  if (feature || fix) {
-    if (_.length === 0) return `log -e Valid ${feature ? 'feature' : 'fix'} name required`
+  if (chore || feature || fix) {
+    const type = chore ? 'chore' : feature ? 'feature' : 'fix'
+
+    if (_.length === 0) return `log -e Valid ${type} name required`
 
     const { getAllBranches, isValidBranchName } = await import('./shared.js')
     const { local, remote } = await getAllBranches()
-    const featureOrFixName = _[0]
-    const requestedBranch = `${feature ? 'feature' : 'fix'}/${featureOrFixName}`
+    const name = _[0]
+    const requestedBranch = `${type}/${name}`
 
     if (local.includes(requestedBranch)) return [`git checkout ${requestedBranch}`, 'git branch --all']
     else if (remote.includes(requestedBranch)) return [`git checkout ${requestedBranch}`, 'git pull', 'git branch --all']
-    else if (!(await isValidBranchName(requestedBranch))) return `log -e Invalid ${feature ? 'feature' : 'fix'} name: ${featureOrFixName}`
+    else if (!(await isValidBranchName(requestedBranch))) return `log -e Invalid ${type} name: ${name}`
     else return [`git checkout -b ${requestedBranch}`, `git push --set-upstream origin ${requestedBranch}`, 'git branch --all']
   }
 

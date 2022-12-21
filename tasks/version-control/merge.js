@@ -1,4 +1,4 @@
-export const description = 'Merges feature, fix or release branches'
+export const description = 'Merges chore, feature, fix or release branches'
 
 export const args = {
   delete: {
@@ -11,7 +11,7 @@ export async function run({ delete: deleteBranch }) {
   const { getCurrentBranch, isCommitRequired, isPushRequired } = await import('./shared.js')
   const currentBranch = await getCurrentBranch()
 
-  if (currentBranch.startsWith('feature/') || currentBranch.startsWith('fix/') || currentBranch.startsWith('release/')) {
+  if (currentBranch.startsWith('chore/') || currentBranch.startsWith('feature/') || currentBranch.startsWith('fix/') || currentBranch.startsWith('release/')) {
     const isRelease = currentBranch.startsWith('release/')
     const targetBranch = isRelease ? 'main' : 'develop'
     const sequence = []
@@ -36,5 +36,5 @@ export async function run({ delete: deleteBranch }) {
     } else sequence.push(`git checkout ${currentBranch}`)
 
     return sequence
-  } else return 'log -e Use merge for fix, feature or release branches'
+  } else return 'log -e Use merge for chore, fix, feature or release branches'
 }

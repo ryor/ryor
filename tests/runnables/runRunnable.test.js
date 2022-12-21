@@ -5,7 +5,7 @@ import { ensureCorrectPATHValue } from '../../source/runner/ensureCorrectPATHVal
 describe('Runs runnable', () => {
   const projectsDirectoryPath = resolve(__dirname, '../.test-projects/projects')
   const projectDirectoryPath = resolve(projectsDirectoryPath, 'all')
-  const configuration = { directory: resolve(projectDirectoryPath, 'run') }
+  const configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
   let output
 
   beforeAll(async () => {

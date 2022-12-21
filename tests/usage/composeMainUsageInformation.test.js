@@ -10,17 +10,17 @@ describe('Compose main usage information', () => {
     let configuration, projectDirectoryPath
 
     projectDirectoryPath = resolve(projectsDirectoryPath, 'empty-runnables-directory')
-    configuration = { directory: resolve(projectDirectoryPath, 'run') }
+    configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
     process.chdir(projectDirectoryPath)
     expect(await composeMainUsageInformation(configuration)).toBe(NO_RUNNABLES_RESOLVED_MESSAGE)
 
     projectDirectoryPath = resolve(projectsDirectoryPath, 'invalid-definitions')
-    configuration = { directory: resolve(projectDirectoryPath, 'run') }
+    configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
     process.chdir(projectDirectoryPath)
     expect(await composeMainUsageInformation(configuration)).toBe(NO_RUNNABLES_RESOLVED_MESSAGE)
 
     projectDirectoryPath = resolve(projectsDirectoryPath, 'syntax-error')
-    configuration = { directory: resolve(projectDirectoryPath, 'run') }
+    configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
     process.chdir(projectDirectoryPath)
     expect(await composeMainUsageInformation(configuration)).toBe(NO_RUNNABLES_RESOLVED_MESSAGE)
   })
@@ -37,7 +37,7 @@ describe('Compose main usage information', () => {
 
   test('for "nested-directories" test project', async () => {
     const projectDirectoryPath = resolve(projectsDirectoryPath, 'nested-directories')
-    const configuration = { directory: resolve(projectDirectoryPath, 'run') }
+    const configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
     const expectedUsageInformation = require(resolve(usageInformationDirectoryPath, 'nested-directories'))
 
     process.chdir(projectDirectoryPath)
@@ -47,7 +47,7 @@ describe('Compose main usage information', () => {
 
   test('for "all" test project', async () => {
     const projectDirectoryPath = resolve(projectsDirectoryPath, 'all')
-    const configuration = { directory: resolve(projectDirectoryPath, 'run') }
+    const configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
     const expectedUsageInformation = require(resolve(usageInformationDirectoryPath, 'all'))
 
     process.chdir(projectDirectoryPath)

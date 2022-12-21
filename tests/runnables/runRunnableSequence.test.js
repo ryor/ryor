@@ -6,7 +6,7 @@ import { LINE_BREAK } from '../../source/shared/constants'
 describe('Runs runnable sequence', () => {
   const projectsDirectoryPath = resolve(__dirname, '../.test-projects/projects')
   const projectDirectoryPath = resolve(projectsDirectoryPath, 'all')
-  const configuration = { directory: resolve(projectDirectoryPath, 'run') }
+  const configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
   let output = ''
 
   beforeAll(async () => {

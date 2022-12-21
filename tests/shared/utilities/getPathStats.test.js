@@ -10,11 +10,11 @@ describe('Gets path stats', () => {
     const projectsDirectoryPath = resolve(__dirname, '../../.test-projects/projects')
     let stats
 
-    stats = await getPathStats(resolve(projectsDirectoryPath, 'all/run'))
+    stats = await getPathStats(resolve(projectsDirectoryPath, 'all/tasks'))
     expect(stats).toBeDefined()
     expect(stats.isDirectory()).toBe(true)
 
-    stats = await getPathStats(resolve(projectsDirectoryPath, 'all/run/git.js'))
+    stats = await getPathStats(resolve(projectsDirectoryPath, 'all/tasks/git.js'))
     expect(stats).toBeDefined()
     expect(stats.isFile()).toBe(true)
   })
