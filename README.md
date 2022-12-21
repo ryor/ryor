@@ -127,10 +127,10 @@ or
 Which should output the following:
 
 ```
-Usage: node tasks **test** [options]
+Usage: node tasks test [options]
 
 Runs tester and optionally collects coverage information
 
-**-c  --coverage**  Collect coverage data
-**-h  --help**      Displays this usage information
+-c  --coverage  Collect coverage data
+-h  --help      Displays this usage information
 ```
