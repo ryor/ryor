@@ -44,4 +44,39 @@ import ryor from 'ryor'
 ryor()
 ```
 
-**Note: ryor uses ES module importing so ```"type": "module"``` in the project's package.json file is required.**
+**Note:** ryor uses ES module importing so ```"type": "module"``` in the project's package.json file is required.
+
+A runnable module is any JS file that exports a "run" value, which can be a string, an array, a function or an asynchronous function:
+
+minify.js
+```js
+export const run = 'minify --option1 --option2 path/to/file'
+```
+
+build.js
+```js
+export const run = [
+  'transpile',
+  'minify'
+]
+```
+
+transpile.js
+```js
+export function run() {
+  const path = ...
+
+  return `transpiler --path ${path}`
+}
+```
+
+test.js
+```js
+import tester from 'tester'
+
+export async function test() {
+  const result = await tester.test()
+  
+  console.log('Tests complete.')
+}
+```
