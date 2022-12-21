@@ -22,21 +22,21 @@ describe('Output usage information', () => {
     let configuration, projectDirectoryPath
 
     projectDirectoryPath = resolve(projectsDirectoryPath, 'empty-runnables-directory')
-    configuration = { directory: resolve(projectDirectoryPath, 'run') }
+    configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
     output = ''
     process.chdir(projectDirectoryPath)
     await outputUsageInformation(configuration)
     expect(output).toBe(LINE_BREAK + NO_RUNNABLES_RESOLVED_MESSAGE + LINE_BREAK)
 
     projectDirectoryPath = resolve(projectsDirectoryPath, 'invalid-definitions')
-    configuration = { directory: resolve(projectDirectoryPath, 'run') }
+    configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
     output = ''
     process.chdir(projectDirectoryPath)
     await outputUsageInformation(configuration)
     expect(output).toBe(LINE_BREAK + NO_RUNNABLES_RESOLVED_MESSAGE + LINE_BREAK)
 
     projectDirectoryPath = resolve(projectsDirectoryPath, 'syntax-error')
-    configuration = { directory: resolve(projectDirectoryPath, 'run') }
+    configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
     output = ''
     process.chdir(projectDirectoryPath)
     await outputUsageInformation(configuration)
@@ -45,7 +45,7 @@ describe('Output usage information', () => {
 
   test('for "all" test project', async () => {
     const projectDirectoryPath = resolve(projectsDirectoryPath, 'all')
-    const configuration = { directory: resolve(projectDirectoryPath, 'run') }
+    const configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
     const { build, bundler, main, tester, transpiler, git } = require(resolve(usageInformationDirectoryPath, 'all'))
 
     process.chdir(projectDirectoryPath)

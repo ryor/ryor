@@ -9,31 +9,43 @@ describe('Compose runnable module usage information', () => {
   test('throws Error when runnable module cannot be resolved', async () => {
     const runnableName = 'unresolvable'
 
-    await expect(composeRunnableModuleUsageInformation(runnableName, { directory: resolve(process.cwd(), 'run') })).rejects.toThrow(UNRESOLVED_RUNNABLE_ERROR_MESSAGE.replace('[NAME]', runnableName))
+    await expect(composeRunnableModuleUsageInformation(runnableName, { directory: resolve(process.cwd(), 'tasks') })).rejects.toThrow(
+      UNRESOLVED_RUNNABLE_ERROR_MESSAGE.replace('[NAME]', runnableName)
+    )
   })
 
-  test("throws Error when runnable modules contain errors", async () => {
+  test('throws Error when runnable modules contain errors', async () => {
     let projectDirectoryPath, runnableName
 
     projectDirectoryPath = resolve(projectsDirectoryPath, 'syntax-error')
     runnableName = 'bundler'
 
     process.chdir(projectDirectoryPath)
-    await expect(composeRunnableModuleUsageInformation(runnableName, { directory: resolve(process.cwd(), 'run') })).rejects.toThrow(UNRESOLVED_RUNNABLE_ERROR_MESSAGE.replace('[NAME]', runnableName))
+    await expect(composeRunnableModuleUsageInformation(runnableName, { directory: resolve(process.cwd(), 'tasks') })).rejects.toThrow(
+      UNRESOLVED_RUNNABLE_ERROR_MESSAGE.replace('[NAME]', runnableName)
+    )
 
     projectDirectoryPath = resolve(projectsDirectoryPath, 'invalid-definitions')
 
     process.chdir(projectDirectoryPath)
-    await expect(composeRunnableModuleUsageInformation(runnableName, { directory: resolve(process.cwd(), 'run') })).rejects.toThrow(UNRESOLVED_RUNNABLE_ERROR_MESSAGE.replace('[NAME]', runnableName))
+    await expect(composeRunnableModuleUsageInformation(runnableName, { directory: resolve(process.cwd(), 'tasks') })).rejects.toThrow(
+      UNRESOLVED_RUNNABLE_ERROR_MESSAGE.replace('[NAME]', runnableName)
+    )
 
     runnableName = 'linter'
-    await expect(composeRunnableModuleUsageInformation(runnableName, { directory: resolve(process.cwd(), 'run') })).rejects.toThrow(UNRESOLVED_RUNNABLE_ERROR_MESSAGE.replace('[NAME]', runnableName))
+    await expect(composeRunnableModuleUsageInformation(runnableName, { directory: resolve(process.cwd(), 'tasks') })).rejects.toThrow(
+      UNRESOLVED_RUNNABLE_ERROR_MESSAGE.replace('[NAME]', runnableName)
+    )
 
     runnableName = 'tester'
-    await expect(composeRunnableModuleUsageInformation(runnableName, { directory: resolve(process.cwd(), 'run') })).rejects.toThrow(UNRESOLVED_RUNNABLE_ERROR_MESSAGE.replace('[NAME]', runnableName))
+    await expect(composeRunnableModuleUsageInformation(runnableName, { directory: resolve(process.cwd(), 'tasks') })).rejects.toThrow(
+      UNRESOLVED_RUNNABLE_ERROR_MESSAGE.replace('[NAME]', runnableName)
+    )
 
     runnableName = 'transpiler'
-    await expect(composeRunnableModuleUsageInformation(runnableName, { directory: resolve(process.cwd(), 'run') })).rejects.toThrow(UNRESOLVED_RUNNABLE_ERROR_MESSAGE.replace('[NAME]', runnableName))
+    await expect(composeRunnableModuleUsageInformation(runnableName, { directory: resolve(process.cwd(), 'tasks') })).rejects.toThrow(
+      UNRESOLVED_RUNNABLE_ERROR_MESSAGE.replace('[NAME]', runnableName)
+    )
   })
 
   test('for runnables in "no-nested-directories" test project', async () => {

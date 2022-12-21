@@ -9,7 +9,7 @@ describe('Resolve runnable module', () => {
 
     process.chdir(projectDirectoryPath)
 
-    expect(await resolveRunnableModule('runnable', { directory: resolve(projectDirectoryPath, 'run') })).toBeUndefined()
+    expect(await resolveRunnableModule('runnable', { directory: resolve(projectDirectoryPath, 'tasks') })).toBeUndefined()
   })
 
   test('undefined when module contains syntax error', async () => {
@@ -17,7 +17,7 @@ describe('Resolve runnable module', () => {
 
     process.chdir(projectDirectoryPath)
 
-    expect(await resolveRunnableModule('bundler', { directory: resolve(projectDirectoryPath, 'run') })).toBeUndefined()
+    expect(await resolveRunnableModule('bundler', { directory: resolve(projectDirectoryPath, 'tasks') })).toBeUndefined()
   })
 
   test('in "nested-directories" test project', async () => {
@@ -27,13 +27,13 @@ describe('Resolve runnable module', () => {
     process.chdir(projectDirectoryPath)
 
     name = 'bundler'
-    expect(await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'run') })).toBeDefined()
+    expect(await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'tasks') })).toBeDefined()
 
     name = 'tester'
-    expect(await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'run') })).toBeDefined()
+    expect(await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'tasks') })).toBeDefined()
 
     name = 'transpiler'
-    expect(await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'run') })).toBeDefined()
+    expect(await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'tasks') })).toBeDefined()
   })
 
   test('in "no-nested-directories" test project', async () => {
@@ -59,15 +59,15 @@ describe('Resolve runnable module', () => {
     process.chdir(projectDirectoryPath)
 
     name = 'git'
-    expect(await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'run') })).toBeDefined()
+    expect(await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'tasks') })).toBeDefined()
 
     name = 'bundler'
-    expect(await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'run') })).toBeDefined()
+    expect(await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'tasks') })).toBeDefined()
 
     name = 'transpiler'
-    expect(await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'run') })).toBeDefined()
+    expect(await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'tasks') })).toBeDefined()
 
     name = 'tester'
-    expect(await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'run') })).toBeDefined()
+    expect(await resolveRunnableModule(name, { directory: resolve(projectDirectoryPath, 'tasks') })).toBeDefined()
   })
 })

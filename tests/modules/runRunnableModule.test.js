@@ -4,7 +4,7 @@ import { LINE_BREAK } from '../../source/shared/constants'
 
 describe('Runs runnable module', () => {
   const projectDirectoryPath = resolve(__dirname, '../.test-projects/projects/all')
-  const configuration = { directory: resolve(projectDirectoryPath, 'run') }
+  const configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
 
   let output
 

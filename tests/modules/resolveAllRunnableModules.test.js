@@ -5,7 +5,7 @@ describe('Resolve all runnable modules', () => {
   const projectsDirectoryPath = resolve(__dirname, '../.test-projects/projects')
 
   test('in "syntax-error" test project, optionally throwing error', async () => {
-    const directoryPath = resolve(projectsDirectoryPath, 'syntax-error/run')
+    const directoryPath = resolve(projectsDirectoryPath, 'syntax-error/tasks')
     const modules = await resolveAllRunnableModules(directoryPath)
 
     expect(modules).toBeInstanceOf(Map)
@@ -27,13 +27,13 @@ describe('Resolve all runnable modules', () => {
   })
 
   test('in "nested-directories" test project', async () => {
-    const allModules = await resolveAllRunnableModules(resolve(projectsDirectoryPath, 'nested-directories/run'))
+    const allModules = await resolveAllRunnableModules(resolve(projectsDirectoryPath, 'nested-directories/tasks'))
     let category
 
     expect(allModules).toBeInstanceOf(Map)
     expect(allModules.size).toBe(3)
 
-    category = allModules.get('tasks')
+    category = allModules.get('main')
     expect(category).toBeInstanceOf(Map)
     expect(category.size).toBe(1)
     expect(category.get('build')).toBeDefined()
@@ -52,18 +52,18 @@ describe('Resolve all runnable modules', () => {
   })
 
   test('in "all" test project', async () => {
-    const modules = await resolveAllRunnableModules(resolve(projectsDirectoryPath, 'all/run'))
-    const tasksModules = modules.get('tasks')
+    const modules = await resolveAllRunnableModules(resolve(projectsDirectoryPath, 'all/tasks'))
+    const mainModules = modules.get('main')
     const toolsModules = modules.get('tools')
     const untypedModules = modules.get('untyped')
 
     expect(modules).toBeInstanceOf(Map)
     expect(modules.size).toBe(3)
     expect(toolsModules).toBeInstanceOf(Map)
-    expect(tasksModules.size).toBe(3)
-    expect(tasksModules.get('build')).toBeDefined()
-    expect(tasksModules.get('test')).toBeDefined()
-    expect(tasksModules.get('deploy')).toBeDefined()
+    expect(mainModules.size).toBe(3)
+    expect(mainModules.get('build')).toBeDefined()
+    expect(mainModules.get('test')).toBeDefined()
+    expect(mainModules.get('deploy')).toBeDefined()
     expect(toolsModules).toBeInstanceOf(Map)
     expect(toolsModules.size).toBe(3)
     expect(toolsModules.get('bundler')).toBeDefined()

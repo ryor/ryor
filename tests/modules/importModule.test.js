@@ -11,11 +11,11 @@ describe('Import module(s)', () => {
   })
 
   test('returns undefned when module contains syntax error', async () => {
-    expect(await importModule(resolve(projectsDirectoryPath, 'syntax-error/run/bundler'))).toBeUndefined()
+    expect(await importModule(resolve(projectsDirectoryPath, 'syntax-error/main/bundler'))).toBeUndefined()
   })
 
   test('in "nested-directories" test project', async () => {
-    const directoryPath = resolve(projectsDirectoryPath, 'nested-directories/run')
+    const directoryPath = resolve(projectsDirectoryPath, 'nested-directories/tasks')
 
     expect(await importModule(resolve(directoryPath, 'tools/bundler.js'))).toBeDefined()
     expect(await importModule(resolve(directoryPath, 'tools/tester'))).toBeDefined()
@@ -23,10 +23,10 @@ describe('Import module(s)', () => {
   })
 
   test('in "all" test project', async () => {
-    const directoryPath = resolve(projectsDirectoryPath, 'all/run')
+    const directoryPath = resolve(projectsDirectoryPath, 'all/tasks')
 
     expect(await importModule(resolve(directoryPath, 'git'))).toBeDefined()
+    expect(await importModule(resolve(directoryPath, 'main/build'))).toBeDefined()
     expect(await importModule(resolve(directoryPath, 'tools/bundler'))).toBeDefined()
-    expect(await importModule(resolve(directoryPath, 'tasks/build'))).toBeDefined()
   })
 })

@@ -6,7 +6,7 @@ const DOUBLE_LINE_BREAK = LINE_BREAK + LINE_BREAK
 const { bold } = chalk
 
 export const gitflow = [
-  `${RUNNABLE_MODULE_USAGE_HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'run').replace('[NAME]', 'gitflow')} <command>`,
+  `${RUNNABLE_MODULE_USAGE_HEADER.replace('[ENTRY_DIRECTORY_NAME]', 'tasks').replace('[NAME]', 'gitflow')} <command>`,
   'Runs Gitflow-esque Git commands',
   'Commands:',
   `  ${bold('branch')}  Creates feature or release branches`,
