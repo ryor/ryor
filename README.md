@@ -20,16 +20,28 @@ Similar to shell, npm or [NPS](https://www.npmjs.com/package/nps) scripts, seque
 
 ### Simple to get usage information
 
-```node run```
+```node tasks```
 
 or
 
-```node run [runnable] -h```
+```node tasks [runnable] -h```
 
 ### Simple to use
 
-```node run <runnable> [...args]```
+```node tasks <runnable> [...args]```
 
 or
 
-```node run <runnable> [...args] + <runnable> [...args] + <runnable> [...args]```
+```node tasks <runnable> [...args] + <runnable> [...args] + <runnable> [...args]```
+
+### Get Started
+
+Create a subdirectory in your project root directory to contain your runnables ("tasks" is a good option) and put the following index.js file in it:
+
+```js
+import ryor from 'ryor'
+
+ryor()
+```
+
+**Note: ryor uses ES module importing so ```"type": "module"``` in the project's package.json file is required.**
