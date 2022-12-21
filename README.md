@@ -72,11 +72,44 @@ export function run() {
 
 test.js
 ```js
-import tester from 'tester'
-
 export async function test() {
+  const tester = await import('tester')
   const result = await tester.test()
   
   console.log('Tests complete.')
 }
 ```
+
+A runnable module containing a function/async function runnable can be passed argument and they can be defined in the **args** export:
+
+test.js
+```js
+export const description = 'Runs tester and optionally collects coverage information'
+
+export const args = {
+  coverage: {
+    alias: 'c',
+    description: 'Collect coverage data',
+    type: 'boolean'
+  }
+}
+
+export async function test({ coverage ) {
+  const tester = await import('tester')
+  const result = await tester.test(coverage)
+  
+  console.log(`Tests complete${coverage ? ' and coverage data collected' : ''}`)
+}
+```
+
+Like in the above module, a **description** export should be provided for usage information.  The above module can be run with the following shell commands:
+
+```node tasks test```
+
+or
+
+```node tasks test -c```
+
+or
+
+```node tasks test --coverage```
