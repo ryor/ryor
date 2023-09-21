@@ -7,7 +7,7 @@
   "repository": "github:ryor/ryor",
   "bugs": "https://github.com/ryor/ryor/issues",
   "engines": {
-    "node": "^14.13.1 || >=16.0.0"
+    "node": ">=16.0.0"
   },
   "type": "module",
   "dependencies": {
@@ -35,7 +35,7 @@
     "npm-check-updates": "^16.14.4",
     "onchange": "^7.1.0",
     "prettier": "^3.0.3",
-    "ryor": "^0.9.16",
+    "ryor": "^0.9.17",
     "shx": "^0.3.4",
     "terser": "^5.20.0",
     "typescript": "^5.2.2"
