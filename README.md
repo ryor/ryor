@@ -20,19 +20,19 @@ Similar to shell, npm or [NPS](https://www.npmjs.com/package/nps) scripts, seque
 
 ### Simple to get usage information
 
-```node tasks```
+`node tasks`
 
 or
 
-```node tasks [runnable] -h```
+`node tasks [runnable] -h`
 
 ### Simple to use
 
-```node tasks <runnable> [...args]```
+`node tasks <runnable> [...args]`
 
 or
 
-```node tasks <runnable> [...args] + <runnable> [...args] + <runnable> [...args]```
+`node tasks <runnable> [...args] + <runnable> [...args] + <runnable> [...args]`
 
 ### Get Started
 
@@ -44,24 +44,24 @@ import ryor from 'ryor'
 ryor()
 ```
 
-**Note:** ryor uses ES module importing so ```"type": "module"``` in the project's package.json file is required.
+**Note:** ryor uses ES modules so `"type": "module"` in the project's package.json file is required and version 16 or greater of Node.js is recommended.
 
 A runnable module is any JS file that exports a "run" value, which can be a string, an array, a function or an asynchronous function:
 
 minify.js
+
 ```js
 export const run = 'minify --option1 --option2 path/to/file'
 ```
 
 build.js
+
 ```js
-export const run = [
-  'transpile',
-  'minify'
-]
+export const run = ['transpile', 'minify']
 ```
 
 transpile.js
+
 ```js
 export function run() {
   const path = ...
@@ -71,11 +71,12 @@ export function run() {
 ```
 
 test.js
+
 ```js
 export async function test() {
   const tester = await import('tester')
   const result = await tester.test()
-  
+
   console.log('Tests complete.')
 }
 ```
@@ -83,6 +84,7 @@ export async function test() {
 A runnable module containing a function/async function runnable can be passed argument and they can be defined in the **args** export:
 
 test.js
+
 ```js
 export const description = 'Runs tester and optionally collects coverage information'
 
@@ -104,25 +106,23 @@ export async function run({ coverage }) {
 
 Like in the above module, a **description** export should be provided for usage information. The above module can be run with the following shell commands:
 
-```node tasks test```
+`node tasks test`
 
 or
 
-```node tasks test -c```
+`node tasks test -c`
 
 or
 
-```node tasks test --coverage```
-
+`node tasks test --coverage`
 
 To output usage information for the above module, use one of the following commands:
 
-```node tasks test -h```
+`node tasks test -h`
 
 or
 
-```node tasks test --help```
-
+`node tasks test --help`
 
 Which should output the following:
 
