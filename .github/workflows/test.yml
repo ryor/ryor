@@ -7,8 +7,6 @@ on:
       - main
       - feature/*
       - release/*
-    tags:
-      - v*
 
 jobs:
   test:

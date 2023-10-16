@@ -1,12 +1,10 @@
 name: Publish
 
 on:
-  push:
-    tags:
-      - v*
   workflow_run:
-    workflows: [Test]
+    branches: [main]
     types: [completed]
+    workflows: [Test]
 
 defaults:
   run:
