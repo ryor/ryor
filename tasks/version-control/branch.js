@@ -19,7 +19,7 @@ export const args = {
     type: 'boolean'
   },
   hotfix: {
-    alias: 'h',
+    alias: 'x',
     description: 'Creates and/or switches to hotfix branch',
     type: 'boolean'
   },
