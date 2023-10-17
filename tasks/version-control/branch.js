@@ -98,9 +98,11 @@ export async function run({ _, ...args }) {
     else if (remote.includes(branch)) return [`git checkout ${branch}`, 'git pull', 'git branch --all']
     else if (!(await isValidBranchName(branch))) return `log -e Invalid ${type} name: ${branchPart}`
     else {
-      const requiredSourceBranch = type === 'hotfix' ? 'release' : 'develop'
+      let sourceBranch = type === 'hotfix' ? 'release' : 'develop'
 
-      if ((await getCurrentBranch()) !== requiredSourceBranch) return `log -e A ${type} branche can only be created from the ${requiredSourceBranch} branch`
+      if (sourceBranch === 'release') sourceBranch = (await getAllBranches()).local.find((name) => name.startsWith('release'))
+
+      if ((await getCurrentBranch()) !== sourceBranch) return `log -e A ${type} branche can only be created from the ${sourceBranch} branch`
 
       return [`git checkout -b ${branch}`, `git push --set-upstream origin ${branch}`, 'git branch --all']
     }
