@@ -11,9 +11,14 @@ export async function run({ delete: deleteBranch }) {
   const { getCurrentBranch, isCommitRequired, isPushRequired } = await import('./shared.js')
   const currentBranch = await getCurrentBranch()
 
-  if (currentBranch.startsWith('chore/') || currentBranch.startsWith('feature/') || currentBranch.startsWith('fix/') || currentBranch.startsWith('release/')) {
-    const isRelease = currentBranch.startsWith('release/')
-    const targetBranch = isRelease ? 'main' : 'develop'
+  if (['bugfix', 'chore', 'feature', 'hotfix', 'release'].findIndex((type) => currentBranch.startsWith(`${type}/`)) > -1) {
+    const targetBranch =
+      currentBranch.startsWith('bugfix/') || currentBranch.startsWith('chore/') || currentBranch.startsWith('feature/')
+        ? 'develop'
+        : currentBranch.startsWith('hotfix/')
+        ? 'release'
+        : 'main'
+    const isRelease = targetBranch === 'release'
     const sequence = []
     let version
 
@@ -36,5 +41,5 @@ export async function run({ delete: deleteBranch }) {
     } else sequence.push(`git checkout ${currentBranch}`)
 
     return sequence
-  } else return 'log -e Use merge for chore, fix, feature or release branches'
+  } else return 'log -e Use merge for bugfix, chore, feature, hotfix or release branches'
 }

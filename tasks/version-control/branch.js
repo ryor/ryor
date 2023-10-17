@@ -1,6 +1,13 @@
-export const description = 'Displays Git branches or creates and/or switches to chore, feature or fix branches'
+import { getCurrentBranch } from './shared.js'
+
+export const description = 'Displays Git branches or creates and/or switches to bugfix, chore, feature, hotfix or release branches'
 
 export const args = {
+  bugfix: {
+    alias: 'b',
+    description: 'Creates and/or switches to bugfix branch',
+    type: 'boolean'
+  },
   chore: {
     alias: 'c',
     description: 'Creates and/or switches to chore branch',
@@ -11,9 +18,9 @@ export const args = {
     description: 'Creates and/or switches to feature branch',
     type: 'boolean'
   },
-  fix: {
-    alias: 'x',
-    description: 'Creates and/or switches to fix branch',
+  hotfix: {
+    alias: 'h',
+    description: 'Creates and/or switches to hotfix branch',
     type: 'boolean'
   },
   release: {
@@ -24,27 +31,28 @@ export const args = {
 }
 
 export async function run({ _, ...args }) {
-  if (['chore', 'feature', 'fix', 'release'].filter((type) => args[type]).length > 1) return 'log -e Only one branch type may be specified at a time'
+  const branchPart = _[0]
+  const types = ['bugfix', 'chore', 'feature', 'hotfix', 'release'].filter((type) => args[type])
 
-  const { chore, feature, fix, release } = args
+  if (types.length === 0) {
+    const sequence = ['git branch --all']
 
-  if (chore || feature || fix) {
-    const type = chore ? 'chore' : feature ? 'feature' : 'fix'
+    if (branchPart) {
+      const { getAllBranches } = await import('./shared.js')
+      const { local } = await getAllBranches()
+      const branch = local.find((name) => name.startsWith(branchPart))
 
-    if (_.length === 0) return `log -e Valid ${type} name required`
+      if (branch) sequence.unshift(`git checkout ${branch}`)
+    }
 
-    const { getAllBranches, isValidBranchName } = await import('./shared.js')
-    const { local, remote } = await getAllBranches()
-    const name = _[0]
-    const requestedBranch = `${type}/${name}`
-
-    if (local.includes(requestedBranch)) return [`git checkout ${requestedBranch}`, 'git branch --all']
-    else if (remote.includes(requestedBranch)) return [`git checkout ${requestedBranch}`, 'git pull', 'git branch --all']
-    else if (!(await isValidBranchName(requestedBranch))) return `log -e Invalid ${type} name: ${name}`
-    else return [`git checkout -b ${requestedBranch}`, `git push --set-upstream origin ${requestedBranch}`, 'git branch --all']
+    return sequence
   }
 
-  if (release) {
+  if (types.length > 1) return 'log -e Only one branch type may be specified at a time'
+
+  const type = types[0]
+
+  if (type === 'release') {
     const [{ readFile, writeFile }, { doesTagExist, getAllBranches, getCurrentBranch }] = await Promise.all([import('fs/promises'), import('./shared.js')])
     const { local, remote } = await getAllBranches()
     let existingRelease = local.find((branch) => branch.startsWith('release'))
@@ -81,15 +89,20 @@ export async function run({ _, ...args }) {
       `git push --set-upstream origin release/${releaseVersion}`,
       'git branch --all'
     ]
+  } else {
+    const { getAllBranches, isValidBranchName } = await import('./shared.js')
+    const { local, remote } = await getAllBranches()
+    const branch = `${type}/${branchPart}`
+
+    if (local.includes(branch)) return [`git checkout ${branch}`, 'git branch --all']
+    else if (remote.includes(branch)) return [`git checkout ${branch}`, 'git pull', 'git branch --all']
+    else if (!(await isValidBranchName(branch))) return `log -e Invalid ${type} name: ${branchPart}`
+    else {
+      const requiredSourceBranch = type === 'hotfix' ? 'release' : 'develop'
+
+      if ((await getCurrentBranch()) !== requiredSourceBranch) return `log -e A ${type} branche can only be created from the ${requiredSourceBranch} branch`
+
+      return [`git checkout -b ${branch}`, `git push --set-upstream origin ${branch}`, 'git branch --all']
+    }
   }
-
-  if (_.length > 0) {
-    const { getAllBranches } = await import('./shared.js')
-    const { local } = await getAllBranches()
-    const requestedBranch = _[0]
-
-    if (local.includes(requestedBranch)) return [`git checkout ${requestedBranch}`, 'git branch --all']
-  }
-
-  return 'git branch --all'
 }
