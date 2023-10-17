@@ -2,12 +2,9 @@ name: Publish
 
 on:
   workflow_run:
-    branches:
-      - main
-    types:
-      - completed
-    workflows:
-      - Test
+    branches: [main]
+    types: [completed]
+    workflows: [Test]
 
 defaults:
   run:
@@ -17,6 +14,7 @@ jobs:
   publish:
     name: Publish release to npm
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
