@@ -18,7 +18,7 @@ export async function run({ delete: deleteBranch }) {
         : currentBranch.startsWith('hotfix/')
         ? 'release'
         : 'main'
-    const isRelease = targetBranch === 'release'
+    const isRelease = targetBranch === 'main'
     const sequence = []
     let version
 
