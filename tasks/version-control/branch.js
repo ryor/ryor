@@ -79,8 +79,6 @@ export async function run({ _, ...args }) {
     if (local.includes(releaseBranch)) return [`git checkout ${releaseBranch}`, 'git branch --all']
     else if (remote.includes(releaseBranch)) return [`git checkout ${releaseBranch}`, 'git pull', 'git branch --all']
 
-    packageJSON.version = releaseVersion
-
     await writeFile('package.json', JSON.stringify(packageJSON, null, '  '))
 
     return [
@@ -98,11 +96,10 @@ export async function run({ _, ...args }) {
     else if (remote.includes(branch)) return [`git checkout ${branch}`, 'git pull', 'git branch --all']
     else if (!(await isValidBranchName(branch))) return `log -e Invalid ${type} name: ${branchPart}`
     else {
-      let sourceBranch = type === 'hotfix' ? 'release' : 'develop'
+      const currentBranch = await getCurrentBranch()
+      const onRequiredSourceBranch = type === 'hotfix' ? currentBranch.startsWith('release') : currentBranch === 'develop'
 
-      if (sourceBranch === 'release') sourceBranch = (await getAllBranches()).local.find((name) => name.startsWith('release'))
-
-      if ((await getCurrentBranch()) !== sourceBranch) return `log -e A ${type} branche can only be created from the ${sourceBranch} branch`
+      if (!onRequiredSourceBranch) return `log -e A ${type} branch can only be created from ${type === 'hotfix' ? 'a release' : 'the develop'} branch`
 
       return [`git checkout -b ${branch}`, `git push --set-upstream origin ${branch}`, 'git branch --all']
     }

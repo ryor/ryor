@@ -12,7 +12,15 @@ export async function run({ delete: deleteBranch }) {
   const currentBranch = await getCurrentBranch()
 
   if (['bugfix', 'chore', 'feature', 'hotfix', 'release'].findIndex((type) => currentBranch.startsWith(`${type}/`)) > -1) {
-    let targetBranch = currentBranch.startsWith('release/') ? 'main' : currentBranch.startsWith('hotfix/') ? 'release' : 'develop'
+    const targetBranch =
+      currentBranch.startsWith('bugfix/') || currentBranch.startsWith('chore/') || currentBranch.startsWith('feature/')
+        ? 'develop'
+        : currentBranch.startsWith('hotfix/')
+        ? 'release'
+        : 'main'
+    const isRelease = targetBranch === 'main'
+    const sequence = []
+    let version
 
     if (targetBranch === 'release') targetBranch = (await getAllBranches()).local.find((name) => name.startsWith('release'))
 
