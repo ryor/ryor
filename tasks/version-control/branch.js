@@ -79,6 +79,8 @@ export async function run({ _, ...args }) {
     if (local.includes(releaseBranch)) return [`git checkout ${releaseBranch}`, 'git branch --all']
     else if (remote.includes(releaseBranch)) return [`git checkout ${releaseBranch}`, 'git pull', 'git branch --all']
 
+    packageJSON.version = releaseVersion
+
     await writeFile('package.json', JSON.stringify(packageJSON, null, '  '))
 
     return [
