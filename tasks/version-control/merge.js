@@ -11,13 +11,13 @@ export async function run({ delete: deleteBranch }) {
   const { getCurrentBranch, isCommitRequired, isPushRequired } = await import('./shared.js')
   const currentBranch = await getCurrentBranch()
 
-  if (['bugfix', 'chore', 'feature', 'hotfix', 'release'].findIndex((type) => currentBranch.startsWith(`${type}/`)) > -1) {
+  if (['develop', 'main'].includes(currentBranch) || ['bugfix', 'chore', 'feature', 'hotfix', 'release'].find((type) => currentBranch.startsWith(`${type}/`))) {
+    // prettier-ignore
     const targetBranch =
-      currentBranch.startsWith('bugfix/') || currentBranch.startsWith('chore/') || currentBranch.startsWith('feature/')
-        ? 'develop'
-        : currentBranch.startsWith('hotfix/')
-          ? 'release'
-          : 'main'
+        currentBranch.startsWith('bugfix') || currentBranch.startsWith('chore') || currentBranch.startsWith('feature') ? 'develop'
+      : currentBranch.startsWith('hotfix') ? 'release'
+      : currentBranch === 'main' ? 'develop'
+      : 'main'
     const isRelease = targetBranch === 'main'
     const sequence = []
     let version
@@ -36,7 +36,7 @@ export async function run({ delete: deleteBranch }) {
 
     if (isRelease) sequence.push(`git tag -a v${version} -m "Version ${version}"`, `git push origin v${version}`)
 
-    if (isRelease || deleteBranch) {
+    if (!['develop', 'main'].includes(currentBranch) && (isRelease || deleteBranch)) {
       sequence.push(`git branch -D ${currentBranch}`, `git push origin --delete ${currentBranch}`)
     } else sequence.push(`git checkout ${currentBranch}`)
 
