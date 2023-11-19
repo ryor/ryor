@@ -28,7 +28,7 @@ export async function run({ delete: deleteBranch }) {
         'git push'
       )
 
-      if (targetBranch.startsWith('hotfix')) {
+      if (currentBranch.startsWith('hotfix')) {
         // prettier-ignore
         sequence.push(
           'git checkout develop',
