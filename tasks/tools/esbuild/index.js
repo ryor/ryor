@@ -16,7 +16,7 @@ export async function run({ quiet }) {
     [
       'esbuild source/index.ts',
       '--bundle',
-      ...['chalk', 'cli-truncate', 'cross-spawn', 'minimist', 'ps-tree', 'shell-quote'].map((value) => `--external:${value}`),
+      ...['chalk', 'cli-truncate', 'cross-spawn', 'fast-glob', 'minimist', 'ps-tree', 'shell-quote'].map((value) => `--external:${value}`),
       '--format=esm',
       '--log-level=error',
       '--outfile=build/index.js',
