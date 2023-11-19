@@ -1,15 +1,15 @@
 import { basename } from 'path'
+import type { RunnableModule } from '../modules'
 import { resolveAllRunnableModules } from '../modules'
+import type { RunnerConfiguration } from '../runner'
 import { LINE_BREAK } from '../shared'
 import { composeRunnableDescription } from './composeRunnableDescription'
 import { composeUsageInformationList } from './composeUsageInformationList'
 import { MAIN_USAGE_FOOTER, MAIN_USAGE_HEADER, NO_RUNNABLES_RESOLVED_MESSAGE } from './constants'
-import type { RunnableModule } from '../modules'
-import type { RunnerConfiguration } from '../runner'
 
 export async function composeMainUsageInformation(configuration: RunnerConfiguration): Promise<string> {
-  const { directory, options }: RunnerConfiguration = configuration
-  const allModules: Map<string, Map<string, RunnableModule>> = await resolveAllRunnableModules(directory, options?.debug === true)
+  const { directory }: RunnerConfiguration = configuration
+  const allModules: Map<string, Map<string, RunnableModule>> = await resolveAllRunnableModules(configuration)
 
   if (allModules.size === 0) return NO_RUNNABLES_RESOLVED_MESSAGE
 
