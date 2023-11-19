@@ -84,7 +84,7 @@ export async function run({ _, ...args }) {
     await writeFile('package.json', JSON.stringify(packageJSON, null, '  '))
 
     return [
-      `commit -p "Release ${releaseVersion}"`,
+      `commit -p "Release v${releaseVersion}"`,
       `git checkout -b release/${releaseVersion}`,
       `git push --set-upstream origin release/${releaseVersion}`,
       'git branch --all'
