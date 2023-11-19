@@ -16,8 +16,8 @@ export async function run({ delete: deleteBranch }) {
       currentBranch.startsWith('bugfix/') || currentBranch.startsWith('chore/') || currentBranch.startsWith('feature/')
         ? 'develop'
         : currentBranch.startsWith('hotfix/')
-        ? 'release'
-        : 'main'
+          ? 'release'
+          : 'main'
     const isRelease = targetBranch === 'main'
     const sequence = []
     let version
