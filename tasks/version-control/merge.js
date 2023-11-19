@@ -20,10 +20,22 @@ export async function run({ delete: deleteBranch }) {
       if (await isCommitRequired()) sequence.push('commit -p')
       else if (await isPushRequired()) sequence.push('git push')
 
-      sequence.push(`git checkout ${targetBranch}`, 'git pull', `git merge --no-edit -X theirs ${currentBranch}`, 'git push')
+      // prettier-ignore
+      sequence.push(
+        `git checkout ${targetBranch}`,
+        'git pull',
+        `git merge --no-edit -X theirs ${currentBranch}`,
+        'git push'
+      )
 
       if (targetBranch.startsWith('hotfix')) {
-        sequence.push('git checkout develop', 'git pull', `git merge --no-edit -X theirs ${currentBranch}`, 'git push')
+        // prettier-ignore
+        sequence.push(
+          'git checkout develop',
+          'git pull',
+          `git merge --no-edit -X theirs ${currentBranch}`,
+          'git push'
+        )
       }
 
       if (deleteBranch) sequence.push(`git branch -D ${currentBranch}`, `git push origin --delete ${currentBranch}`)
