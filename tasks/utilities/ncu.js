@@ -11,14 +11,12 @@ export async function run({ update }) {
   if (!update) return 'npm-check-updates'
 
   const { stat } = await import('fs/promises')
-  const previousModifiedTime = (await stat('package.json')).mtimeMs
+  const { mtimeMs: previousModifiedTime } = await stat('package.json')
 
   return [
     'npm-check-updates -u',
     async () => {
-      const currentModifiedTime = (await stat('package.json')).mtimeMs
-
-      if (currentModifiedTime > previousModifiedTime) return 'npm install --force'
+      if ((await stat('package.json')).mtimeMs > previousModifiedTime) return ['npm install --force', 'npm audit fix --force']
     }
   ]
 }

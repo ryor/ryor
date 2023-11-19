@@ -5,8 +5,8 @@ export function composeRunnableDescription(runnableModule: RunnableModule): stri
     typeof runnableModule.description === 'function'
       ? runnableModule.description()
       : typeof runnableModule.description === 'string'
-      ? runnableModule.description
-      : undefined
+        ? runnableModule.description
+        : undefined
 
   if (typeof description !== 'string' || description === '') description = undefined
 
