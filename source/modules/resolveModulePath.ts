@@ -11,7 +11,7 @@ export async function resolveModulePath(directoryPath: string, dirent: Dirent): 
     const path: string = resolve(directoryPath, name, 'index.js')
     const stats: Stats | undefined = await getPathStats(path)
 
-    if (stats !== undefined && stats.isFile()) return path // eslint-disable-line @typescript-eslint/prefer-optional-chain
+    if (stats !== undefined && stats.isFile()) return path
   }
 
   return undefined

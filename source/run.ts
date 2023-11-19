@@ -23,7 +23,7 @@ export async function run(argv: string[], usage?: UsageConfiguration): Promise<v
     if (options?.help === true || sequence.length === 0) await outputUsageInformation(configuration)
     else {
       killChildProcessesOnExit = true
-      await runRunnableSequence(sequence, { directory, options, usage })
+      await runRunnableSequence(sequence, configuration)
 
       if (options?.time === true) console.log(RUN_TIME_TEMPLATE.replace('[RUN_TIME]', String(Date.now() - startTime)))
     }
