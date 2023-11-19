@@ -15,4 +15,11 @@ export const args = {
   }
 }
 
-export const run = ({ coverage, fix, quiet }) => [`eslint${fix ? ' -f' : ''}${quiet ? ' -q' : ''}`, `jest${coverage ? ' -c' : ''}${quiet ? ' -q' : ''}`]
+export function run({ coverage, fix, quiet }) {
+  // prettier-ignore
+  return  [
+    '-c',
+    `eslint${fix ? ' -f' : ''}${quiet ? ' -q' : ''}`,
+    `jest${coverage ? ' -c' : ''}${quiet ? ' -q' : ''}`
+  ]
+}
