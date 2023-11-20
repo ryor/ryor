@@ -26,6 +26,8 @@ export async function run() {
     return 'git branch --all'
   }
 
+  await checkoutBranch('develop')
+  
   if (await isCommitRequired()) {
     log.error('Resolve uncommitted changes on develop branch before creating release')
     return
