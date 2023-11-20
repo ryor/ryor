@@ -32,7 +32,7 @@ export async function checkoutBranch(branch) {
 
 export async function commit(message, push = false) {
   await runShellCommand('git add --all')
-  await runShellCommand(`git commit -m ${message}`)
+  await runShellCommand('git', 'commit', '-m', message)
   if (push) await runShellCommand('git push')
 }
 

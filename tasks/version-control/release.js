@@ -49,7 +49,7 @@ export async function run() {
 
     log.wait(`Creating commit for version ${releaseVersion}...`)
 
-    await commit(`Release v${releaseVersion}`)
+    await commit(`Release v${releaseVersion}`, true)
   }
 
   releaseBranch = `release/${releaseVersion}`
