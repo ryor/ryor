@@ -1,8 +1,17 @@
-async function runShellCommand(command) {
-  const { spawn } = await import('child_process')
+async function runShellCommand(command, ...args) {
+  if (!spawn) spawn = (await import('child_process')).spawn
+
+  let name
+
+  if (args.length > 0) name = command
+  else {
+    const [value1, ...rest] = command.split(' ')
+
+    name = value1
+    args = rest
+  }
 
   return new Promise((resolve) => {
-    const [name, ...args] = command.split(' ')
     const childProcess = spawn(name, args)
     let stderr = ''
     let stdout = ''
@@ -32,19 +41,17 @@ export async function createBranch(branch) {
   await runShellCommand(`git push --set-upstream origin ${branch}`)
 }
 
-export async function createTag(version) {
-  await runShellCommand(`git tag -a v${version} -m "Release v${version}"`)
+export async function createVersionTag(version) {
+  await runShellCommand('git', 'tag', '-a', `v${version}`, '-m', `Release v${version}`)
   await runShellCommand(`git push origin v${version}`)
 }
 
-export async function doesTagExist(name) {
-  return (await runShellCommand(`git tag -v ${name}`)).stderr !== `error: tag '${name}' not found.`
+export async function fetchAll() {
+  await runShellCommand('git fetch --all --tags')
 }
 
 export async function getAllBranches() {
-  const { stdout } = await runShellCommand('git branch --all')
-
-  return stdout
+  return (await runShellCommand('git branch --all')).stdout
     .split('\n')
     .map((line) => line.trim())
     .filter((line) => !!line)
@@ -73,8 +80,8 @@ export async function getAllBranches() {
     )
 }
 
-export async function fetchAll() {
-  await runShellCommand('git fetch --all --tags')
+export async function getAllTags() {
+  return (await runShellCommand('git tag --sort=-v:refname')).stdout.split('\n').map((line) => line.trim())
 }
 
 export async function getCurrentBranch() {
@@ -96,3 +103,5 @@ export async function isPushRequired() {
 export async function isValidBranchName(name) {
   return (await runShellCommand(`git check-ref-format --branch ${name}`)).code === 0
 }
+
+let spawn
