@@ -17,6 +17,26 @@ async function runShellCommand(command) {
   })
 }
 
+export async function checkoutBranch(branch) {
+  await runShellCommand(`git checkout ${branch}`)
+}
+
+export async function commit(message, push = false) {
+  await runShellCommand('git add --all')
+  await runShellCommand(`git commit -m ${message}`)
+  if (push) await runShellCommand('git push')
+}
+
+export async function createBranch(branch) {
+  await runShellCommand(`git checkout -b ${branch}`)
+  await runShellCommand(`git push --set-upstream origin ${branch}`)
+}
+
+export async function createTag(name, message) {
+  await runShellCommand(`git tag -a ${name} -m "${message}"`)
+  await runShellCommand(`git push ${name}`)
+}
+
 export async function doesTagExist(name) {
   return (await runShellCommand(`git tag -v ${name}`)).stderr !== `error: tag '${name}' not found.`
 }
@@ -51,6 +71,10 @@ export async function getAllBranches() {
       },
       { current: null, local: [], remote: [] }
     )
+}
+
+export async function fetchAll() {
+  await runShellCommand('git fetch --all --tags')
 }
 
 export async function getCurrentBranch() {
