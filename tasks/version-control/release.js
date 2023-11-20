@@ -60,7 +60,7 @@ export async function run() {
 
   log.wait(`Creating v${releaseVersion} tag...`)
 
-  await createTag(`v${releaseVersion}`)
+  await createTag(releaseVersion)
 
   return 'git branch --all'
 }

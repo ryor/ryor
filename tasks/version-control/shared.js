@@ -32,9 +32,9 @@ export async function createBranch(branch) {
   await runShellCommand(`git push --set-upstream origin ${branch}`)
 }
 
-export async function createTag(name, message) {
-  await runShellCommand(`git tag -a ${name} -m "${message}"`)
-  await runShellCommand(`git push ${name}`)
+export async function createTag(version) {
+  await runShellCommand(`git tag -a v${version} -m "Release v${version}"`)
+  await runShellCommand(`git push origin v${version}`)
 }
 
 export async function doesTagExist(name) {
