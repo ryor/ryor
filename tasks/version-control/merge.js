@@ -24,7 +24,7 @@ export async function run({ delete: deleteBranch }) {
       sequence.push(
         `git checkout ${targetBranch}`,
         'git pull',
-        `git merge --no-edit -s theirs ${currentBranch}`,
+        `git merge --no-edit -X theirs ${currentBranch}`,
         'git push'
       )
 
