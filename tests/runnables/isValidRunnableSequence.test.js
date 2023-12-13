@@ -1,6 +1,6 @@
 import { isValidRunnableSequence } from '../../source/runnables/isValidRunnableSequence'
 
-describe('Checks for a valid runnable sequence', () => {
+describe('Check for a valid runnable sequence', () => {
   test('returns false for individual invalid runnables', () => {
     expect(isValidRunnableSequence()).toEqual(false)
     expect(isValidRunnableSequence(undefined)).toEqual(false)

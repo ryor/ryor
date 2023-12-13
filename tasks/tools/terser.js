@@ -12,7 +12,7 @@ export const run = ({ quiet }) => {
 
   if (!quiet) sequence.push('log -w Minifying module with Terser')
 
-  sequence.push('terser build/index.js --compress --mangle --output build/index.js')
+  sequence.push('terser build/index.js --compress --mangle --toplevel --output build/index.js')
 
   return sequence
 }

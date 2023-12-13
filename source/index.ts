@@ -1,4 +1,4 @@
-import { run } from './run'
-import type { UsageConfiguration } from './usage'
+import { run } from './runner'
+import { EntryRunnableModulesList } from './runner/types'
 
-export default async (usage?: UsageConfiguration): Promise<void> => await run(process.argv.slice(1), usage)
+export default async (list: EntryRunnableModulesList) => await run(process.argv.slice(1), list)

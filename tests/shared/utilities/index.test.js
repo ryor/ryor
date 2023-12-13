@@ -1,4 +1,4 @@
-describe('Verifies shared/utilities exports', () => {
+describe('Verify shared/utilities exports', () => {
   test('Six exported functions', () => {
     const exports = require('../../../source/shared/utilities/index')
 

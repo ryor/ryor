@@ -1,12 +1,12 @@
-import type { RunnableSequence } from '../runnables'
+import { RunnableSequence } from '../runnables'
 
-export function parseRunnerRunnableSequence(argv: string[]): RunnableSequence {
+export function parseRunnerRunnableSequence(argv: string[]) {
   let sequence: RunnableSequence = []
 
   if (argv.length > 0) {
     sequence = argv
       .reduce(
-        (definitions: string[][], value: string): string[][] => {
+        (definitions: string[][], value: string) => {
           if (value === '+') definitions.push([])
           else definitions[definitions.length - 1]?.push(value)
 
@@ -14,8 +14,8 @@ export function parseRunnerRunnableSequence(argv: string[]): RunnableSequence {
         },
         [[]]
       )
-      .filter((definition: string[]): boolean => definition.length > 0)
-      .map((array: string[]): string => array.join(' '))
+      .filter((definition: string[]) => definition.length > 0)
+      .map((array: string[]) => array.join(' '))
   }
 
   return sequence

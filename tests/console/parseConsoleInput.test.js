@@ -1,6 +1,6 @@
 import { parseConsoleInput } from '../../source/console/parseConsoleInput'
 
-describe('Parses console input', () => {
+describe('Parse console input', () => {
   test('with no arguments', () => {
     expect(parseConsoleInput([])).toEqual({ options: {}, sequence: [] })
   })

@@ -1,6 +1,6 @@
 import { parseRunnableArguments } from '../../source/runnables/parseRunnableArguments'
 
-describe('Parses runnable arguments based on definitions', () => {
+describe('Parse runnable arguments based on definitions', () => {
   test('with no argument definitions', () => {
     const definitions = {}
 

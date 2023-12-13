@@ -3,10 +3,23 @@ import { runRunnableSequence } from '../../source/runnables/runRunnableSequence'
 import { ensureCorrectPATHValue } from '../../source/runner/ensureCorrectPATHValue'
 import { LINE_BREAK } from '../../source/shared/constants'
 
-describe('Runs runnable sequence', () => {
+describe('Run runnable sequence', () => {
   const projectsDirectoryPath = resolve(__dirname, '../.test-projects/projects')
   const projectDirectoryPath = resolve(projectsDirectoryPath, 'all')
-  const configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
+  const directory = resolve(projectDirectoryPath, 'tasks')
+  // prettier-ignore
+  const modules = [
+    ['linter', 'invalid'],
+    ['build', 'main'],
+    ['deploy', 'main'],
+    ['test', 'main'],
+    ['npm'],
+    ['tester', 'tools'],
+    ['transpiler', 'tools'],
+    ['bundler', 'tools'],
+    ['git']
+  ]
+  const configuration = { directory, modules }
   let output = ''
 
   beforeAll(async () => {

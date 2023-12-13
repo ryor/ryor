@@ -1,6 +1,6 @@
 import { isValidRunnable } from '../../source/runnables/isValidRunnable'
 
-describe('Checks for a valid runnable', () => {
+describe('Check for a valid runnable', () => {
   test('returns false for falsy values', () => {
     expect(isValidRunnable()).toEqual(false)
     expect(isValidRunnable(undefined)).toEqual(false)

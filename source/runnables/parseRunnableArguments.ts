@@ -1,10 +1,10 @@
-import minimist, { Opts, ParsedArgs } from 'minimist'
-import type { RunnableArgumentDefinitions } from './types'
+import minimist, { Opts } from 'minimist'
+import { RunnableArgumentDefinitions } from './types'
 
-export function parseRunnableArguments(definitions: RunnableArgumentDefinitions, args: string[]): ParsedArgs {
+export function parseRunnableArguments(definitions: RunnableArgumentDefinitions, args: string[]) {
   return minimist(
     args,
-    Object.entries(definitions).reduce((opts: Opts, [name, definition]): Opts => {
+    Object.entries(definitions).reduce((opts: Opts, [name, definition]) => {
       if (definition.alias !== undefined) {
         opts.alias = {
           [definition.alias]: name,

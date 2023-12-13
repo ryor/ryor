@@ -7,7 +7,7 @@ const INVALID_RUNNABLE_MODULE_ERROR_MESSAGE = 'Invalid runnable module'
 
 const INVALID_RUNNABLE_IN_MODULE_ERROR_MESSAGE = 'Invalid runnable in module'
 
-export function isValidRunnableModule(module: any, debug = false): boolean {
+export function isValidRunnableModule(module: any, debug = false) {
   if (!isPopulatedObject(module)) {
     if (debug) throw new RunnableModuleError(INVALID_RUNNABLE_MODULE_ERROR_MESSAGE)
 

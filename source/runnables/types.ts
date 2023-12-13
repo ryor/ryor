@@ -1,5 +1,5 @@
 /* eslint no-use-before-define: off */
-import type { ParsedArgs } from 'minimist'
+import { ParsedArgs } from 'minimist'
 
 export interface RunnableArgumentDefinition {
   alias?: string

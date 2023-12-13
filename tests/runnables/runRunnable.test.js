@@ -2,10 +2,23 @@ import { resolve } from 'path'
 import { runRunnable } from '../../source/runnables/runRunnable'
 import { ensureCorrectPATHValue } from '../../source/runner/ensureCorrectPATHValue'
 
-describe('Runs runnable', () => {
+describe('Run runnable', () => {
   const projectsDirectoryPath = resolve(__dirname, '../.test-projects/projects')
   const projectDirectoryPath = resolve(projectsDirectoryPath, 'all')
-  const configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
+  const directory = resolve(projectDirectoryPath, 'tasks')
+  // prettier-ignore
+  const modules = [
+    ['linter', 'invalid'],
+    ['build', 'main'],
+    ['deploy', 'main'],
+    ['test', 'main'],
+    ['npm'],
+    ['tester', 'tools'],
+    ['transpiler', 'tools'],
+    ['bundler', 'tools'],
+    ['git']
+  ]
+  const configuration = { directory, modules }
   let output
 
   beforeAll(async () => {

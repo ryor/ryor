@@ -6,11 +6,11 @@ describe('Import module(s)', () => {
 
   afterEach(() => jest.resetModules())
 
-  test('returns undefned when module cannot be resolved', async () => {
+  test('returns undefined when module cannot be resolved', async () => {
     expect(await importModule(resolve(__dirname, 'unresolvable'))).toBeUndefined()
   })
 
-  test('returns undefned when module contains syntax error', async () => {
+  test('returns undefined when module contains syntax error', async () => {
     expect(await importModule(resolve(projectsDirectoryPath, 'syntax-error/main/bundler'))).toBeUndefined()
   })
 

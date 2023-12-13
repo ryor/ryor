@@ -1,10 +1,9 @@
-/* eslint no-use-before-define: off */
-import { UsageConfiguration } from '../usage'
+export type EntryRunnableModulesList = (string | [string, string[]])[]
 
 export interface RunnerConfiguration {
   directory: string
+  modules: RunnableModulesList
   options?: RunnerOptions
-  usage?: UsageConfiguration
 }
 
 export interface RunnerOptions {
@@ -12,3 +11,5 @@ export interface RunnerOptions {
   help?: boolean
   time?: boolean
 }
+
+export type RunnableModulesList = [name: string, category?: string][]

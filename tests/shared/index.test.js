@@ -1,4 +1,4 @@
-describe('Verifies shared exports', () => {
+describe('Verify usage exports', () => {
   test('Two exported constants, three exported functions and one exported error class', () => {
     const exports = require('../../source/shared/index')
 

@@ -19,24 +19,30 @@ describe('Output usage information', () => {
   afterAll(() => jest.restoreAllMocks())
 
   test('NO_RUNNABLES_RESOLVED_MESSAGE when no valid runnables are resolved', async () => {
-    let configuration, projectDirectoryPath
+    let configuration, directory, modules, projectDirectoryPath
 
     projectDirectoryPath = resolve(projectsDirectoryPath, 'empty-runnables-directory')
-    configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
+    directory = resolve(projectDirectoryPath, 'tasks')
+    modules = []
+    configuration = { directory, modules }
     output = ''
     process.chdir(projectDirectoryPath)
     await outputUsageInformation(configuration)
     expect(output).toBe(LINE_BREAK + NO_RUNNABLES_RESOLVED_MESSAGE + LINE_BREAK)
 
     projectDirectoryPath = resolve(projectsDirectoryPath, 'invalid-definitions')
-    configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
+    directory = resolve(projectDirectoryPath, 'tasks')
+    modules = ['bundler', 'linter', 'tester', 'transpiler']
+    configuration = { directory, modules }
     output = ''
     process.chdir(projectDirectoryPath)
     await outputUsageInformation(configuration)
     expect(output).toBe(LINE_BREAK + NO_RUNNABLES_RESOLVED_MESSAGE + LINE_BREAK)
 
     projectDirectoryPath = resolve(projectsDirectoryPath, 'syntax-error')
-    configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
+    directory = resolve(projectDirectoryPath, 'tasks')
+    modules = ['bundler']
+    configuration = { directory, modules }
     output = ''
     process.chdir(projectDirectoryPath)
     await outputUsageInformation(configuration)
@@ -45,7 +51,19 @@ describe('Output usage information', () => {
 
   test('for "all" test project', async () => {
     const projectDirectoryPath = resolve(projectsDirectoryPath, 'all')
-    const configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
+    const directory = resolve(projectDirectoryPath, 'tasks')
+    // prettier-ignore
+    const modules = [
+      ['build', 'main'],
+      ['deploy', 'main'],
+      ['test', 'main'],
+      ['bundler', 'tools'],
+      ['tester', 'tools'],
+      ['transpiler', 'tools'],
+      ['git'],
+      ['npm']
+    ]
+    const configuration = { directory, modules }
     const { build, bundler, main, tester, transpiler, git } = require(resolve(usageInformationDirectoryPath, 'all'))
 
     process.chdir(projectDirectoryPath)

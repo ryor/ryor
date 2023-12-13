@@ -1,6 +1,6 @@
 import { isPopulatedObject } from '../../../source/shared/utilities/isPopulatedObject'
 
-describe('Determines if value is a populated object', () => {
+describe('Determine if value is a populated object', () => {
   test('returns false when value is not a populated object', () => {
     expect(isPopulatedObject(undefined)).toBe(false)
     expect(isPopulatedObject(false)).toBe(false)

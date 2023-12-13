@@ -1,5 +1,7 @@
 export * from './constants'
 export { ensureCorrectPATHValue } from './ensureCorrectPATHValue'
+export { parseRunnableModulesList } from './parseRunnableModulesList'
 export { parseRunnerOptions } from './parseRunnerOptions'
 export { parseRunnerRunnableSequence } from './parseRunnerRunnableSequence'
-export type { RunnerConfiguration, RunnerOptions } from './types'
+export { run } from './run'
+export { RunnableModulesList, RunnerConfiguration, RunnerOptions } from './types'

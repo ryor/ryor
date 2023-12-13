@@ -1,6 +1,6 @@
-import type { RunnableModule } from '../modules'
+import { RunnableModule } from '../modules'
 
-export function composeRunnableDescription(runnableModule: RunnableModule): string | undefined {
+export function composeRunnableDescription(runnableModule: RunnableModule) {
   let description: string | undefined =
     typeof runnableModule.description === 'function'
       ? runnableModule.description()

@@ -3,7 +3,7 @@ import { DEFAULT_PATH_DIVIDER, WINDOWS_PATH_DIVIDER } from '../../source/runner/
 import { ensureCorrectPATHValue } from '../../source/runner/ensureCorrectPATHValue'
 import { WINDOWS_IDENTIFIER } from '../../source/shared/constants'
 
-describe('Ensures PATH environment variable has correct value', () => {
+describe('Ensure PATH environment variable has correct value', () => {
   const { env } = process
   const PATH = env.PATH
   const projectsDirectoryPath = resolve(__dirname, '../.test-projects/projects')

@@ -1,8 +1,8 @@
-import type { RunnableArgumentDefinitions } from '../runnables'
+import { RunnableArgumentDefinitions } from '../runnables'
 
 const RUNNABLE_MODULE_HELP_ARGUMENT_DESCRIPTION = 'Displays this usage information'
 
-export function ensureRunnableModuleHelpArgumentDefinition(definitions: RunnableArgumentDefinitions = {}): RunnableArgumentDefinitions {
+export function ensureRunnableModuleHelpArgumentDefinition(definitions: RunnableArgumentDefinitions = {}) {
   return {
     ...definitions,
     help: {
@@ -10,5 +10,5 @@ export function ensureRunnableModuleHelpArgumentDefinition(definitions: Runnable
       description: RUNNABLE_MODULE_HELP_ARGUMENT_DESCRIPTION,
       type: 'boolean'
     }
-  }
+  } as RunnableArgumentDefinitions
 }

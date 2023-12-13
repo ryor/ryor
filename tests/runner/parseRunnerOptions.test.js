@@ -1,6 +1,6 @@
 import { parseRunnerOptions } from '../../source/runner/parseRunnerOptions'
 
-describe('Parses runner options', () => {
+describe('Parse runner options', () => {
   test('with invalid flags set', () => {
     expect(parseRunnerOptions(['-f', 'runnable'])).toEqual({})
     expect(parseRunnerOptions(['--foo', 'runnable'])).toEqual({})

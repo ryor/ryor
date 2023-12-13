@@ -1,6 +1,6 @@
 import { isValidRunnableModule } from '../../source/modules/isValidRunnableModule'
 
-describe('Checks for a valid runnable module', () => {
+describe('Check for a valid runnable module', () => {
   test('returns false for values of the wrong type or empty objects', () => {
     expect(isValidRunnableModule()).toEqual(false)
     expect(isValidRunnableModule(undefined)).toEqual(false)

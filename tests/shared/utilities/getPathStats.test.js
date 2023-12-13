@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import { getPathStats } from '../../../source/shared/utilities/getPathStats'
 
-describe('Gets path stats', () => {
+describe('Get path stats', () => {
   test('returns undefined when path is not valid', async () => {
     expect(await getPathStats('./invalid/path')).toBe(undefined)
   })

@@ -2,9 +2,22 @@ import { resolve } from 'path'
 import { runRunnableModule } from '../../source/modules/runRunnableModule'
 import { LINE_BREAK } from '../../source/shared/constants'
 
-describe('Runs runnable module', () => {
+describe('Run runnable module', () => {
   const projectDirectoryPath = resolve(__dirname, '../.test-projects/projects/all')
-  const configuration = { directory: resolve(projectDirectoryPath, 'tasks') }
+  const directory = resolve(projectDirectoryPath, 'tasks')
+  // prettier-ignore
+  const modules = [
+    ['linter', 'invalid'],
+    ['build', 'main'],
+    ['deploy', 'main'],
+    ['test', 'main'],
+    ['npm'],
+    ['tester', 'tools'],
+    ['transpiler', 'tools'],
+    ['bundler', 'tools'],
+    ['git']
+  ]
+  const configuration = { directory, modules }
 
   let output
 

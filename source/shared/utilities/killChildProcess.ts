@@ -4,7 +4,7 @@ import { wait } from './wait'
 
 const POLLING_DELAY = 250
 
-export async function killChildProcess(pid: number): Promise<void> {
+export async function killChildProcess(pid: number) {
   let processTerminated = false
 
   try {

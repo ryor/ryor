@@ -1,8 +1,6 @@
-import { parseRunnerOptions, parseRunnerRunnableSequence } from '../runner'
-import type { RunnableSequence } from '../runnables'
-import type { RunnerOptions } from '../runner'
+import { parseRunnerOptions, parseRunnerRunnableSequence, RunnerOptions } from '../runner'
 
-export function parseConsoleInput(argv: string[]): { options: RunnerOptions; sequence: RunnableSequence } {
+export function parseConsoleInput(argv: string[]) {
   let options: RunnerOptions = {}
 
   if (argv.length > 0) {
@@ -13,7 +11,7 @@ export function parseConsoleInput(argv: string[]): { options: RunnerOptions; seq
     if (flags.length > 0) options = parseRunnerOptions(flags)
   }
 
-  const sequence: RunnableSequence = parseRunnerRunnableSequence(argv)
+  const sequence = parseRunnerRunnableSequence(argv)
 
   return { options, sequence }
 }

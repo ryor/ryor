@@ -6,16 +6,16 @@ const ENOENT_ERROR_TEMPLATE = 'Error: spawn [COMMAND] ENOENT'
 
 const UNRESOLVED_COMMAND_ERROR_TEMPLATE = `Could not resolve ${chalk.bold('[COMMAND]')}`
 
-export async function runShellCommand(command: string, args: string[] = [], spawnOptions: SpawnOptions = {}): Promise<void> {
-  return await new Promise<void>((resolve: () => void, reject: (error: Error) => void): void => {
+export async function runShellCommand(command: string, args: string[] = [], spawnOptions: SpawnOptions = {}) {
+  return await new Promise<void>((resolve: () => void, reject: (error: Error) => void) => {
     const childProcess: ChildProcess = spawn(command, args, { env: { ...process.env, FORCE_COLOR: 'true' }, stdio: 'inherit', ...spawnOptions })
     let error = ''
 
-    childProcess.on('error', (data: Buffer): void => {
+    childProcess.on('error', (data: Buffer) => {
       error += data.toString()
     })
 
-    childProcess.on('close', (code: number): void => {
+    childProcess.on('close', (code: number) => {
       error = error.trim()
 
       if (code !== 0) {

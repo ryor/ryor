@@ -1,13 +1,19 @@
 /* eslint no-use-before-define: off */
 import { Runnable, RunnableArgumentDefinitions, RunnableSequence } from '../runnables'
-import { Usage } from '../usage'
 
 export type RunnableModule = NodeModule & {
   args?: RunnableArgumentDefinitions
   commands?: RunnableModuleCommandDefinitions
   description?: string | (() => string)
   run: Runnable | RunnableSequence
-  usage?: Usage | (() => Usage)
+  usage?: RunnableModuleUsage | (() => RunnableModuleUsage)
+}
+
+export type RunnableModuleUsage = RunnableModuleUsageDefinition | string
+
+export interface RunnableModuleUsageDefinition {
+  args?: string
+  body?: string
 }
 
 export interface RunnableModuleCommandDefinition {

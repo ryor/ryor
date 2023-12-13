@@ -1,16 +1,15 @@
 import { resolve } from 'path'
-import { resolveRunnableModule, runRunnableModule } from '../modules'
+import { RunnableModule, resolveRunnableModule, runRunnableModule } from '../modules'
+import { RunnerConfiguration } from '../runner'
+import { killChildProcesses } from '../shared'
 import { parseStringRunnable } from './parseStringRunnable'
 import { runShellCommand } from './runShellCommand'
-import type { RunnableModule } from '../modules'
-import type { RunnerConfiguration } from '../runner'
-import { killChildProcesses } from '../shared'
-import type { Runnable, RunnableSequence } from './types'
+import { Runnable } from './types'
 
-export async function runRunnable(runnable: Runnable, configuration: RunnerConfiguration, context?: string): Promise<Runnable | RunnableSequence | undefined> {
+export async function runRunnable(runnable: Runnable, configuration: RunnerConfiguration, context?: string) {
   if (typeof runnable === 'function') return runnable()
   else if (typeof runnable === 'string') {
-    const args: string[] = parseStringRunnable(runnable)
+    const args = parseStringRunnable(runnable)
 
     if (args.length > 0) {
       if (args[0] === 'exit') {

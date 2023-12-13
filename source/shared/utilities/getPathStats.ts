@@ -1,7 +1,7 @@
 /* eslint no-empty: ["error", { "allowEmptyCatch": true }] */
-import { Stats, promises as fs } from 'fs'
+import { promises as fs } from 'fs'
 
-export async function getPathStats(path: string): Promise<Stats | undefined> {
+export async function getPathStats(path: string) {
   try {
     return await fs.stat(path)
   } catch (error) {}

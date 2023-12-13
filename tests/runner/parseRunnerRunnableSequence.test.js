@@ -1,6 +1,6 @@
 import { parseRunnerRunnableSequence } from '../../source/runner/parseRunnerRunnableSequence'
 
-describe('Parses command line input', () => {
+describe('Parse command line input', () => {
   test('with no runnable sequence defined', () => {
     expect(parseRunnerRunnableSequence([])).toEqual([])
   })
