@@ -1,6 +1,6 @@
 import { getCurrentBranch } from './shared.js'
 
-export const description = 'Displays Git branches or creates and/or switches to bugfix, chore, feature, hotfix or release branches'
+export const description = 'Displays Git branches or creates and/or switches to bugfix, chore, feature or hotfix branches'
 
 export const args = {
   bugfix: {
@@ -22,17 +22,12 @@ export const args = {
     alias: 'x',
     description: 'Creates and/or switches to hotfix branch',
     type: 'boolean'
-  },
-  release: {
-    alias: 'r',
-    description: 'Creates and/or switches to release branch',
-    type: 'boolean'
   }
 }
 
 export async function run({ _, ...args }) {
   const branchPart = _[0]
-  const types = ['bugfix', 'chore', 'feature', 'hotfix', 'release'].filter((type) => args[type])
+  const types = ['bugfix', 'chore', 'feature', 'hotfix'].filter((type) => args[type])
 
   if (types.length === 0) {
     const sequence = ['git branch --all']
@@ -50,60 +45,20 @@ export async function run({ _, ...args }) {
 
   if (types.length > 1) return 'log -e Only one branch type may be specified at a time'
 
+  const { getAllBranches, isValidBranchName } = await import('./shared.js')
+  const { local, remote } = await getAllBranches()
   const type = types[0]
+  const branch = `${type}/${branchPart}`
 
-  if (type === 'release') {
-    const [{ readFile, writeFile }, { doesTagExist, getAllBranches, getCurrentBranch }] = await Promise.all([import('fs/promises'), import('./shared.js')])
-    const { local, remote } = await getAllBranches()
-    let existingRelease = local.find((branch) => branch.startsWith('release'))
+  if (local.includes(branch)) return [`git checkout ${branch}`, 'git branch --all']
+  else if (remote.includes(branch)) return [`git checkout ${branch}`, 'git pull', 'git branch --all']
+  else if (!(await isValidBranchName(branch))) return `log -e Invalid ${type} name: ${branchPart}`
+  else {
+    const currentBranch = await getCurrentBranch()
+    const onRequiredSourceBranch = type === 'hotfix' ? currentBranch.startsWith('release') : currentBranch === 'develop'
 
-    if (existingRelease) return [`git checkout ${existingRelease}`, 'git branch --all']
+    if (!onRequiredSourceBranch) return `log -e A ${type} branch can only be created from ${type === 'hotfix' ? 'a release' : 'the develop'} branch`
 
-    existingRelease = remote.find((branch) => branch.startsWith('release'))
-
-    if (existingRelease) return [`git checkout ${existingRelease}`, 'git pull', 'git branch --all']
-
-    if ((await getCurrentBranch()) !== 'develop') return 'log -e Release branches can only be created from the develop branch'
-
-    const packageJSON = JSON.parse(await readFile('package.json'))
-    let releaseVersion = packageJSON.version
-
-    while (await doesTagExist(`v${releaseVersion}`))
-      releaseVersion = releaseVersion
-        .split('.')
-        .map((value, index) => (index === 2 ? Number(value) + 1 : value))
-        .join('.')
-
-    const releaseBranch = `release/${releaseVersion}`
-
-    if (local.includes(releaseBranch)) return [`git checkout ${releaseBranch}`, 'git branch --all']
-    else if (remote.includes(releaseBranch)) return [`git checkout ${releaseBranch}`, 'git pull', 'git branch --all']
-
-    packageJSON.version = releaseVersion
-
-    await writeFile('package.json', JSON.stringify(packageJSON, null, '  '))
-
-    return [
-      `commit -p "Release v${releaseVersion}"`,
-      `git checkout -b release/${releaseVersion}`,
-      `git push --set-upstream origin release/${releaseVersion}`,
-      'git branch --all'
-    ]
-  } else {
-    const { getAllBranches, isValidBranchName } = await import('./shared.js')
-    const { local, remote } = await getAllBranches()
-    const branch = `${type}/${branchPart}`
-
-    if (local.includes(branch)) return [`git checkout ${branch}`, 'git branch --all']
-    else if (remote.includes(branch)) return [`git checkout ${branch}`, 'git pull', 'git branch --all']
-    else if (!(await isValidBranchName(branch))) return `log -e Invalid ${type} name: ${branchPart}`
-    else {
-      const currentBranch = await getCurrentBranch()
-      const onRequiredSourceBranch = type === 'hotfix' ? currentBranch.startsWith('release') : currentBranch === 'develop'
-
-      if (!onRequiredSourceBranch) return `log -e A ${type} branch can only be created from ${type === 'hotfix' ? 'a release' : 'the develop'} branch`
-
-      return [`git checkout -b ${branch}`, `git push --set-upstream origin ${branch}`, 'git branch --all']
-    }
+    return [`git checkout -b ${branch}`, `git push --set-upstream origin ${branch}`, 'git branch --all']
   }
 }
