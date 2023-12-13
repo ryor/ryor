@@ -1,10 +1,37 @@
-export const description = 'Creates release and tag'
+import { getAllTags } from './shared.js'
 
-export async function run() {
-  const [{ checkoutBranch, getCurrentBranch, isCommitRequired, isPullRequired, pull }, log] = await Promise.all([
-    import('./shared.js'),
-    import('../utilities/log.js')
-  ])
+export const description = 'Creates tagged release. Current version patch number is bumped if version not specified.'
+
+export const args = {
+  version: {
+    alias: 'v',
+    description: 'Specific release version',
+    type: 'string'
+  }
+}
+
+export async function run({ version }) {
+  const log = await import('../utilities/log.js')
+
+  if (version) {
+    if (
+      !version.includes('.') ||
+      version.split('.').length !== 3 ||
+      version.split('.').findIndex((value) => !Number.isInteger(parseInt(value)) || Number(value) < 0) > -1
+    ) {
+      log.error(`Invalid version: "${version}". Semver value required.`)
+      return
+    }
+
+    // Ensuring integer values with no leading zeros
+    version = version
+      .split('.')
+      .map((value) => parseInt(value))
+      .join('.')
+  }
+
+  // prettier-ignore
+  const [{ readFile, writeFile }, { checkoutBranch, commit, createVersionTag, getCurrentBranch, isCommitRequired, isPullRequired, mergeBranch, pull }] = await Promise.all([import('fs/promises'), import('./shared.js')])
   const currentBranch = await getCurrentBranch()
 
   if (currentBranch !== 'develop') await checkoutBranch('develop')
@@ -17,44 +44,45 @@ export async function run() {
     return 'git status -s'
   }
 
+  const [tags, packageBuffer] = await Promise.all([getAllTags(), readFile('package.json')])
+  const packageJSON = JSON.parse(packageBuffer)
+
+  if (version) {
+    if (tags.includes(`v${version}`)) {
+      log.error(`Tag v${version} already exists.`)
+      return
+    }
+  } else {
+    version = packageJSON.version
+
+    while (tags.includes(`v${version}`)) {
+      version = version
+        .split('.')
+        .map((value, index) => (index === 2 ? parseInt(value) + 1 : value))
+        .join('.')
+    }
+  }
+
   return [
     'test -f',
     async () => {
-      const [{ readFile, writeFile }, { commit, createVersionTag, getAllTags, mergeBranch }, log] = await Promise.all([
-        import('fs/promises'),
-        import('./shared.js'),
-        import('../utilities/log.js')
-      ])
-      const [tags, packageBuffer] = await Promise.all([getAllTags(), readFile('package.json')])
-      const packageJSON = JSON.parse(packageBuffer)
-      let releaseVersion = packageJSON.version
+      packageJSON.version = version
 
-      while (tags.includes(`v${releaseVersion}`)) {
-        releaseVersion = releaseVersion
-          .split('.')
-          .map((value, index) => (index === 2 ? Number(value) + 1 : value))
-          .join('.')
-      }
+      await writeFile('package.json', JSON.stringify(packageJSON, null, '  '))
 
-      if (packageJSON.version !== releaseVersion) {
-        packageJSON.version = releaseVersion
-
-        await writeFile('package.json', JSON.stringify(packageJSON, null, '  '))
-      }
-
-      await commit(`Release v${releaseVersion}`, true, true)
+      await commit(`Release v${version}`, true, true)
 
       await checkoutBranch('main')
 
       if (await isPullRequired()) await pull()
 
-      log.wait(`Merging Release v${releaseVersion} into main branch...`)
+      log.wait(`Merging Release v${version} into main branch...`)
 
-      await mergeBranch('develop', `Release v${releaseVersion}`)
+      await mergeBranch('develop', `Release v${version}`)
 
-      log.wait(`Creating v${releaseVersion} tag...`)
+      log.wait(`Creating v${version} tag...`)
 
-      await createVersionTag(releaseVersion)
+      await createVersionTag(version)
 
       await checkoutBranch('develop')
     }
