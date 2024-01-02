@@ -18,72 +18,57 @@ Instead of cluttering of a project's root directory and/or package.json file wit
 
 Similar to shell, npm or [NPS](https://www.npmjs.com/package/nps) scripts, sequences can be composed that run runnables either serially or concurrently.
 
-### Simple to get usage information
+<br />
 
-`node tasks`
+### Get started:
 
-or
+Install with `npm install -D ryor` and create a subdirectory in your project root directory ("tasks" is a good option) to add runnable ES modules to, either in that directory or nested one level into subdirectories to organize them into categories. A runnable ES module must export a **run** value, which can be a string, an array, a function or an asynchronous function. Runnable modules should also export a **description** value describing what the runnable does; "No description provided" is output in the usage information for the runnable otherwise.
 
-`node tasks [runnable] -h`
+**Note:** `"type": "module"` in the project's package.json file is required and version 16 or greater of Node.js is recommended.
 
-### Simple to use
+<br />
 
-`node tasks <runnable> [...args]`
+### Runnable examples:
 
-or
+A string runnable can be used to call a CLI:
 
-`node tasks <runnable> [...args] + <runnable> [...args] + <runnable> [...args]`
-
-### Get Started
-
-Create a subdirectory in your project root directory to contain your runnables ("tasks" is a good option) and put the following index.js file in it:
+_tasks/minify.js_
 
 ```js
-import ryor from 'ryor'
+export const description = 'Minifies JavaScript'
 
-ryor()
-```
-
-**Note:** ryor uses ES modules so `"type": "module"` in the project's package.json file is required and version 16 or greater of Node.js is recommended.
-
-A runnable module is any JS file that exports a "run" value, which can be a string, an array, a function or an asynchronous function:
-
-minify.js
-
-```js
 export const run = 'minify --option1 --option2 path/to/file'
 ```
 
-build.js
+<br />
+
+An array runnable can be used to call other runnables and/or CLIs and run functions in sequence:
+
+_tasks/build.js_
 
 ```js
-export const run = ['transpile', 'minify']
+export const description = 'Creates production build'
+
+export const run = ['transpile', 'minify', () => (...do something), 'echo "Done."',]
 ```
 
-transpile.js
+<br />
+
+An array runnable that begins with the flag **-c** or **--concurrent** will run anything following it concurrently:
+
+_tasks/develop.js_
 
 ```js
-export function run() {
-  const path = ...
+export const description = 'Runs development watchers and server'
 
-  return `transpiler --path ${path}`
-}
+export const run = ['-c', 'transpile --watch', 'lint --watch', 'serve', () => (...start some process for development)]
 ```
 
-test.js
+<br />
 
-```js
-export async function test() {
-  const tester = await import('tester')
-  const result = await tester.test()
+A runnable function or async function can be passed arguments which are defined in the **args** export:
 
-  console.log('Tests complete.')
-}
-```
-
-A runnable module containing a function/async function runnable can be passed argument and they can be defined in the **args** export:
-
-test.js
+_tasks/test.js_
 
 ```js
 export const description = 'Runs tester and optionally collects coverage information'
@@ -104,33 +89,83 @@ export async function run({ coverage }) {
 }
 ```
 
-Like in the above module, a **description** export should be provided for usage information. The above module can be run with the following shell commands:
+<br />
 
-`node tasks test`
+A runnable function or async function can return other runnable definitions:
 
-or
+_tasks/build.js_
 
-`node tasks test -c`
+```js
+export const description = 'Creates production build'
 
-or
+export const args = {
+  quiet: {
+    alias: 'q',
+    description: 'No output unless errors are encountered',
+    type: 'boolean'
+  }
+}
 
-`node tasks test --coverage`
+export function run({ quiet }) {
+  const startTime = Date.now()
+  const sequence = [`transpile${quiet ? ' -d' : ''}`, `minify${quiet ? ' -d' : ''}`]
 
-To output usage information for the above module, use one of the following commands:
+  if (!quiet) sequence.push(`echo "Build took ${Date.now() - startTime}ms."`)
 
-`node tasks test -h`
-
-or
-
-`node tasks test --help`
-
-Which should output the following:
-
+  return sequence
+}
 ```
-Usage: node tasks test [options]
 
-Runs tester and optionally collects coverage information
+<br />
 
--c  --coverage  Collect coverage data
--h  --help      Displays this usage information
+### Runner:
+
+Add an index.js file in your runnables directory that specifies your runnables like this:
+
+_tasks/index.js_
+
+```js
+import ryor from 'ryor'
+
+ryor(['build', 'develop', 'test'])
 ```
+
+or, if runnables are categorized into subdirectories, this:
+
+```js
+import ryor from 'ryor'
+
+ryor([
+  ['main', ['build', 'develop', 'test']],
+  ['tools', ['eslint', 'jest', 'tsc']],
+  ['utilities', ['log']]
+])
+```
+
+<br />
+
+### Usage information:
+
+To output usage information for all runnables, use:
+
+`node tasks` or `node tasks -h` or `node tasks --help`
+
+<br />
+
+To output usage information for a specific runnable, use:
+
+`node tasks [runnable] -h` or `node tasks [runnable] --help`
+
+<br />
+
+### Usage:
+
+To run a single runnable, use:
+
+`node tasks <runnable> [...args]`
+
+<br />
+
+To run more than one runnable in sequence, use:
+
+`node tasks <runnable> [...args] + <runnable> [...args] + <runnable> [...args]`
