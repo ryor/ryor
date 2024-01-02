@@ -18,15 +18,21 @@ Instead of cluttering of a project's root directory and/or package.json file wit
 
 Similar to shell, npm or [NPS](https://www.npmjs.com/package/nps) scripts, sequences can be composed that run runnables either serially or concurrently.
 
+<br />
+
 ### Install
 
 `npm install -D ryor`
+
+<br />
 
 ### Add runnables
 
 Create a subdirectory in your project root directory ("tasks" is a good option) and add runnable ES modules, either in that directory or nested one level into subdirectories to organize them into categories. A runnable is an ES module that exports a **run** value, which can be a string, an array, a function or an asynchronous function. Runnable modules should also export a **description** value describing what the runnable does; "No description provided" is output in the usage information for the runnable otherwise.
 
 **Note:** `"type": "module"` in the project's package.json file is required and version 16 or greater of Node.js is recommended.
+
+<br />
 
 ### Examples
 
@@ -40,6 +46,8 @@ export const description = 'Minifies JavaScript'
 export const run = 'minify --option1 --option2 path/to/file'
 ```
 
+<br />
+
 An array runnable can be used to call other runnables and/or CLIs and run functions in sequence:
 
 _tasks/build.js_
@@ -50,6 +58,8 @@ export const description = 'Creates production build'
 export const run = ['transpile', 'minify', () => (...do something), 'echo "Done."',]
 ```
 
+<br />
+
 An array runnable that begins with the flag **-c** or **--concurrent** will run anything following it concurrently:
 
 _tasks/develop.js_
@@ -59,6 +69,8 @@ export const description = 'Runs development watchers and server'
 
 export const run = ['-c', 'transpile --watch', 'lint --watch', 'serve', () => (...start some process for development)]
 ```
+
+<br />
 
 A runnable function or async function can be passed arguments which are defined in the **args** export:
 
@@ -82,6 +94,8 @@ export async function run({ coverage }) {
   console.log(`Tests complete${coverage ? ' and coverage data collected' : ''}`)
 }
 ```
+
+<br />
 
 A runnable function or async function can return other runnable definitions:
 
@@ -108,6 +122,8 @@ export function run({ quiet }) {
 }
 ```
 
+<br />
+
 ### The runner
 
 Add an index.js file in your runnables directory that specifies your runnables like this:
@@ -132,6 +148,8 @@ ryor([
 ])
 ```
 
+<br />
+
 ### Usage information
 
 To output usage information for all runnables, use:
@@ -143,6 +161,8 @@ To output usage information for all runnables, use:
 To output usage information for a specific runnable, use:
 
 `node tasks [runnable] -h` or `node tasks [runnable] --help`
+
+<br />
 
 ### Usage
 
