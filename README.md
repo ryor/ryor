@@ -24,15 +24,11 @@ Similar to shell, npm or [NPS](https://www.npmjs.com/package/nps) scripts, seque
 
 `npm install -D ryor`
 
-<br />
-
 ### Add runnables
 
 Create a subdirectory in your project root directory ("tasks" is a good option) and add runnable ES modules, either in that directory or nested one level into subdirectories to organize them into categories. A runnable is an ES module that exports a **run** value, which can be a string, an array, a function or an asynchronous function. Runnable modules should also export a **description** value describing what the runnable does; "No description provided" is output in the usage information for the runnable otherwise.
 
 **Note:** `"type": "module"` in the project's package.json file is required and version 16 or greater of Node.js is recommended.
-
-<br />
 
 ### Examples
 
