@@ -144,7 +144,7 @@ ryor([
 
 <br />
 
-### Usage information
+### Usage information:
 
 To output usage information for all runnables, use:
 
@@ -158,7 +158,7 @@ To output usage information for a specific runnable, use:
 
 <br />
 
-### Usage
+### Usage:
 
 To run a single runnable, use:
 
