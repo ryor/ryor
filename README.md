@@ -18,14 +18,13 @@ Instead of cluttering of a project's root directory and/or package.json file wit
 
 Similar to shell, npm or [NPS](https://www.npmjs.com/package/nps) scripts, sequences can be composed that run runnables either serially or concurrently.
 
-### Get Started
-
-Install **ryor** as a project development dependency:
+### Install
 
 `npm install -D ryor`
 
-Create a subdirectory in your project root directory ("tasks" is a good option) and add runnables, either in that directory or nested one level into subdirectories to organize them into categories. A runnable is an ES module that exports a **run** value, which can be a string, an array, a function or an asynchronous function. Runnable modules should also export a **description** value describing what the runnable does; "No description provided" is output in the usage information for the runnable
-otherwise.
+### Add runnables
+
+Create a subdirectory in your project root directory ("tasks" is a good option) and add runnable ES modules, either in that directory or nested one level into subdirectories to organize them into categories. A runnable is an ES module that exports a **run** value, which can be a string, an array, a function or an asynchronous function. Runnable modules should also export a **description** value describing what the runnable does; "No description provided" is output in the usage information for the runnable otherwise.
 
 **Note:** `"type": "module"` in the project's package.json file is required and version 16 or greater of Node.js is recommended.
 
@@ -33,7 +32,7 @@ otherwise.
 
 A string runnable can be used to call a CLI:
 
-[runnables directory]/minify.js
+tasks/minify.js
 
 ```js
 export const description = 'Minifies JavaScript'
@@ -43,7 +42,7 @@ export const run = 'minify --option1 --option2 path/to/file'
 
 An array runnable can be used to call other runnables and/or CLIs and run functions in sequence:
 
-[runnables directory]/build.js
+tasks/build.js
 
 ```js
 export const description = 'Creates production build'
@@ -53,7 +52,7 @@ export const run = ['transpile', 'minify', () => (...do something), 'echo "Done.
 
 An array runnable that begins with the flag **-c** or **--concurrent** will run anything following it concurrently:
 
-[runnables directory]/develop.js
+tasks/develop.js
 
 ```js
 export const description = 'Runs development watchers and server'
@@ -63,7 +62,7 @@ export const run = ['-c', 'transpile --watch', 'lint --watch', 'serve', () => (.
 
 A runnable function or async function can be passed arguments which are defined in the **args** export:
 
-[runnables directory]/test.js
+tasks/test.js
 
 ```js
 export const description = 'Runs tester and optionally collects coverage information'
@@ -86,7 +85,7 @@ export async function run({ coverage }) {
 
 A runnable function or async function can return other runnable definitions:
 
-[runnables directory]/build.js
+tasks/build.js
 
 ```js
 export const description = 'Creates production build'
@@ -111,7 +110,9 @@ export function run({ quiet }) {
 
 ### The runner
 
-Add an index.js file in your runnables directory that specifies your runnables:
+Add an index.js file in your runnables directory that specifies your runnables like this:
+
+tasks/index.js
 
 ```js
 import ryor from 'ryor'
@@ -119,7 +120,7 @@ import ryor from 'ryor'
 ryor(['build', 'develop', 'test'])
 ```
 
-or
+or, if runnables are categorized into subdirectories, this:
 
 ```js
 import ryor from 'ryor'
@@ -131,37 +132,22 @@ ryor([
 ])
 ```
 
-To output usage information for any runnable module, use one of the following commands:
+### Usage information
 
-`node tasks test -h`
+To output usage information for all runnables, use:
 
-or
+`node tasks` or `node tasks -h` or `node tasks --help`
 
-`node tasks test --help`
+To output usage information for a specific runnable, use:
 
-Which should output the following for the **test** runnable above:
+`node tasks [runnable] -h` or `node tasks [runnable] --help`
 
-```
-Usage: node tasks test [options]
+### Usage
 
-Runs tester and optionally collects coverage information
-
--c  --coverage  Collect coverage data
--h  --help      Displays this usage information
-```
-
-### Simple to get usage information
-
-`node tasks`
-
-or
-
-`node tasks [runnable] -h`
-
-### Simple to use
+To run a single runnable, use:
 
 `node tasks <runnable> [...args]`
 
-or
+To run more than one runnable in sequence, use:
 
 `node tasks <runnable> [...args] + <runnable> [...args] + <runnable> [...args]`
