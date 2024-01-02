@@ -32,7 +32,7 @@ Create a subdirectory in your project root directory ("tasks" is a good option) 
 
 A string runnable can be used to call a CLI:
 
-tasks/minify.js
+_tasks/minify.js_
 
 ```js
 export const description = 'Minifies JavaScript'
@@ -42,7 +42,7 @@ export const run = 'minify --option1 --option2 path/to/file'
 
 An array runnable can be used to call other runnables and/or CLIs and run functions in sequence:
 
-tasks/build.js
+_tasks/build.js_
 
 ```js
 export const description = 'Creates production build'
@@ -52,7 +52,7 @@ export const run = ['transpile', 'minify', () => (...do something), 'echo "Done.
 
 An array runnable that begins with the flag **-c** or **--concurrent** will run anything following it concurrently:
 
-tasks/develop.js
+_tasks/develop.js_
 
 ```js
 export const description = 'Runs development watchers and server'
@@ -62,7 +62,7 @@ export const run = ['-c', 'transpile --watch', 'lint --watch', 'serve', () => (.
 
 A runnable function or async function can be passed arguments which are defined in the **args** export:
 
-tasks/test.js
+_tasks/test.js_
 
 ```js
 export const description = 'Runs tester and optionally collects coverage information'
@@ -85,7 +85,7 @@ export async function run({ coverage }) {
 
 A runnable function or async function can return other runnable definitions:
 
-tasks/build.js
+_tasks/build.js_
 
 ```js
 export const description = 'Creates production build'
@@ -112,7 +112,7 @@ export function run({ quiet }) {
 
 Add an index.js file in your runnables directory that specifies your runnables like this:
 
-tasks/index.js
+_tasks/index.js_
 
 ```js
 import ryor from 'ryor'
