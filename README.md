@@ -26,6 +26,8 @@ Install with `npm install -D ryor` and create a subdirectory in your project roo
 
 **Note:** `"type": "module"` in the project's package.json file is required and version 16 or greater of Node.js is recommended.
 
+<br />
+
 ### Examples
 
 A string runnable can be used to call a CLI:
