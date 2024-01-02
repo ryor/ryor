@@ -20,7 +20,7 @@ Similar to shell, npm or [NPS](https://www.npmjs.com/package/nps) scripts, seque
 
 <br />
 
-### Get Started
+### Get started:
 
 Install with `npm install -D ryor` and create a subdirectory in your project root directory ("tasks" is a good option) to add runnable ES modules to, either in that directory or nested one level into subdirectories to organize them into categories. A runnable ES module must export a **run** value, which can be a string, an array, a function or an asynchronous function. Runnable modules should also export a **description** value describing what the runnable does; "No description provided" is output in the usage information for the runnable otherwise.
 
@@ -28,7 +28,7 @@ Install with `npm install -D ryor` and create a subdirectory in your project roo
 
 <br />
 
-### Examples
+### Runnable examples:
 
 A string runnable can be used to call a CLI:
 
@@ -118,7 +118,7 @@ export function run({ quiet }) {
 
 <br />
 
-### The runner
+### Runner:
 
 Add an index.js file in your runnables directory that specifies your runnables like this:
 
