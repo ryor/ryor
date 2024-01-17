@@ -162,11 +162,11 @@ ryor([
 
 To output usage information for all runnables, simply run `node [directory name]`.
 
-&nbsp;&nbsp;**Example:** `node tasks`
+**Example:** `node tasks`
 
 To output usage information for a specific runnable: `node [directory name] <runnable> -h/--help`
 
-&nbsp;&nbsp;**Example:** `node tasks develop -h` or `node tasks develop --help`
+**Example:** `node tasks develop -h` or `node tasks develop --help`
 
 **Note:** When defining arguments for a runnable module, note that **help** and its **h** alias are both reserved for all modules.
 
@@ -176,10 +176,10 @@ To output usage information for a specific runnable: `node [directory name] <run
 
 To run a single runnable, simply run `node [directory name] <runnable> [...args]`
 
-&nbsp;&nbsp;**Example:** `node tasks build -q`
+**Example:** `node tasks build -q`
 
 To run more than one runnable in sequence:
 
 `node [directory name] <runnable> [...args] + <runnable> [...args] + <runnable> [...args]`
 
-&nbsp;&nbsp;**Example:** `node tasks test + build + publish`
+**Example:** `node tasks test + build + publish`
