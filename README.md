@@ -170,8 +170,12 @@ To output usage information for a specific runnable: `node [directory name] <run
 
 ### Usage:
 
-To run a single runnable: `node [directory name] <runnable> [...args]`
+To run a single runnable, simply run `node [directory name] <runnable> [...args]`
+
+Example: `node tasks build -q`
 
 To run more than one runnable in sequence:
 
 `node [directory name] <runnable> [...args] + <runnable> [...args] + <runnable> [...args]`
+
+Example: `node tasks test + build + publish`
