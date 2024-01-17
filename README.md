@@ -8,7 +8,7 @@ Including **[ryor](https://www.npmjs.com/package/ryor)** as a project developmen
 
 ### No plugins
 
-Unlike task runners or pluggable build tools that require often clunky coordination between unevenly maintained 3rd-party plugins (Gulp, Grunt, Webpack, etc.), **ryor** offers a convenient means of using tools that already [do one thing and do it well](https://en.wikipedia.org/wiki/Unix_philosophy) as CLIs or Node APIs.
+Unlike task runners or pluggable build tools that require often clunky coordination between unevenly maintained 3rd-party plugins (Gulp, Grunt, Webpack, etc.), ryor offers a convenient means of using tools that already [do one thing and do it well](https://en.wikipedia.org/wiki/Unix_philosophy) as CLIs or Node APIs.
 
 ### Less clutter
 
@@ -22,15 +22,15 @@ Similar to shell, npm or [NPS](https://www.npmjs.com/package/nps) scripts, seque
 
 ### Get started:
 
-Install: `npm install -D ryor`
+First, install ryor as a project development dependency: `npm install -D ryor`
 
-Create a subdirectory in your project's root directory ("tasks" is a good option) for your task runner and runnable ES modules. A runnable module must export a **run** value, which can be a string, an array or a function (sync or async). Runnable modules should also export a **description** value describing what the runnable does ("No description provided" is output in the CLI usage information for the runnable otherwise).
+Next, create a subdirectory in your project's root directory for your task runner and runnable ES modules ("tasks" is a good option). A runnable module must export a **run** value, which can be a string, an array or a function (sync or async). Runnable modules should also export a **description** value describing what the runnable does ("No description provided" is output in the CLI usage information for the runnable otherwise).
 
 **Note:** `"type": "module"` in the project's package.json file is required and version 16 or greater of Node.js is recommended.
 
 <br />
 
-### Runnable ES module examples:
+### Create runnables:
 
 A string run value can be used to call a CLI:
 
@@ -56,7 +56,7 @@ export const run = 'minifier --config tasks/minify/config.js'
 
 <br />
 
-An array run value can be used to call other runnables, CLIs or run functions in sequence:
+An array run value can be used to call other runnables, CLIs or functions in sequence:
 
 _tasks/build.js_
 
@@ -132,7 +132,7 @@ export function run({ quiet }) {
 
 <br />
 
-### Runner:
+### Create a runner:
 
 Add an index.js file in your runnables directory that specifies your runnables like this:
 
@@ -144,7 +144,7 @@ import ryor from 'ryor'
 ryor(['build', 'develop', 'test'])
 ```
 
-or, if runnables are categorized into subdirectories, like this:
+or, if runnables are separated into subdirectories, like this:
 
 ```js
 import ryor from 'ryor'
