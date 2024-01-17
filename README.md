@@ -164,7 +164,7 @@ To output usage information for all runnables, simply run `node [directory name]
 
 **Example:** `node tasks`
 
-To output usage information for a specific runnable: `node [directory name] <runnable> -h/--help`
+To output usage information for a specific runnable, run `node [directory name] <runnable> -h/--help`
 
 **Example:** `node tasks develop -h` or `node tasks develop --help`
 
@@ -174,10 +174,10 @@ To output usage information for a specific runnable: `node [directory name] <run
 
 ### Usage:
 
-To run a single runnable: `node [directory name] <runnable> [...args]`
+To run a single runnable, use `node [directory name] <runnable> [...args]`
 
 **Example:** `node tasks build -q`
 
-To run more than one runnable in a sequence, use **+**:
+To run more than one runnable in a sequence, use **+**.
 
 **Example:** `node tasks test + build + publish`
