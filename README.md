@@ -22,27 +22,41 @@ Similar to shell, npm or [NPS](https://www.npmjs.com/package/nps) scripts, seque
 
 ### Get started:
 
-Install with `npm install -D ryor` and create a subdirectory in your project root directory ("tasks" is a good option) to add runnable ES modules to, either in that directory or nested one level into subdirectories to organize them into categories. A runnable ES module must export a **run** value, which can be a string, an array, a function or an asynchronous function. Runnable modules should also export a **description** value describing what the runnable does; "No description provided" is output in the usage information for the runnable otherwise.
+Install: `npm install -D ryor`
+
+Create a subdirectory in your project's root directory ("tasks" is a good option) for your task runner and runnable ES modules. A runnable module must export a **run** value, which can be a string, an array or a function (sync or async). Runnable modules should also export a **description** value describing what the runnable does ("No description provided" is output in the CLI usage information for the runnable otherwise).
 
 **Note:** `"type": "module"` in the project's package.json file is required and version 16 or greater of Node.js is recommended.
 
 <br />
 
-### Runnable examples:
+### Runnable ES module examples:
 
-A string runnable can be used to call a CLI:
+A string run value can be used to call a CLI:
 
 _tasks/minify.js_
 
 ```js
 export const description = 'Minifies JavaScript'
 
-export const run = 'minify --option1 --option2 path/to/file'
+export const run = 'minifier --option1 --option2 path/to/file'
 ```
 
 <br />
 
-An array runnable can be used to call other runnables and/or CLIs and run functions in sequence:
+A configuration file can be included alongside a runnable ES module by simply creating a directory with an index.js file:
+
+_tasks/minify/index.js_
+
+```js
+export const description = 'Minifies JavaScript'
+
+export const run = 'minifier --config tasks/minify/config.js'
+```
+
+<br />
+
+An array run value can be used to call other runnables, CLIs or run functions in sequence:
 
 _tasks/build.js_
 
@@ -54,7 +68,7 @@ export const run = ['transpile', 'minify', () => (...do something), 'echo "Done.
 
 <br />
 
-An array runnable that begins with the flag **-c** or **--concurrent** will run anything following it concurrently:
+An array run value that begins with the flag **-c** or **--concurrent** will run anything following it concurrently:
 
 _tasks/develop.js_
 
@@ -66,7 +80,7 @@ export const run = ['-c', 'transpile --watch', 'lint --watch', 'serve', () => (.
 
 <br />
 
-A runnable function or async function can be passed arguments which are defined in the **args** export:
+A run function can be passed arguments which are defined in the **args** export:
 
 _tasks/test.js_
 
@@ -91,7 +105,7 @@ export async function run({ coverage }) {
 
 <br />
 
-A runnable function or async function can return other runnable definitions:
+A run function can return strings, arrays or functions to run:
 
 _tasks/build.js_
 
@@ -130,7 +144,7 @@ import ryor from 'ryor'
 ryor(['build', 'develop', 'test'])
 ```
 
-or, if runnables are categorized into subdirectories, this:
+or, if runnables are categorized into subdirectories, like this:
 
 ```js
 import ryor from 'ryor'
@@ -146,26 +160,22 @@ ryor([
 
 ### Usage information:
 
-To output usage information for all runnables, use:
-
-`node tasks` or `node tasks -h` or `node tasks --help`
+To output usage information for all runnables, simply run `node [directory name]`.
 
 <br />
 
-To output usage information for a specific runnable, use:
+To output usage information for a specific runnable, use `node [directory name] <runnable> -h/--help`
 
-`node tasks [runnable] -h` or `node tasks [runnable] --help`
+**Note:** The **help** argument and its **h** alias are reserved for all runnable modules.
 
 <br />
 
 ### Usage:
 
-To run a single runnable, use:
-
-`node tasks <runnable> [...args]`
+To run a single runnable, use: `node [directory name] <runnable> [...args]`
 
 <br />
 
 To run more than one runnable in sequence, use:
 
-`node tasks <runnable> [...args] + <runnable> [...args] + <runnable> [...args]`
+`node [directory name] <runnable> [...args] + <runnable> [...args] + <runnable> [...args]`
